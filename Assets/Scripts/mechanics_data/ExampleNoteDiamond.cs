@@ -21,7 +21,7 @@ public class ExampleNoteDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = Direction.Up,
-            InitialPower = 1,
+            InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData
@@ -64,19 +64,19 @@ public class ExampleNoteDiamond : NoteDiamond
             }
         };
 
-		public override string DescribeMainEffect (float power)
+		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) power} cards to your track.";
+            return $"Adds {(int) vector.Power} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, float power)
+		public override void MainEffect (Track input, EffectVector vector)
 		{
             // TODO: add cards
 		}
 
-		public override float MetaEffect (float power)
+		public override EffectVector MetaEffect (EffectVector vector)
 		{
-            return power + 1;
+            return vector + 1;
 		}
 	}
 
@@ -85,7 +85,7 @@ public class ExampleNoteDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = Direction.Left,
-            InitialPower = 1,
+            InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData
@@ -128,19 +128,19 @@ public class ExampleNoteDiamond : NoteDiamond
             }
         };
 
-		public override string DescribeMainEffect (float power)
+		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) power} cards to your track.";
+            return $"Adds {(int) vector.Power} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, float power)
+		public override void MainEffect (Track input, EffectVector vector)
 		{
             // TODO: add cards
 		}
 
-		public override float MetaEffect (float power)
+		public override EffectVector MetaEffect (EffectVector vector)
 		{
-            return power + 1;
+            return vector + 1;
 		}
 	}
 
@@ -149,7 +149,7 @@ public class ExampleNoteDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = Direction.Down,
-            InitialPower = 1,
+            InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData
@@ -192,19 +192,19 @@ public class ExampleNoteDiamond : NoteDiamond
             }
         };
 
-		public override string DescribeMainEffect (float power)
+		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) power} cards to your track.";
+            return $"Adds {(int) vector.Power} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, float power)
+		public override void MainEffect (Track input, EffectVector vector)
 		{
             // TODO: add cards
 		}
 
-		public override float MetaEffect (float power)
+		public override EffectVector MetaEffect (EffectVector vector)
 		{
-            return power + 1;
+            return vector + 1;
 		}
 	}
 
@@ -213,7 +213,7 @@ public class ExampleNoteDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = Direction.Right,
-            InitialPower = 1,
+            InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData
@@ -256,19 +256,19 @@ public class ExampleNoteDiamond : NoteDiamond
             }
         };
 
-		public override string DescribeMainEffect (float power)
+		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) power} cards to your track.";
+            return $"Adds {(int) vector.Power} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, float power)
+		public override void MainEffect (Track input, EffectVector vector)
 		{
             // TODO: add cards
 		}
 
-		public override float MetaEffect (float power)
+		public override EffectVector MetaEffect (EffectVector vector)
 		{
-            return power + 1;
+            return vector + 1;
 		}
 	}
 }

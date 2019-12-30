@@ -1,15 +1,45 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Note
     {
+        public struct EffectVector
+        {
+            public readonly float Power; // generic numeric scalar
+            public readonly bool TargetsEnemy; // TODO: do something with this
+
+            public EffectVector (float power, bool targetsEnemy)
+            {
+                Power = power;
+                TargetsEnemy = targetsEnemy;
+            }
+
+            public static EffectVector operator +(EffectVector v) => v;
+            public static EffectVector operator -(EffectVector v) => new EffectVector(-v.Power, v.TargetsEnemy);
+
+            public static EffectVector operator +(EffectVector v, float f) => new EffectVector(v.Power + f, v.TargetsEnemy);
+            public static EffectVector operator -(EffectVector v, float f) => v + (-f);
+
+            public static EffectVector operator *(EffectVector v, float f) => new EffectVector(v.Power * f, v.TargetsEnemy);
+            public static EffectVector operator /(EffectVector v, float f)
+            {
+                if (f == 0)
+                {
+                    throw new DivideByZeroException();
+                }
+
+                return new EffectVector(v.Power / f, v.TargetsEnemy);
+            }
+        }
+
         protected struct NoteData
         {
             public Direction Direction;
 
             // the initial state of the value that meta notes manipulate
-            public float InitialPower;
+            public EffectVector InitialVector;
 
             // helps to have a color for consistent visual language
             public Color Color;
@@ -30,7 +60,7 @@ public abstract class Note
         protected abstract NoteData data { get; }
 
         public Direction Direction => data.Direction;
-        public float InitialPower => data.InitialPower;
+        public EffectVector InitialVector => data.InitialVector;
         public Color Color => data.Color;
         public string MetaEffectDescription => data.MetaEffectDescription;
 
@@ -44,9 +74,9 @@ public abstract class Note
             return data.MetaCombos?[mainDirection]?[nextDirection] ?? false;
         }
 
-        public abstract void MainEffect (Track input, float power);
-        public abstract float MetaEffect (float power);
+        public abstract void MainEffect (Track input, EffectVector vector);
+        public abstract EffectVector MetaEffect (EffectVector vector);
 
         // for use in the UI to describe what the spell currently is:
-        public abstract string DescribeMainEffect (float power);
+        public abstract string DescribeMainEffect (EffectVector vector);
     }

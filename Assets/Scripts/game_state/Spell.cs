@@ -10,11 +10,11 @@ public class Spell
     public readonly Note MainNote;
     public readonly ReadOnlyCollection<Note> MetaNotes;
 
-    public float Power =>
-        MetaNotes.Aggregate(MainNote.InitialPower, (power, metaNote) => metaNote.MetaEffect(power));
+    public Note.EffectVector FinalVector =>
+        MetaNotes.Aggregate(MainNote.InitialVector, (vector, metaNote) => metaNote.MetaEffect(vector));
 
     public string Description =>
-        MainNote.DescribeMainEffect(Power);
+        MainNote.DescribeMainEffect(FinalVector);
 
     public List<Note> AllNotes => 
         new List<Note> { MainNote }.Concat(MetaNotes).ToList();
@@ -38,7 +38,7 @@ public class Spell
 
     public void CastOn (Track input)
     {
-        MainNote.MainEffect(input, Power);
+        MainNote.MainEffect(input, FinalVector);
     }
 
     public bool CanComboInto (Direction direction)
