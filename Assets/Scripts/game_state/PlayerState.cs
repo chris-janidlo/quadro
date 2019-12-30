@@ -4,22 +4,41 @@ using UnityEngine;
 
 public class PlayerState
 {
+    public Track Track => rhythm.Track;
+
     readonly NoteDiamond noteDiamond;
     Spell currentSpell;
     int comboCounter;
-    Track track;
+    Rhythm rhythm = new Rhythm();
 
-    public PlayerState (NoteDiamond noteDiamond, Track track = null)
+    public PlayerState (NoteDiamond noteDiamond)
     {
         this.noteDiamond = noteDiamond;
-        this.track = track ?? new Track();
     }
 
-    public void PlayDirection (Direction direction)
+    public void DoNoteInput (NoteInput input)
+    {
+        bool success = rhythm.TryHitNow();
+
+        if (success && input == NoteInput.Cast && rhythm.IsDownbeat())
+        {
+            castSpell();
+        }
+        else if (success)
+        {
+            playDirection((Direction) input);
+        }
+        else
+        {
+            comboCounter = 0;
+        }
+    }
+
+    void playDirection (Direction direction)
     {
         Note next = noteDiamond[direction];
 
-        if (currentSpell == null) // never played a note before / just casted a spell
+        if (currentSpell == null || comboCounter == 0) // never played a note before / just casted a spell / just failed a spell
         {
             currentSpell = new Spell(next);
             comboCounter++;
@@ -35,9 +54,9 @@ public class PlayerState
         }
     }
 
-    public void CastSpell ()
+    void castSpell ()
     {
-        currentSpell.CastOn(track);
+        currentSpell.CastOn(Track);
         currentSpell = null;
         comboCounter = 0;
     }
