@@ -71,7 +71,7 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            // TODO: add cards
+            input.SpawnCards((int) vector.Power);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -135,7 +135,7 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            // TODO: add cards
+            input.SpawnCards((int) vector.Power);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -199,7 +199,7 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            // TODO: add cards
+            input.SpawnCards((int) vector.Power);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -263,7 +263,7 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            // TODO: add cards
+            input.SpawnCards((int) vector.Power);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
