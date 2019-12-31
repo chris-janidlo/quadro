@@ -26,7 +26,7 @@ public class PlayerState
         }
         else if (success)
         {
-            playDirection((Direction) input);
+            playDirection((InputDirection) input);
         }
         else
         {
@@ -34,7 +34,7 @@ public class PlayerState
         }
     }
 
-    void playDirection (Direction direction)
+    void playDirection (InputDirection direction)
     {
         Note next = noteDiamond[direction];
 

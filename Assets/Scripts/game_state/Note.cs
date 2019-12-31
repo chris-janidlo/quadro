@@ -36,7 +36,7 @@ public abstract class Note
 
         protected struct NoteData
         {
-            public Direction Direction;
+            public InputDirection Direction;
 
             // the initial state of the value that meta notes manipulate
             public EffectVector InitialVector;
@@ -54,22 +54,22 @@ public abstract class Note
             public MetaComboData MetaCombos;
         }
 
-        protected class ComboData : DirectionBox<bool> {}
-        protected class MetaComboData : DirectionBox<ComboData> {}
+        protected class ComboData : InputDirectionBox<bool> {}
+        protected class MetaComboData : InputDirectionBox<ComboData> {}
 
         protected abstract NoteData data { get; }
 
-        public Direction Direction => data.Direction;
+        public InputDirection Direction => data.Direction;
         public EffectVector InitialVector => data.InitialVector;
         public Color Color => data.Color;
         public string MetaEffectDescription => data.MetaEffectDescription;
 
-        public bool GetMainComboData (Direction nextDirection)
+        public bool GetMainComboData (InputDirection nextDirection)
         {
             return data.MainCombos?[nextDirection] ?? false;
         }
 
-        public bool GetMetaComboData (Direction mainDirection, Direction nextDirection)
+        public bool GetMetaComboData (InputDirection mainDirection, InputDirection nextDirection)
         {
             return data.MetaCombos?[mainDirection]?[nextDirection] ?? false;
         }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using crass;
 
 public class Track
 {
@@ -20,7 +22,7 @@ public class Track
     public const int STARTING_BEATS_PER_CARD = 4;
 
     List<RhythmCard> cards = new List<RhythmCard>();
-    RhythmCardGenerator generator = new RhythmCardGenerator(QUAVERS_PER_BEAT);
+    BagRandomizer<RhythmCard> cardBag;
 
     int _bSteps = STARTING_BSTEPS;
     public int BSteps
@@ -39,8 +41,18 @@ public class Track
     public int CardsCleared { get; private set; }
 
     public int BPM => BSteps * BPM_PER_BSTEP;
-
     public ReadOnlyCollection<RhythmCard> Cards => cards.AsReadOnly();
+
+    public Track ()
+    {
+        // there are 2^n permutations of any pattern with n values that are either on or off, like a beat pattern. subtract 1 because we don't include the all-off pattern
+        int uniqueCardPermutations = (1 << QUAVERS_PER_BEAT) - 1;
+
+        // start at 1 to avoid the all-off pattern
+        List<RhythmCard> allPossibleCards = Enumerable.Range(1, uniqueCardPermutations).Select(i => indexToCard(i)).ToList();
+
+        cardBag = new BagRandomizer<RhythmCard> { Items = allPossibleCards };
+    }
 
     public void SpawnCards (int n)
     {
@@ -50,5 +62,11 @@ public class Track
     public void ClearCards (int n)
     {
         throw new NotImplementedException();
+    }
+
+    RhythmCard indexToCard (int index)
+    {
+        string paddedBinary = Convert.ToString(index, 2).PadLeft(QUAVERS_PER_BEAT, '0');
+        return new RhythmCard(paddedBinary.Select(c => c == '1').ToArray());
     }
 }

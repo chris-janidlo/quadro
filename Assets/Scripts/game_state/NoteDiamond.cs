@@ -6,10 +6,10 @@ using UnityEngine;
 
 public abstract class NoteDiamond
 {
-    public Note this[Direction direction] => notes[direction];
+    public Note this[InputDirection direction] => notes[direction];
 
-    DirectionBox<Note> _notes;
-    DirectionBox<Note> notes
+    InputDirectionBox<Note> _notes;
+    InputDirectionBox<Note> notes
     {
         get
         {
@@ -17,9 +17,9 @@ public abstract class NoteDiamond
             {
                 _notes = initializeNotes();
             }
-            return (DirectionBox<Note>) _notes;
+            return _notes;
         }
     }
 
-    protected abstract DirectionBox<Note> initializeNotes ();
+    protected abstract InputDirectionBox<Note> initializeNotes ();
 }

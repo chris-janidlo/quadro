@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ExampleNoteDiamond : NoteDiamond
 {
-	protected override DirectionBox<Note> initializeNotes()
+	protected override InputDirectionBox<Note> initializeNotes()
 	{
-        return new DirectionBox<Note>
+        return new InputDirectionBox<Note>
         {
             // all 4 notes are functionally the same, just have different internal direction values (which is necessary for things like spells to work)
             Up = new ExampleNote1(),
@@ -20,7 +20,7 @@ public class ExampleNoteDiamond : NoteDiamond
 	{
 		protected override NoteData data => new NoteData
         {
-            Direction = Direction.Up,
+            Direction = InputDirection.Up,
             InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
@@ -84,7 +84,7 @@ public class ExampleNoteDiamond : NoteDiamond
 	{
 		protected override NoteData data => new NoteData
         {
-            Direction = Direction.Left,
+            Direction = InputDirection.Left,
             InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
@@ -148,7 +148,7 @@ public class ExampleNoteDiamond : NoteDiamond
 	{
 		protected override NoteData data => new NoteData
         {
-            Direction = Direction.Down,
+            Direction = InputDirection.Down,
             InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
@@ -212,7 +212,7 @@ public class ExampleNoteDiamond : NoteDiamond
 	{
 		protected override NoteData data => new NoteData
         {
-            Direction = Direction.Right,
+            Direction = InputDirection.Right,
             InitialVector = new EffectVector(1, false),
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
