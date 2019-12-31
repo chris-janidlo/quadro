@@ -8,9 +8,11 @@ using crass;
 
 public class Track
 {
-    public const int CARDS_PER_DIFFICULTY_INCREASE = 16; // every time we clear this many cards, increase the BPM and the card spawn rate
+    public const int MEASURES = 8;
+    public const int BEATS_PER_MEASURE = 4; // also cards per measure
+    public const int QUAVERS_PER_BEAT = 4; // also the subdivisions in every card
 
-    public const int QUAVERS_PER_BEAT = 4;
+    public const int CARDS_PER_DIFFICULTY_INCREASE = 16; // every time we clear this many cards, increase the BPM and the card spawn rate
 
     // a bstep is a made up metrical unit for scaling purposes (since a change of a single BPM is too subtle to be noticed)
     public const int BPM_PER_BSTEP = 5;
@@ -38,10 +40,28 @@ public class Track
         set => _cardSpawnRate = Mathf.Clamp(value, 1, MAX_BEATS_PER_CARD);
     }
 
+    bool _failedLastCard;
+    public bool FailedLastCard
+    {
+        get => _failedLastCard;
+        private set
+        {
+            if (value && InDanger)
+            {
+                Dead = true;
+            }
+
+            _failedLastCard = value;
+        }
+    }
+
     public int CardsCleared { get; private set; }
+    public bool Dead { get; private set; }
 
     public int BPM => BSteps * BPM_PER_BSTEP;
     public ReadOnlyCollection<RhythmCard> Cards => cards.AsReadOnly();
+
+    public bool InDanger => cards.Count > BEATS_PER_MEASURE * MEASURES;
 
     public Track ()
     {
@@ -54,14 +74,50 @@ public class Track
         cardBag = new BagRandomizer<RhythmCard> { Items = allPossibleCards };
     }
 
-    public void SpawnCards (int n)
+    public void SpawnCards (int numCards)
     {
-        throw new NotImplementedException();
+        if (numCards != 0)
+        {
+            FailedLastCard = false;
+        }
+
+        for (int i = 0; i < numCards; i++)
+        {
+            cards.Add(cardBag.GetNext());
+        }
     }
 
-    public void ClearCards (int n)
+    public void ClearCards (int numCards)
     {
-        throw new NotImplementedException();
+        if (numCards != 0)
+        {
+            FailedLastCard = false;
+        }
+
+        for (int i = 0; i < numCards; i++)
+        {
+            if (cards.Count == 0) break;
+
+            cards.RemoveAt(0);
+
+            CardsCleared++;
+            if (CardsCleared % CARDS_PER_DIFFICULTY_INCREASE == 0)
+            {
+                BSteps++;
+                CardSpawnRate--;
+            }
+        }
+    }
+
+    public void FailCard ()
+    {
+        if (cards.Count == 0) return;
+
+        RhythmCard card = cards[0];
+        cards.RemoveAt(0);
+        cards.Add(card);
+
+        FailedLastCard = true;
     }
 
     RhythmCard indexToCard (int index)
