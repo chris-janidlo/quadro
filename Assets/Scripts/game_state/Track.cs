@@ -39,7 +39,6 @@ public class Track
     public int CardsCleared { get; private set; }
 
     public int BPM => BSteps * BPM_PER_BSTEP;
-    public double SecondsPerBeat => 60.0 / BPM;
 
     public ReadOnlyCollection<RhythmCard> Cards => cards.AsReadOnly();
 

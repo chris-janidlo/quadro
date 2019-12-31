@@ -37,8 +37,10 @@ public class Rhythm
         }
     }
 
-    public double CurrentQuaverPosition => (AudioTime - Latency) / (Track.SecondsPerBeat / Track.QUAVERS_PER_BEAT);
-    public double CurrentBeatPosition => (AudioTime - Latency) / Track.SecondsPerBeat;
+    public double CurrentQuaverPosition => (AudioTime - Latency) / (secondsPerBeat / Track.QUAVERS_PER_BEAT);
+    public double CurrentBeatPosition => (AudioTime - Latency) / secondsPerBeat;
+
+    double secondsPerBeat => 60.0 / Track.BPM;
 
     public bool TryHitNow ()
     {
