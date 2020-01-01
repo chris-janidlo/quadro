@@ -33,11 +33,11 @@ public class Track
         set => _bSteps = Mathf.Clamp(value, MIN_BSTEPS, MAX_BSTEPS);
     }
 
-    int _cardSpawnRate = STARTING_BEATS_PER_CARD;
-    public int CardSpawnRate
+    int _beatsPerCard = STARTING_BEATS_PER_CARD;
+    public int BeatsPerCard
     {
-        get => _cardSpawnRate;
-        set => _cardSpawnRate = Mathf.Clamp(value, 1, MAX_BEATS_PER_CARD);
+        get => _beatsPerCard;
+        set => _beatsPerCard = Mathf.Clamp(value, 1, MAX_BEATS_PER_CARD);
     }
 
     bool _failedLastCard;
@@ -104,7 +104,7 @@ public class Track
             if (CardsCleared % CARDS_PER_DIFFICULTY_INCREASE == 0)
             {
                 BSteps++;
-                CardSpawnRate--;
+                BeatsPerCard--;
             }
         }
     }

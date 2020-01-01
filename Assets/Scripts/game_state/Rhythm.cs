@@ -14,7 +14,7 @@ public class Rhythm
 
     public double Latency;
 
-    int quaverTicker, beatTicker;
+    int quaverTicker, beatTicker, cardSpawnTicker;
     bool closestQuaverAttempted, failedDuringLatestCard;
 
     // needs to be updated by external driver
@@ -38,6 +38,11 @@ public class Rhythm
     int positionWithinBeat => (int) Math.Round(CurrentQuaverPosition - ((int) CurrentBeatPosition * Track.QUAVERS_PER_BEAT));
 
     double secondsPerBeat => 60.0 / Track.BPM;
+
+    public Rhythm ()
+    {
+        Beat += trackCardSpawning;
+    }
 
     public bool TryHitNow ()
     {
@@ -100,6 +105,17 @@ public class Rhythm
 
                 failedDuringLatestCard = false;
             }
+        }
+    }
+
+    void trackCardSpawning ()
+    {
+        cardSpawnTicker++;
+
+        if (cardSpawnTicker >= Track.BeatsPerCard)
+        {
+            Track.SpawnCards(1);
+            cardSpawnTicker = 0;
         }
     }
 }
