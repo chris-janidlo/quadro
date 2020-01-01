@@ -24,7 +24,7 @@ public class PlayerState
         {
             castSpell();
         }
-        else if (success)
+        else if (success && input != NoteInput.Cast)
         {
             playDirection((InputDirection) input);
         }
