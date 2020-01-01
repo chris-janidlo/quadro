@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerState
 {
-    public Track Track => rhythm.Track;
+    public readonly Rhythm Rhythm = new Rhythm();
+
+    public Track Track => Rhythm.Track;
 
     readonly NoteDiamond noteDiamond;
     Spell currentSpell;
-    int comboCounter;
-    Rhythm rhythm = new Rhythm();
 
     public PlayerState (NoteDiamond noteDiamond)
     {
@@ -18,19 +18,19 @@ public class PlayerState
 
     public void DoNoteInput (NoteInput input)
     {
-        bool success = rhythm.TryHitNow();
+        if (!Rhythm.TryHitNow()) return;
 
-        if (success && input == NoteInput.Cast && rhythm.IsDownbeat())
-        {
-            castSpell();
-        }
-        else if (success && input != NoteInput.Cast)
+        if (input != NoteInput.Cast)
         {
             playDirection((InputDirection) input);
         }
+        else if (Rhythm.IsDownbeat())
+        {
+            castSpell();
+        }
         else
         {
-            comboCounter = 0;
+            Rhythm.FailCombo();
         }
     }
 
@@ -38,19 +38,17 @@ public class PlayerState
     {
         Note next = noteDiamond[direction];
 
-        if (currentSpell == null || comboCounter == 0) // never played a note before / just casted a spell / just failed a spell
+        if (currentSpell == null || Rhythm.ComboCounter == 0) // never played a note before / just casted a spell / just failed a spell
         {
             currentSpell = new Spell(next);
-            comboCounter++;
         }
         else if (currentSpell.CanComboInto(direction))
         {
-            currentSpell = comboCounter == 0 ? new Spell(next) : currentSpell.PlusMetaNote(next);
-            comboCounter++;
+            currentSpell = Rhythm.ComboCounter == 0 ? new Spell(next) : currentSpell.PlusMetaNote(next);
         }
         else
         {
-            comboCounter = 0;
+            Rhythm.FailCombo();
         }
     }
 
@@ -58,6 +56,5 @@ public class PlayerState
     {
         currentSpell.CastOn(Track);
         currentSpell = null;
-        comboCounter = 0;
     }
 }
