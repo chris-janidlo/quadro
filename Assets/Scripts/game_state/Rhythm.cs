@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +33,7 @@ public class Rhythm
     public int ComboCounter { get; private set; }
 
     public double CurrentBeatPosition => (AudioTime - Latency) / secondsPerBeat;
+    public double CurrentPositionWithinMeasure => CurrentBeatPosition % Track.BEATS_PER_MEASURE;
 
     int closestPositionWithinMeasure => (int) Math.Round(CurrentBeatPosition) % Track.BEATS_PER_MEASURE;
     int previousPositionWithinMeasure => (int) Math.Floor(CurrentBeatPosition) % Track.BEATS_PER_MEASURE;

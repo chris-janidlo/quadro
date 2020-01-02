@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,23 +10,20 @@ public class TestDriver : MonoBehaviour
 
     public AudioClip Downbeat, Beat;
 
-    PlayerState state = new PlayerState(new BaseSingleplayerDiamond());
+    public readonly PlayerState State = new PlayerState(new BaseSingleplayerDiamond());
 
     void Start ()
     {
-        state.Rhythm.Beat += () =>
+        State.Rhythm.Beat += () =>
         {
-            Debug.Log("state:");
-            Debug.Log("cards: " + prettyPrintCards());
             Debug.Log("spell: " + prettyPrintSpell());
-            AudioSource.PlayOneShot(state.Rhythm.IsDownbeat() ? Downbeat : Beat);
+            AudioSource.PlayOneShot(State.Rhythm.IsDownbeat() ? Downbeat : Beat);
         };
     }
 
     void Update ()
     {
-        state.Rhythm.AudioTime = Time.time;
-
+        State.Rhythm.AudioTime = Time.time;
 
         if (Input.GetButtonDown("NoteUp"))
         {
@@ -48,18 +45,18 @@ public class TestDriver : MonoBehaviour
 
     void doInput (NoteInput input)
     {
-        state.DoNoteInput(input);
+        State.DoNoteInput(input);
     }
 
 
     string prettyPrintCards ()
     {
-        return String.Join("|", state.Track.Cards.Select(c => c.ToString()));
+        return String.Join("|", State.Track.Cards.Select(c => c.ToString()));
     }
 
     string prettyPrintSpell ()
     {
-        if (state.CurrentSpell == null) return "(none)";
-        return String.Join(", ", state.CurrentSpell.AllNotes.Select(n => nameof(n.Direction)[0]));
+        if (State.CurrentSpell == null) return "(none)";
+        return String.Join(", ", State.CurrentSpell.AllNotes.Select(n => nameof(n.Direction)[0]));
     }
 }
