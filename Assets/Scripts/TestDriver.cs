@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ public class TestDriver : MonoBehaviour
 
         if (Input.GetButtonDown("NoteUp"))
         {
-            doInput(NoteInput.Down);
+            doInput(NoteInput.Up);
         }
         else if (Input.GetButtonDown("NoteLeft"))
         {
