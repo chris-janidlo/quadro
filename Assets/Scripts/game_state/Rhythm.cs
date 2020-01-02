@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,6 +89,12 @@ public class Rhythm
 
         if (AudioTime > Math.Floor(CurrentBeatPosition) + SUCCESS_RANGE_BEATS)
         {
+            // if the player completely skipped this beat when they shouldn't have, fail
+            if (Track.Cards[0][positionWithinBeat] && !closestBeatAttempted)
+            {
+                FailCombo();
+            }
+
             closestBeatAttempted = false;
 
             if (positionWithinBeat == Track.BEATS_PER_MEASURE - 1)
