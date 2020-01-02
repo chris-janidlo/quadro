@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class Rhythm
     public double Latency;
 
     int beatTicker, cardSpawnTicker;
-    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfMeasure, shouldSpawnCard;
+    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfMeasure, shouldSpawnCard, shouldUpCombo;
 
     // needs to be updated by external driver
     double _audioTime;
@@ -63,7 +63,7 @@ public class Rhythm
 
         bool passed = checkHitInternal();
 
-        if (passed) ComboCounter++;
+        if (passed) shouldUpCombo = true;
         else FailCombo();
 
         return passed;
@@ -114,6 +114,12 @@ public class Rhythm
         else
         {
             handledEndOfMeasure = false;
+        }
+
+        if (shouldUpCombo)
+        {
+            shouldUpCombo = false;
+            ComboCounter++;
         }
 
         if (shouldSpawnCard)
