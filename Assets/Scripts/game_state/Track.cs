@@ -20,7 +20,7 @@ public class Track
     public const int STARTING_BSTEPS = 24;
 
     public const int MAX_BEATS_PER_CARD = 16;
-    public const int STARTING_BEATS_PER_CARD = 4;
+    public const int STARTING_BEATS_PER_CARD = 8;
 
     List<RhythmCard> cards = new List<RhythmCard>();
     BagRandomizer<RhythmCard> cardBag;
