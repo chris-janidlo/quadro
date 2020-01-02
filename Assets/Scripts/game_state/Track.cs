@@ -8,17 +8,16 @@ using crass;
 
 public class Track
 {
-    public const int MEASURES = 8;
-    public const int BEATS_PER_MEASURE = 4; // also cards per measure
-    public const int QUAVERS_PER_BEAT = 4; // also the subdivisions in every card
+    public const int CARDS_UNTIL_DEAD = 32;
+    public const int BEATS_PER_MEASURE = 4; // also the subdivisions in every card
 
     public const int CARDS_PER_DIFFICULTY_INCREASE = 16; // every time we clear this many cards, increase the BPM and the card spawn rate
 
     // a bstep is a made up metrical unit for scaling purposes (since a change of a single BPM is too subtle to be noticed)
     public const int BPM_PER_BSTEP = 5;
-    public const int MIN_BSTEPS = 8;
-    public const int MAX_BSTEPS = 28;
-    public const int STARTING_BSTEPS = 12;
+    public const int MIN_BSTEPS = 20;
+    public const int MAX_BSTEPS = 40;
+    public const int STARTING_BSTEPS = 24;
 
     public const int MAX_BEATS_PER_CARD = 16;
     public const int STARTING_BEATS_PER_CARD = 4;
@@ -61,12 +60,12 @@ public class Track
     public int BPM => BSteps * BPM_PER_BSTEP;
     public ReadOnlyCollection<RhythmCard> Cards => cards.AsReadOnly();
 
-    public bool InDanger => cards.Count > BEATS_PER_MEASURE * MEASURES;
+    public bool InDanger => cards.Count > CARDS_UNTIL_DEAD;
 
     public Track ()
     {
         // there are 2^n permutations of any pattern with n values that are either on or off, like a beat pattern. subtract 1 because we don't include the all-off pattern
-        int uniqueCardPermutations = (1 << QUAVERS_PER_BEAT) - 1;
+        int uniqueCardPermutations = (1 << BEATS_PER_MEASURE) - 1;
 
         // start at 1 to avoid the all-off pattern
         List<RhythmCard> allPossibleCards = Enumerable.Range(1, uniqueCardPermutations).Select(i => indexToCard(i)).ToList();
@@ -122,7 +121,7 @@ public class Track
 
     RhythmCard indexToCard (int index)
     {
-        string paddedBinary = Convert.ToString(index, 2).PadLeft(QUAVERS_PER_BEAT, '0');
+        string paddedBinary = Convert.ToString(index, 2).PadLeft(BEATS_PER_MEASURE, '0');
         return new RhythmCard(paddedBinary.Select(c => c == '1').ToArray());
     }
 }
