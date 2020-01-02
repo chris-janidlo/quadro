@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class Rhythm
     public double Latency;
 
     int beatTicker, cardSpawnTicker;
-    bool closestBeatAttempted, failedDuringLatestCard;
+    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfMeasure, shouldSpawnCard;
 
     // needs to be updated by external driver
     double _audioTime;
@@ -34,7 +34,8 @@ public class Rhythm
 
     public double CurrentBeatPosition => (AudioTime - Latency) / secondsPerBeat;
 
-    int positionWithinBeat => (int) Math.Round(CurrentBeatPosition) % Track.BEATS_PER_MEASURE;
+    int closestPositionWithinMeasure => (int) Math.Round(CurrentBeatPosition) % Track.BEATS_PER_MEASURE;
+    int previousPositionWithinMeasure => (int) Math.Floor(CurrentBeatPosition) % Track.BEATS_PER_MEASURE;
 
     double secondsPerBeat => 60.0 / Track.BPM;
 
@@ -52,7 +53,7 @@ public class Rhythm
             closestBeatAttempted = true;
 
             // is this even a valid beat
-            if (!Track.Cards[0][positionWithinBeat]) return false;
+            if (!beatIsOn()) return false;
 
             // if we're out of range
             if (Math.Abs(CurrentBeatPosition - (int) CurrentBeatPosition) > SUCCESS_RANGE_BEATS) return false;
@@ -70,7 +71,7 @@ public class Rhythm
 
     public bool IsDownbeat ()
     {
-        return positionWithinBeat == 0;
+        return closestPositionWithinMeasure == 0;
     }
 
     public void FailCombo ()
@@ -87,24 +88,46 @@ public class Rhythm
             Beat?.Invoke();
         }
 
-        if (AudioTime > Math.Floor(CurrentBeatPosition) + SUCCESS_RANGE_BEATS)
+        if (AudioTime > (Math.Floor(CurrentBeatPosition) + SUCCESS_RANGE_BEATS) * secondsPerBeat)
         {
-            // if the player completely skipped this beat when they shouldn't have, fail
-            if (Track.Cards[0][positionWithinBeat] && !closestBeatAttempted)
+            if (!handledEndOfMeasure)
             {
-                FailCombo();
-            }
+                handledEndOfMeasure = true;
 
-            closestBeatAttempted = false;
+                // if the player completely skipped this beat when they shouldn't have, fail
+                if (beatIsOn(true) && !closestBeatAttempted)
+                {
+                    FailCombo();
+                }
 
-            if (positionWithinBeat == Track.BEATS_PER_MEASURE - 1)
-            {
-                if (failedDuringLatestCard) Track.FailCard();
-                else Track.ClearCards(1);
+                closestBeatAttempted = false;
 
-                failedDuringLatestCard = false;
+                if (previousPositionWithinMeasure == Track.BEATS_PER_MEASURE - 1)
+                {
+                    if (failedDuringLatestCard) Track.FailCard();
+                    else Track.ClearCards(1);
+
+                    failedDuringLatestCard = false;
+                }
             }
         }
+        else
+        {
+            handledEndOfMeasure = false;
+        }
+
+        if (shouldSpawnCard)
+        {
+            shouldSpawnCard = false;
+            Track.SpawnCards(1);
+        }
+    }
+
+    bool beatIsOn (bool previous = false)
+    {
+        if (Track.Cards.Count == 0) return false;
+
+        return Track.Cards[0][previous ? previousPositionWithinMeasure : closestPositionWithinMeasure];
     }
 
     void trackCardSpawning ()
@@ -113,7 +136,7 @@ public class Rhythm
 
         if (cardSpawnTicker >= Track.BeatsPerCard)
         {
-            Track.SpawnCards(1);
+            shouldSpawnCard = true;
             cardSpawnTicker = 0;
         }
     }
