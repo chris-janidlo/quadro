@@ -16,7 +16,6 @@ public class TestDriver : MonoBehaviour
     {
         state.Rhythm.Beat += () =>
         {
-            Debug.Log(state.Rhythm.IsDownbeat());
             Debug.Log("state:");
             Debug.Log("cards: " + prettyPrintCards());
             Debug.Log("spell: " + prettyPrintSpell());
