@@ -57,6 +57,6 @@ public class TestDriver : MonoBehaviour
     string prettyPrintSpell ()
     {
         if (State.CurrentSpell == null) return "(none)";
-        return String.Join(", ", State.CurrentSpell.AllNotes.Select(n => nameof(n.Direction)[0]));
+        return String.Join(", ", State.CurrentSpell.AllNotes.Select(n => n.Direction.ToString()[0]));
     }
 }
