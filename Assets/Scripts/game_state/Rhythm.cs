@@ -8,14 +8,14 @@ public class Rhythm
 	public event Action Beat;
 
     // the percentage of a beat you can "miss" by but still register as a hit. always assumed to be less than half a beat - making it more than a half beat makes no sense if beats can be on right next to each other, and the code isn't written with the potential for exactly half a beat in mind. 0.5 might work, but there might be subtle bugs, so it's highly not recommended.
-    public const double SUCCESS_RANGE_BEATS = 0.2;
+    public const double SUCCESS_RANGE_BEATS = 0.49;
 
     public readonly Track Track = new Track();
 
     public double Latency;
 
     int beatTicker, cardSpawnTicker;
-    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfMeasure, shouldSpawnCard, shouldUpCombo;
+    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat, shouldSpawnCard, shouldUpCombo;
 
     // needs to be updated by external driver
     double _audioTime;
@@ -35,8 +35,8 @@ public class Rhythm
     public double CurrentBeatPosition => (AudioTime - Latency) / secondsPerBeat;
     public double CurrentPositionWithinMeasure => CurrentBeatPosition % Track.BEATS_PER_MEASURE;
 
-    int closestPositionWithinMeasure => (int) Math.Round(CurrentBeatPosition) % Track.BEATS_PER_MEASURE;
-    int previousPositionWithinMeasure => (int) Math.Floor(CurrentBeatPosition) % Track.BEATS_PER_MEASURE;
+    int closestPositionWithinMeasure => (int) Math.Round(CurrentPositionWithinMeasure);
+    int previousPositionWithinMeasure => (int) CurrentPositionWithinMeasure;
 
     double secondsPerBeat => 60.0 / Track.BPM;
 
@@ -54,7 +54,7 @@ public class Rhythm
             closestBeatAttempted = true;
 
             // is this even a valid beat
-            if (!beatIsOn()) return false;
+            if (!beatIsOn(closestPositionWithinMeasure)) return false;
 
             // if we're out of range
             if (Math.Abs(CurrentBeatPosition - (int) CurrentBeatPosition) > SUCCESS_RANGE_BEATS) return false;
@@ -91,12 +91,12 @@ public class Rhythm
 
         if (AudioTime > (Math.Floor(CurrentBeatPosition) + SUCCESS_RANGE_BEATS) * secondsPerBeat)
         {
-            if (!handledEndOfMeasure)
+            if (!handledEndOfBeat)
             {
-                handledEndOfMeasure = true;
+                handledEndOfBeat = true;
 
                 // if the player completely skipped this beat when they shouldn't have, fail
-                if (beatIsOn(true) && !closestBeatAttempted)
+                if (beatIsOn(previousPositionWithinMeasure) && !closestBeatAttempted)
                 {
                     FailCombo();
                 }
@@ -114,7 +114,7 @@ public class Rhythm
         }
         else
         {
-            handledEndOfMeasure = false;
+            handledEndOfBeat = false;
         }
 
         if (shouldUpCombo)
@@ -130,11 +130,11 @@ public class Rhythm
         }
     }
 
-    bool beatIsOn (bool previous = false)
+    bool beatIsOn (int positionWithinMeasure)
     {
         if (Track.Cards.Count == 0) return false;
 
-        return Track.Cards[0][previous ? previousPositionWithinMeasure : closestPositionWithinMeasure];
+        return Track.Cards[0][positionWithinMeasure];
     }
 
     void trackCardSpawning ()
