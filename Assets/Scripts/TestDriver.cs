@@ -6,24 +6,30 @@ using UnityEngine;
 
 public class TestDriver : MonoBehaviour
 {
-    public AudioSource AudioSource;
+    public AudioSource TimingSource, BeatSource;
 
     public AudioClip Downbeat, Beat;
 
     public readonly PlayerState State = new PlayerState(new BaseSingleplayerDiamond());
 
+    float inverseAudioFrequency;
+
     void Start ()
     {
+        inverseAudioFrequency = 1f / TimingSource.clip.frequency;
+
         State.Rhythm.Beat += () =>
         {
             Debug.Log("spell: " + prettyPrintSpell());
-            AudioSource.PlayOneShot(State.Rhythm.IsDownbeat() ? Downbeat : Beat);
+            BeatSource.PlayOneShot(State.Rhythm.IsDownbeat() ? Downbeat : Beat);
+
+            TimingSource.pitch = State.Track.BPM / 60f;
         };
     }
 
     void Update ()
     {
-        State.Rhythm.AudioTime = Time.time;
+        State.Rhythm.CurrentPositionWithinMeasure = TimingSource.timeSamples * inverseAudioFrequency;
 
         if (Input.GetButtonDown("NoteUp"))
         {

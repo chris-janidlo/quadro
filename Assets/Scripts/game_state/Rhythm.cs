@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,28 +12,25 @@ public class Rhythm
 
     public readonly Track Track = new Track();
 
-    public double Latency;
+    public double Latency; // TODO: use this
 
     int beatTicker, cardSpawnTicker;
     bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat, shouldSpawnCard, shouldUpCombo;
 
     // needs to be updated by external driver
-    double _audioTime;
-    public double AudioTime
+    double _beatPos;
+    public double CurrentPositionWithinMeasure
     {
-        get => _audioTime;
+        get => _beatPos;
         set
         {
-            _audioTime = value;
+            _beatPos = value;
 
             audioTimeDidUpdate();
         }
     }
 
     public int ComboCounter { get; private set; }
-
-    public double CurrentBeatPosition => (AudioTime - Latency) / secondsPerBeat;
-    public double CurrentPositionWithinMeasure => CurrentBeatPosition % Track.BEATS_PER_MEASURE;
 
     int closestPositionWithinMeasure => (int) Math.Round(CurrentPositionWithinMeasure);
     int previousPositionWithinMeasure => (int) CurrentPositionWithinMeasure;
@@ -57,7 +54,7 @@ public class Rhythm
             if (!beatIsOn(closestPositionWithinMeasure)) return false;
 
             // if we're out of range
-            if (Math.Abs(CurrentBeatPosition - (int) CurrentBeatPosition) > SUCCESS_RANGE_BEATS) return false;
+            if (Math.Abs(CurrentPositionWithinMeasure - (int) CurrentPositionWithinMeasure) > SUCCESS_RANGE_BEATS) return false;
 
             return true;
         };
@@ -83,13 +80,16 @@ public class Rhythm
 
     void audioTimeDidUpdate ()
     {
-        if (CurrentBeatPosition > beatTicker + 1)
+        if (previousPositionWithinMeasure != beatTicker)
         {
-            beatTicker++;
+            if (CurrentPositionWithinMeasure >= beatTicker + 1) beatTicker++; // tick
+            else if (previousPositionWithinMeasure == 0) beatTicker = 0; // loop
+            else throw new InvalidOperationException("something fucky with beats");
+
             Beat?.Invoke();
         }
 
-        if (CurrentBeatPosition - (int) CurrentBeatPosition > SUCCESS_RANGE_BEATS)
+        if (CurrentPositionWithinMeasure - (int) CurrentPositionWithinMeasure > SUCCESS_RANGE_BEATS)
         {
             if (!handledEndOfBeat)
             {
