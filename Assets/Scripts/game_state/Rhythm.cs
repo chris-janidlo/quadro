@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,7 +89,7 @@ public class Rhythm
             Beat?.Invoke();
         }
 
-        if (AudioTime > (Math.Floor(CurrentBeatPosition) + SUCCESS_RANGE_BEATS) * secondsPerBeat)
+        if (CurrentBeatPosition - (int) CurrentBeatPosition > SUCCESS_RANGE_BEATS)
         {
             if (!handledEndOfBeat)
             {
