@@ -24,8 +24,12 @@ public class Rhythm
         get => _beatPos;
         set
         {
-            _beatPos = value;
+            if (value > Track.BEATS_PER_MEASURE - 1)
+            {
+                throw new ArgumentException("value must be between 0 and " + (Track.BEATS_PER_MEASURE - 1));
+            }
 
+            _beatPos = value;
             audioTimeDidUpdate();
         }
     }
