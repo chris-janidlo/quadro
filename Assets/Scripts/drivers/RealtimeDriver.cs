@@ -33,7 +33,7 @@ public class RealtimeDriver : ADriver
 
     void Update ()
     {
-        State.Rhythm.CurrentPositionWithinMeasure = TimingSource.timeSamples * inverseAudioFrequency;
+        State.Rhythm.CurrentPositionInMeasure = TimingSource.timeSamples * inverseAudioFrequency;
 
         var input = getInput();
 

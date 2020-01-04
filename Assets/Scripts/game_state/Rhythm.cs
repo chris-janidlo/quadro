@@ -19,7 +19,7 @@ public class Rhythm
 
     // needs to be updated by external driver
     double _beatPos;
-    public double CurrentPositionWithinMeasure
+    public double CurrentPositionInMeasure
     {
         get => _beatPos;
         set
@@ -35,9 +35,10 @@ public class Rhythm
     }
 
     public int ComboCounter { get; private set; }
-    public int TruncatedPositionWithinMeasure => (int) CurrentPositionWithinMeasure;
+    public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
 
-    int closestPositionWithinMeasure => (int) Math.Round(CurrentPositionWithinMeasure);
+    // may be outside of measure, ie when CurrentPositionInMeasure > Track.BEATS_PER_MEASURE + 0.5
+    int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
 
     public bool TryHitNow ()
     {
@@ -48,10 +49,10 @@ public class Rhythm
             closestBeatAttempted = true;
 
             // is this even a valid beat
-            if (!Track.FirstCardHasBeat(closestPositionWithinMeasure % Track.BEATS_PER_MEASURE)) return false;
+            if (!Track.FirstCardHasBeat(closestBeatPosition % Track.BEATS_PER_MEASURE)) return false;
 
             // if we're out of range
-            if (Math.Abs(CurrentPositionWithinMeasure - closestPositionWithinMeasure) > SUCCESS_RANGE_BEATS) return false;
+            if (Math.Abs(CurrentPositionInMeasure - closestBeatPosition) > SUCCESS_RANGE_BEATS) return false;
 
             return true;
         };
@@ -66,7 +67,7 @@ public class Rhythm
 
     public bool IsDownbeat ()
     {
-        return closestPositionWithinMeasure == 0;
+        return closestBeatPosition == 0;
     }
 
     public void FailCombo ()
@@ -77,10 +78,10 @@ public class Rhythm
 
     void audioTimeDidUpdate ()
     {
-        if (TruncatedPositionWithinMeasure != beatTicker)
+        if (TruncatedPositionInMeasure != beatTicker)
         {
-            if (CurrentPositionWithinMeasure >= beatTicker + 1) beatTicker++; // tick
-            else if (TruncatedPositionWithinMeasure == 0) beatTicker = 0; // loop
+            if (CurrentPositionInMeasure >= beatTicker + 1) beatTicker++; // tick
+            else if (TruncatedPositionInMeasure == 0) beatTicker = 0; // loop
             else throw new InvalidOperationException("something fucky with beats");
 
             updateCardState();
@@ -88,14 +89,14 @@ public class Rhythm
             Beat?.Invoke();
         }
 
-        double fractionalPart = CurrentPositionWithinMeasure - TruncatedPositionWithinMeasure;
+        double fractionalPart = CurrentPositionInMeasure - TruncatedPositionInMeasure;
 
         if (fractionalPart > SUCCESS_RANGE_BEATS && !handledEndOfBeat)
         {
             handledEndOfBeat = true;
 
             // if the player completely skipped this beat when they shouldn't have, fail
-            if (Track.FirstCardHasBeat(TruncatedPositionWithinMeasure) && !closestBeatAttempted) FailCombo();
+            if (Track.FirstCardHasBeat(TruncatedPositionInMeasure) && !closestBeatAttempted) FailCombo();
 
             closestBeatAttempted = false;
         }
@@ -119,7 +120,7 @@ public class Rhythm
 
     void updateCardState ()
     {
-        if (TruncatedPositionWithinMeasure == 0)
+        if (TruncatedPositionInMeasure == 0)
         {
             if (failedDuringLatestCard) Track.FailCard();
             else Track.ClearCards(1);

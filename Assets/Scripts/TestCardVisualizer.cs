@@ -27,7 +27,7 @@ public class TestCardVisualizer : MonoBehaviour
             createCardVisuals();
         }
 
-        cardVisualParent.transform.localPosition = Vector2.left * (float) Driver.State.Rhythm.CurrentPositionWithinMeasure * OffsetScale;
+        cardVisualParent.transform.localPosition = Vector2.left * (float) Driver.State.Rhythm.CurrentPositionInMeasure * OffsetScale;
     }
 
     void createCardVisuals ()
