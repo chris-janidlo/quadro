@@ -58,7 +58,7 @@ public class Rhythm
             if (!beatIsOn(closestPositionWithinMeasure)) return false;
 
             // if we're out of range
-            if (Math.Abs(CurrentPositionWithinMeasure - (int) CurrentPositionWithinMeasure) > SUCCESS_RANGE_BEATS) return false;
+            if (Math.Abs(CurrentPositionWithinMeasure - closestPositionWithinMeasure) > SUCCESS_RANGE_BEATS) return false;
 
             return true;
         };
