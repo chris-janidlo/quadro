@@ -7,7 +7,7 @@ public class TestCardVisualizer : MonoBehaviour
 {
     public float OffsetScale, CardGap;
 
-    public TestDriver Driver;
+    public ADriver Driver;
     public TestRhythmCardVisual RhythmCardVisualPrefab;
 
     Track track => Driver.State.Track;

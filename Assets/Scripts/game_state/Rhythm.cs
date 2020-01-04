@@ -31,9 +31,9 @@ public class Rhythm
     }
 
     public int ComboCounter { get; private set; }
+    public int TruncatedPositionWithinMeasure => (int) CurrentPositionWithinMeasure;
 
     int closestPositionWithinMeasure => (int) Math.Round(CurrentPositionWithinMeasure);
-    int previousPositionWithinMeasure => (int) CurrentPositionWithinMeasure;
 
     double secondsPerBeat => 60.0 / Track.BPM;
 
@@ -80,10 +80,10 @@ public class Rhythm
 
     void audioTimeDidUpdate ()
     {
-        if (previousPositionWithinMeasure != beatTicker)
+        if (TruncatedPositionWithinMeasure != beatTicker)
         {
             if (CurrentPositionWithinMeasure >= beatTicker + 1) beatTicker++; // tick
-            else if (previousPositionWithinMeasure == 0) beatTicker = 0; // loop
+            else if (TruncatedPositionWithinMeasure == 0) beatTicker = 0; // loop
             else throw new InvalidOperationException("something fucky with beats");
 
             Beat?.Invoke();
@@ -96,14 +96,14 @@ public class Rhythm
                 handledEndOfBeat = true;
 
                 // if the player completely skipped this beat when they shouldn't have, fail
-                if (beatIsOn(previousPositionWithinMeasure) && !closestBeatAttempted)
+                if (beatIsOn(TruncatedPositionWithinMeasure) && !closestBeatAttempted)
                 {
                     FailCombo();
                 }
 
                 closestBeatAttempted = false;
 
-                if (previousPositionWithinMeasure == Track.BEATS_PER_MEASURE - 1)
+                if (TruncatedPositionWithinMeasure == Track.BEATS_PER_MEASURE - 1)
                 {
                     if (failedDuringLatestCard) Track.FailCard();
                     else Track.ClearCards(1);
