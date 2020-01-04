@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,9 +24,9 @@ public class Rhythm
         get => _beatPos;
         set
         {
-            if (value > Track.BEATS_PER_MEASURE - 1)
+            if (value < 0 || value >= Track.BEATS_PER_MEASURE)
             {
-                throw new ArgumentException("value must be between 0 and " + (Track.BEATS_PER_MEASURE - 1));
+                throw new ArgumentException("value must be between 0 and " + Track.BEATS_PER_MEASURE);
             }
 
             _beatPos = value;
