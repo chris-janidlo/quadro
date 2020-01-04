@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ public class Rhythm
 	public event Action Beat;
 
     // the percentage of a beat you can "miss" by but still register as a hit. always assumed to be less than half a beat - making it more than a half beat makes no sense if beats can be on right next to each other, and the code isn't written with the potential for exactly half a beat in mind. 0.5 might work, but there might be subtle bugs, so it's highly not recommended.
-    public const double SUCCESS_RANGE_BEATS = 0.49;
+    public const double SUCCESS_RANGE_BEATS = 0.3;
 
     public readonly Track Track = new Track();
 
@@ -39,13 +39,6 @@ public class Rhythm
 
     int closestPositionWithinMeasure => (int) Math.Round(CurrentPositionWithinMeasure);
 
-    double secondsPerBeat => 60.0 / Track.BPM;
-
-    public Rhythm ()
-    {
-        Beat += trackCardSpawning;
-    }
-
     public bool TryHitNow ()
     {
         Func<bool> checkHitInternal = () =>
@@ -55,7 +48,7 @@ public class Rhythm
             closestBeatAttempted = true;
 
             // is this even a valid beat
-            if (!beatIsOn(closestPositionWithinMeasure)) return false;
+            if (!beatIsOn(closestPositionWithinMeasure % Track.BEATS_PER_MEASURE)) return false;
 
             // if we're out of range
             if (Math.Abs(CurrentPositionWithinMeasure - closestPositionWithinMeasure) > SUCCESS_RANGE_BEATS) return false;
@@ -90,33 +83,23 @@ public class Rhythm
             else if (TruncatedPositionWithinMeasure == 0) beatTicker = 0; // loop
             else throw new InvalidOperationException("something fucky with beats");
 
+            updateCardState();
+
             Beat?.Invoke();
         }
 
-        if (CurrentPositionWithinMeasure - (int) CurrentPositionWithinMeasure > SUCCESS_RANGE_BEATS)
+        double fractionalPart = CurrentPositionWithinMeasure - TruncatedPositionWithinMeasure;
+
+        if (fractionalPart > SUCCESS_RANGE_BEATS && !handledEndOfBeat)
         {
-            if (!handledEndOfBeat)
-            {
-                handledEndOfBeat = true;
+            handledEndOfBeat = true;
 
-                // if the player completely skipped this beat when they shouldn't have, fail
-                if (beatIsOn(TruncatedPositionWithinMeasure) && !closestBeatAttempted)
-                {
-                    FailCombo();
-                }
+            // if the player completely skipped this beat when they shouldn't have, fail
+            if (beatIsOn(TruncatedPositionWithinMeasure) && !closestBeatAttempted) FailCombo();
 
-                closestBeatAttempted = false;
-
-                if (TruncatedPositionWithinMeasure == Track.BEATS_PER_MEASURE - 1)
-                {
-                    if (failedDuringLatestCard) Track.FailCard();
-                    else Track.ClearCards(1);
-
-                    failedDuringLatestCard = false;
-                }
-            }
+            closestBeatAttempted = false;
         }
-        else
+        else if (fractionalPart <= SUCCESS_RANGE_BEATS)
         {
             handledEndOfBeat = false;
         }
@@ -134,15 +117,16 @@ public class Rhythm
         }
     }
 
-    bool beatIsOn (int positionWithinMeasure)
+    void updateCardState ()
     {
-        if (Track.Cards.Count == 0) return false;
+        if (TruncatedPositionWithinMeasure == 0)
+        {
+            if (failedDuringLatestCard) Track.FailCard();
+            else Track.ClearCards(1);
 
-        return Track.Cards[0][positionWithinMeasure];
-    }
+            failedDuringLatestCard = false;
+        }
 
-    void trackCardSpawning ()
-    {
         cardSpawnTicker++;
 
         if (cardSpawnTicker >= Track.BeatsPerCard)
@@ -150,5 +134,12 @@ public class Rhythm
             shouldSpawnCard = true;
             cardSpawnTicker = 0;
         }
+    }
+
+    bool beatIsOn (int positionWithinMeasure)
+    {
+        if (Track.Cards.Count == 0) return false;
+
+        return Track.Cards[0][positionWithinMeasure];
     }
 }
