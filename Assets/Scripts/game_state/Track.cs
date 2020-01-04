@@ -119,6 +119,18 @@ public class Track
         FailedLastCard = true;
     }
 
+    public bool FirstCardHasBeat (int positionWithinMeasure)
+    {
+        if (positionWithinMeasure < 0 || positionWithinMeasure >= BEATS_PER_MEASURE)
+        {
+            throw new ArgumentException("beat position must be within 0 and " + BEATS_PER_MEASURE);
+        }
+
+        if (Cards.Count == 0) return false;
+
+        return Cards[0][positionWithinMeasure];
+    }
+
     RhythmCard indexToCard (int index)
     {
         string paddedBinary = Convert.ToString(index, 2).PadLeft(BEATS_PER_MEASURE, '0');
