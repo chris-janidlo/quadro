@@ -11,6 +11,8 @@ public class PlayerState
 
     public Track Track => Rhythm.Track;
 
+    bool justFailed;
+
     public PlayerState (NoteDiamond noteDiamond)
     {
         NoteDiamond = noteDiamond;
@@ -18,7 +20,13 @@ public class PlayerState
 
     public void DoNoteInput (NoteInput input)
     {
-        if (!Rhythm.TryHitNow()) return;
+        if (!Rhythm.TryHitNow())
+        {
+            justFailed = true;
+            return;
+        }
+
+        justFailed = false;
 
         if (input != NoteInput.Cast)
         {
@@ -30,6 +38,7 @@ public class PlayerState
         }
         else
         {
+            justFailed = true;
             Rhythm.FailCombo();
         }
     }
@@ -43,7 +52,7 @@ public class PlayerState
     {
         Note next = NoteDiamond[direction];
 
-        if (CurrentSpell == null || Rhythm.ComboCounter == 1) // never played a note before / just casted a spell / just failed a spell
+        if (CurrentSpell == null || justFailed) // never played a note before / just casted a spell / just failed a spell
         {
             CurrentSpell = new Spell(next);
         }
@@ -66,6 +75,7 @@ public class PlayerState
         }
         else
         {
+            justFailed = true;
             Rhythm.FailCombo();
         }
     }
