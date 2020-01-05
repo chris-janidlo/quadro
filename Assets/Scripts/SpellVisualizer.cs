@@ -16,7 +16,7 @@ public class SpellVisualizer : MonoBehaviour
     {
         if (spell != null && !noteCache.SequenceEqual(spell.AllNotes)) updateVisuals();
 
-        if (Driver.State.Rhythm.ComboCounter == 0 && transform.childCount != 0)
+        if ((Driver.State.Rhythm.ComboCounter == 0 || spell == null) && transform.childCount != 0)
         {
             noteCache = new List<Note>();
             clearVisuals();
