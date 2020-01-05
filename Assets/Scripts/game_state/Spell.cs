@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -49,7 +49,7 @@ public class Spell
         }
         else
         {
-            return MetaNotes.Last().GetMetaComboData(MainNote.Direction, direction);
+            return MainNote.GetMetaComboData(MetaNotes.Last().Direction, direction);
         }
     }
 }
