@@ -5,7 +5,7 @@ using UnityEngine;
 // FIXME:
 public class TurnBasedDriver : ADriver
 {
-    void Start ()
+    void Awake ()
     {
         Initialize(new BaseSingleplayerDiamond());
         fastForward();

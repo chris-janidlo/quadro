@@ -11,7 +11,6 @@ public class PlayerState
 
     public Track Track => Rhythm.Track;
 
-
     public PlayerState (NoteDiamond noteDiamond)
     {
         NoteDiamond = noteDiamond;
@@ -33,6 +32,11 @@ public class PlayerState
         {
             Rhythm.FailCombo();
         }
+    }
+
+    public bool CanComboInto (InputDirection direction)
+    {
+        return CurrentSpell == null || CurrentSpell.CanComboInto(direction);
     }
 
     void playDirection (InputDirection direction)

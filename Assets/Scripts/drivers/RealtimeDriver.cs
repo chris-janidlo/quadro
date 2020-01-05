@@ -13,7 +13,7 @@ public class RealtimeDriver : ADriver
 
     float inverseAudioFrequency;
 
-    void Start ()
+    void Awake ()
     {
         Initialize(new BaseSingleplayerDiamond());
     }
