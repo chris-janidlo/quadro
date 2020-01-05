@@ -147,7 +147,14 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.ClearCards((int) vector.Power);
+            if (vector.Power > 0)
+            {
+                input.ClearCards((int) vector.Power);
+            }
+            else
+            {
+                input.SpawnCards((int) -vector.Power);
+            }
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -284,7 +291,14 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.SpawnCards((int) vector.Power);
+            if (vector.Power > 0)
+            {
+                input.SpawnCards((int) vector.Power);
+            }
+            else
+            {
+                input.ClearCards((int) -vector.Power);
+            }
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
