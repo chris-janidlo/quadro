@@ -16,14 +16,14 @@ public abstract class Note
                 TargetsEnemy = targetsEnemy;
             }
 
-            public static EffectVector operator +(EffectVector v) => v;
-            public static EffectVector operator -(EffectVector v) => new EffectVector(-v.Power, v.TargetsEnemy);
+            public static EffectVector operator + (EffectVector v) => v;
+            public static EffectVector operator - (EffectVector v) => new EffectVector(-v.Power, v.TargetsEnemy);
 
-            public static EffectVector operator +(EffectVector v, float f) => new EffectVector(v.Power + f, v.TargetsEnemy);
-            public static EffectVector operator -(EffectVector v, float f) => v + (-f);
+            public static EffectVector operator + (EffectVector v, float f) => new EffectVector(v.Power + f, v.TargetsEnemy);
+            public static EffectVector operator - (EffectVector v, float f) => v + (-f);
 
-            public static EffectVector operator *(EffectVector v, float f) => new EffectVector(v.Power * f, v.TargetsEnemy);
-            public static EffectVector operator /(EffectVector v, float f)
+            public static EffectVector operator * (EffectVector v, float f) => new EffectVector(v.Power * f, v.TargetsEnemy);
+            public static EffectVector operator / (EffectVector v, float f)
             {
                 if (f == 0)
                 {
