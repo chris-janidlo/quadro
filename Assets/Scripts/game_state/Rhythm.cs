@@ -15,7 +15,7 @@ public class Rhythm
     public double Latency; // TODO: use this
 
     int beatTicker, cardSpawnTicker;
-    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat, shouldSpawnCard, shouldUpCombo;
+    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat, shouldSpawnCard;
 
     // needs to be updated by external driver
     double _beatPos;
@@ -61,7 +61,7 @@ public class Rhythm
 
         bool passed = checkHitInternal();
 
-        if (passed) shouldUpCombo = true;
+        if (passed) ComboCounter++;
         else FailCombo();
 
         return passed;
@@ -105,12 +105,6 @@ public class Rhythm
         else if (fractionalPart <= SUCCESS_RANGE_BEATS)
         {
             handledEndOfBeat = false;
-        }
-
-        if (shouldUpCombo)
-        {
-            shouldUpCombo = false;
-            ComboCounter++;
         }
 
         if (shouldSpawnCard)

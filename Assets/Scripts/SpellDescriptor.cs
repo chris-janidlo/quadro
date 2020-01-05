@@ -10,13 +10,6 @@ public class SpellDescriptor : MonoBehaviour
 
     void Update ()
     {
-        string text = "";
-
-        if (Driver.State.Rhythm.ComboCounter > 0 && Driver.State.CurrentSpell != null)
-        {
-            text = Driver.State.CurrentSpell.Description;
-        }
-
-        Text.text = text;
+        Text.text = Driver.State.Spell?.Description ?? "";
     }
 }

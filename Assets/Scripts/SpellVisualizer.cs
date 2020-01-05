@@ -9,14 +9,14 @@ public class SpellVisualizer : MonoBehaviour
     public ADriver Driver;
     public Image ChipPrefab;
 
-    Spell spell => Driver.State.CurrentSpell;
+    Spell spell => Driver.State.Spell;
     List<Note> noteCache = new List<Note>();
 
     void Update ()
     {
         if (spell != null && !noteCache.SequenceEqual(spell.AllNotes)) updateVisuals();
 
-        if ((Driver.State.Rhythm.ComboCounter == 0 || spell == null) && transform.childCount != 0)
+        if (spell == null && transform.childCount != 0)
         {
             noteCache = new List<Note>();
             clearVisuals();

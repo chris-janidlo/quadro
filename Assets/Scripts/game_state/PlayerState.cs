@@ -7,11 +7,10 @@ public class PlayerState
     public readonly Rhythm Rhythm = new Rhythm();
     public readonly NoteDiamond NoteDiamond;
 
-    public Spell CurrentSpell { get; private set; }
-
+    public Spell Spell => Rhythm.ComboCounter > 0 ? innerSpell : null;
     public Track Track => Rhythm.Track;
 
-    bool justFailed;
+    Spell innerSpell;
 
     public PlayerState (NoteDiamond noteDiamond)
     {
@@ -20,17 +19,13 @@ public class PlayerState
 
     public void DoNoteInput (NoteInput input)
     {
-        if (!Rhythm.TryHitNow())
-        {
-            justFailed = true;
-            return;
-        }
+        bool comboWasZero = Rhythm.ComboCounter == 0;
 
-        justFailed = false;
+        if (!Rhythm.TryHitNow()) return;
 
         if (input != NoteInput.Cast)
         {
-            playDirection((InputDirection) input);
+            playDirection((InputDirection) input, comboWasZero);
         }
         else if (Rhythm.IsDownbeat())
         {
@@ -38,27 +33,26 @@ public class PlayerState
         }
         else
         {
-            justFailed = true;
             Rhythm.FailCombo();
         }
     }
 
     public bool CanComboInto (InputDirection direction)
     {
-        return CurrentSpell == null || CurrentSpell.CanComboInto(direction);
+        return innerSpell == null || innerSpell.CanComboInto(direction);
     }
 
-    void playDirection (InputDirection direction)
+    void playDirection (InputDirection direction, bool thisIsMainNote)
     {
         Note next = NoteDiamond[direction];
 
-        if (CurrentSpell == null || justFailed) // never played a note before / just casted a spell / just failed a spell
+        if (innerSpell == null) // never played a note before / just casted a spell
         {
-            CurrentSpell = new Spell(next);
+            innerSpell = new Spell(next);
         }
-        else if (CurrentSpell.CanComboInto(direction))
+        else if (innerSpell.CanComboInto(direction))
         {
-            CurrentSpell = Rhythm.ComboCounter == 0 ? new Spell(next) : CurrentSpell.PlusMetaNote(next);
+            innerSpell = thisIsMainNote ? new Spell(next) : innerSpell.PlusMetaNote(next);
         }
         else
         {
@@ -68,14 +62,13 @@ public class PlayerState
 
     void castSpell ()
     {
-        if (CurrentSpell != null)
+        if (innerSpell != null)
         {
-            CurrentSpell.CastOn(Track);
-            CurrentSpell = null;
+            innerSpell.CastOn(Track);
+            innerSpell = null;
         }
         else
         {
-            justFailed = true;
             Rhythm.FailCombo();
         }
     }
