@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,7 +50,7 @@ public abstract class Note
             // the notes that can follow this if this is the first note of the spell
             public ComboData MainCombos;
 
-            // combo data for when this is a meta note, based off of the main note for the spell
+            // combo data for any meta notes following this as the main note
             public MetaComboData MetaCombos;
         }
 
