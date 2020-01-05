@@ -10,6 +10,8 @@ public abstract class Note
             public readonly float Power; // generic numeric scalar
             public readonly bool TargetsEnemy; // TODO: do something with this
 
+            public int IntPower => (int) Power;
+
             public EffectVector (float power, bool targetsEnemy)
             {
                 Power = power;

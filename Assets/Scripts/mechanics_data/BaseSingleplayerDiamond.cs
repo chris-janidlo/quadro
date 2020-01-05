@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,12 +74,12 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"increases your track's BPM by {((int) vector.Power) * Track.BPM_PER_BSTEP}";
+            return $"increases your track's BPM by {(vector.IntPower) * Track.BPM_PER_BSTEP}";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.BSteps += (int) vector.Power;
+            input.BSteps += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -142,18 +142,18 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"clears {(int) vector.Power} cards from your track";
+            return $"clears {vector.IntPower} cards from your track";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
             if (vector.Power > 0)
             {
-                input.ClearCards((int) vector.Power);
+                input.ClearCards(vector.IntPower);
             }
             else
             {
-                input.SpawnCards((int) -vector.Power);
+                input.SpawnCards(-vector.IntPower);
             }
 		}
 
@@ -217,13 +217,13 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            int effect = (int) vector.Power;
+            int effect = vector.IntPower;
             return $"increases the time between card spawns by {effect} beat{(effect > 1 ? "s" : "")}";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.BeatsPerCard += (int) vector.Power;
+            input.BeatsPerCard += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -286,18 +286,18 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"adds {(int) vector.Power} cards to your track";
+            return $"adds {vector.IntPower} cards to your track";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
             if (vector.Power > 0)
             {
-                input.SpawnCards((int) vector.Power);
+                input.SpawnCards(vector.IntPower);
             }
             else
             {
-                input.ClearCards((int) -vector.Power);
+                input.ClearCards(-vector.IntPower);
             }
 		}
 
