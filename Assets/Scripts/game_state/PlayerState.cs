@@ -43,7 +43,7 @@ public class PlayerState
     {
         Note next = NoteDiamond[direction];
 
-        if (CurrentSpell == null || Rhythm.ComboCounter == 0) // never played a note before / just casted a spell / just failed a spell
+        if (CurrentSpell == null || Rhythm.ComboCounter == 1) // never played a note before / just casted a spell / just failed a spell
         {
             CurrentSpell = new Spell(next);
         }
