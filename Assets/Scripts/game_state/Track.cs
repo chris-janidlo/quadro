@@ -54,6 +54,8 @@ public class Track
         }
     }
 
+    public RhythmCard NextToSpawn => cardBag.PeekNext();
+
     public int CardsCleared { get; private set; }
     public bool Dead { get; private set; }
 

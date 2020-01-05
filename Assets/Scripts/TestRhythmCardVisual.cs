@@ -17,4 +17,20 @@ public class TestRhythmCardVisual : MonoBehaviour
         Three.enabled = card[2];
         Four.enabled = card[3];
     }
+
+    public void SetOpacity (float opacity)
+    {
+        setSRAlpha(GetComponent<SpriteRenderer>(), opacity);
+        setSRAlpha(One, opacity);
+        setSRAlpha(Two, opacity);
+        setSRAlpha(Three, opacity);
+        setSRAlpha(Four, opacity);
+    }
+
+    void setSRAlpha (SpriteRenderer sr, float a)
+    {
+        var color = sr.color;
+        color.a = a;
+        sr.color = color;
+    }
 }

@@ -6,8 +6,10 @@ using UnityEngine;
 public class TestCardVisualizer : MonoBehaviour
 {
     public float OffsetScale, CardGap;
+    public int PreviewBeats;
 
     public ADriver Driver;
+    public Transform PreviewParent;
     public TestRhythmCardVisual RhythmCardVisualPrefab;
 
     Track track => Driver.State.Track;
@@ -19,6 +21,15 @@ public class TestCardVisualizer : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        if (Driver.State.Rhythm.BeatsUntilNextSpawn <= PreviewBeats && PreviewParent.childCount == 0)
+        {
+            Instantiate(RhythmCardVisualPrefab, PreviewParent).Initialize(track.NextToSpawn);
+        }
+        if (Driver.State.Rhythm.BeatsUntilNextSpawn > PreviewBeats && PreviewParent.childCount != 0)
+        {
+            Destroy(PreviewParent.GetChild(0).gameObject);
+        }
+
         if (track.Cards == null || track.Cards.Count == 0) return;
 
         if (!cardCache.SequenceEqual(track.Cards))
