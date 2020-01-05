@@ -2,9 +2,9 @@ FIXME:
 turn based driver
 
 TODO:
-peek at next card before it spawns
 better immediate feedback (failure/success per note)
 flesh out base diamond combos
+spell diamond visualizer
 
 split card rng in two - main rng and garbage rng
 	main rng is used on the regular every-few-beats spawns
