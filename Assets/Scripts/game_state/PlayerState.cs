@@ -55,7 +55,14 @@ public class PlayerState
 
     void castSpell ()
     {
-        CurrentSpell.CastOn(Track);
-        CurrentSpell = null;
+        if (CurrentSpell != null)
+        {
+            CurrentSpell.CastOn(Track);
+            CurrentSpell = null;
+        }
+        else
+        {
+            Rhythm.FailCombo();
+        }
     }
 }
