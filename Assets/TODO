@@ -2,6 +2,13 @@ FIXME:
 turn based driver
 
 TODO:
+have rhythm return quality of hit
+	notes are more effective the more accurate they are
+
+make cast dependent on mana
+	get one mana per card clear
+	mana of spell is based solely off main note
+
 split card rng in two - main rng and garbage rng
 	main rng is used on the regular every-few-beats spawns
 	garbage is used whenever a player manually causes a card spawn (like tetris garbage)
