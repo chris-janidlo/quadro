@@ -11,13 +11,13 @@ public class Track
     public const int CARDS_UNTIL_DEAD = 32;
     public const int BEATS_PER_MEASURE = 4; // also the subdivisions in every card
 
-    public const int CARDS_PER_DIFFICULTY_INCREASE = 16; // every time we clear this many cards, increase the BPM and the card spawn rate
+    public const int CARDS_PER_DIFFICULTY_INCREASE = 8; // every time we clear this many cards, increase the BPM and the card spawn rate
 
     // a bstep is a made up metrical unit for scaling purposes (since a change of a single BPM is too subtle to be noticed)
     public const int BPM_PER_BSTEP = 5;
-    public const int MIN_BSTEPS = 20;
+    public const int MIN_BSTEPS = 12;
     public const int MAX_BSTEPS = 40;
-    public const int STARTING_BSTEPS = 24;
+    public const int STARTING_BSTEPS = 16;
 
     public const int MAX_BEATS_PER_CARD = 16;
     public const int STARTING_BEATS_PER_CARD = 8;
