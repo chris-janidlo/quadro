@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseSingleplayerDiamond : NoteDiamond
 {
-    const float MULT = 1.5f;
-    const int ADD = 2;
+    const float MULT = 2f;
+    const int ADD = 1;
 
 	protected override InputDirectionBox<Note> initializeNotes()
 	{
@@ -30,43 +30,32 @@ public class BaseSingleplayerDiamond : NoteDiamond
             InitialVector = new EffectVector(3, false),
             Color = Color.red, // TODO: specify red
             MetaEffectDescription = $"multiplies the effect of the spell by {MULT}",
-            // TODO:
             MainCombos = new ComboData
             {
-                Up = true,
                 Left = true,
-                Down = true,
                 Right = true
             },
-            // TODO:
             MetaCombos = new MetaComboData
             {
                 Up = new ComboData
                 {
-                    Up = true,
                     Left = true,
                     Down = true,
-                    Right = true
                 },
                 Left = new ComboData
                 {
-                    Up = true,
-                    Left = true,
                     Down = true,
                     Right = true
                 },
                 Right = new ComboData
                 {
                     Up = true,
-                    Left = true,
-                    Down = true,
-                    Right = true
+                    Down = true
                 },
                 Down = new ComboData
                 {
                     Up = true,
                     Left = true,
-                    Down = true,
                     Right = true
                 }
             }
@@ -74,7 +63,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"increases your track's BPM by {(vector.IntPower) * Track.BPM_PER_BSTEP}";
+            return $"increases your track's BPM by {vector.IntPower} steps ({vector.IntPower * Track.BPM_PER_BSTEP} BPM)";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
@@ -95,46 +84,34 @@ public class BaseSingleplayerDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = InputDirection.Left,
-            InitialVector = new EffectVector(2, false),
+            InitialVector = new EffectVector(3, false),
             Color = Color.white, // TODO: placeholder. want a blue-tinted white
             MetaEffectDescription = $"decreases the effect of the spell by {ADD}",
-            // TODO:
             MainCombos = new ComboData
             {
-                Up = true,
-                Left = true,
-                Down = true,
-                Right = true
+                Left = true
             },
-            // TODO:
             MetaCombos = new MetaComboData
             {
                 Up = new ComboData
                 {
-                    Up = true,
                     Left = true,
                     Down = true,
-                    Right = true
                 },
                 Left = new ComboData
                 {
-                    Up = true,
-                    Left = true,
                     Down = true,
                     Right = true
                 },
                 Right = new ComboData
                 {
                     Up = true,
-                    Left = true,
-                    Down = true,
-                    Right = true
+                    Down = true
                 },
                 Down = new ComboData
                 {
                     Up = true,
                     Left = true,
-                    Down = true,
                     Right = true
                 }
             }
@@ -173,43 +150,32 @@ public class BaseSingleplayerDiamond : NoteDiamond
             InitialVector = new EffectVector(1, false),
             Color = Color.blue, // TODO: specify blue
             MetaEffectDescription = $"flips the polarity of the spell and multiplies its effect by {1/MULT}",
-            // TODO:
             MainCombos = new ComboData
             {
-                Up = true,
                 Left = true,
-                Down = true,
                 Right = true
             },
-            // TODO:
             MetaCombos = new MetaComboData
             {
                 Up = new ComboData
                 {
-                    Up = true,
                     Left = true,
                     Down = true,
-                    Right = true
                 },
                 Left = new ComboData
                 {
-                    Up = true,
-                    Left = true,
                     Down = true,
                     Right = true
                 },
                 Right = new ComboData
                 {
                     Up = true,
-                    Left = true,
-                    Down = true,
-                    Right = true
+                    Down = true
                 },
                 Down = new ComboData
                 {
                     Up = true,
                     Left = true,
-                    Down = true,
                     Right = true
                 }
             }
@@ -242,43 +208,32 @@ public class BaseSingleplayerDiamond : NoteDiamond
             InitialVector = new EffectVector(2, false),
             Color = Color.magenta, // TODO: placeholder. want an orange
             MetaEffectDescription = $"increases the effect of the spell by {ADD}",
-            // TODO:
             MainCombos = new ComboData
             {
                 Up = true,
-                Left = true,
-                Down = true,
-                Right = true
+                Left = true
             },
-            // TODO:
             MetaCombos = new MetaComboData
             {
                 Up = new ComboData
                 {
-                    Up = true,
                     Left = true,
                     Down = true,
-                    Right = true
                 },
                 Left = new ComboData
                 {
-                    Up = true,
-                    Left = true,
                     Down = true,
                     Right = true
                 },
                 Right = new ComboData
                 {
                     Up = true,
-                    Left = true,
-                    Down = true,
-                    Right = true
+                    Down = true
                 },
                 Down = new ComboData
                 {
                     Up = true,
                     Left = true,
-                    Down = true,
                     Right = true
                 }
             }

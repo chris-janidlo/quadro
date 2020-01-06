@@ -2,11 +2,12 @@ FIXME:
 turn based driver
 
 TODO:
-better immediate feedback (failure/success per note)
-flesh out base diamond combos
-
 split card rng in two - main rng and garbage rng
 	main rng is used on the regular every-few-beats spawns
 	garbage is used whenever a player manually causes a card spawn (like tetris garbage)
 	main and garbage have their own seeds so they don't cross contaminate
 	seeds should be the same for every player in a multiplayer match
+
+determine whether or not to simplify meta combos so that they no longer depend on the main note
+
+better immediate feedback (failure/success per note)
