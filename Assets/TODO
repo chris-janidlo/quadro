@@ -2,8 +2,22 @@ FIXME:
 turn based driver
 
 TODO:
-have rhythm return quality of hit
-	notes are more effective the more accurate they are
+dial up music! figure out how dial up works and use that
+	chilled out nostalgic chords seem to work well
+
+reword game text for new hacker mentality
+	spell -> command?
+	card -> packet
+	track -> network something something
+
+charge system
+	update rhythm to return quality of hit
+		3-tiered system (TODO: labels for tiers)
+	add a meter called the "charge" meter or something similar
+		TODO: figure out lore (stores excess electricity?)
+	every time you hit a beat successfully, the charge increases. the more accurate you are, the better the increase (might even make the least accurate hit-tier not add anything)
+	every time you miss a beat or hit when you shouldn't, the charge decreases
+	when the charge meter fills up, the current spell gets a bonus to the magnitude of its effectiveness, and the meter resets back to zero
 
 make cast dependent on mana
 	get one mana per card clear
