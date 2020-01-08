@@ -2,6 +2,8 @@ FIXME:
 turn based driver
 
 TODO:
+for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
+
 dial up music! figure out how dial up works and use that
 	chilled out nostalgic chords seem to work well
 
