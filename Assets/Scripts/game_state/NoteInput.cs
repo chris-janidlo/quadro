@@ -14,6 +14,27 @@ public enum InputDirection
     Up, Left, Down, Right
 }
 
+public static class InputDirectionExtensions
+{
+    public static char ToArrow (this InputDirection direction)
+    {
+        switch (direction)
+        {
+            // these seem to be double width
+            case InputDirection.Up:
+                return '↑';
+            case InputDirection.Left:
+                return '←';
+            case InputDirection.Down:
+                return '↓';
+            case InputDirection.Right:
+                return '→';
+            default:
+                throw new InvalidEnumArgumentException($"unexpected Direction {direction}");
+        }
+    }
+}
+
 public class InputDirectionBox<T>
 {
     public T Up, Left, Down, Right;

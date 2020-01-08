@@ -28,7 +28,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(3, false),
-            Color = Color.red, // TODO: specify red
+            Color = Color.red,
             MetaEffectDescription = $"multiplies the effect of the spell by {MULT}",
             MainCombos = new ComboData
             {
@@ -85,7 +85,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(3, false),
-            Color = Color.white, // TODO: placeholder. want a blue-tinted white
+            Color = new Color(0.87f, 1, 0.99f),
             MetaEffectDescription = $"decreases the effect of the spell by {ADD}",
             MainCombos = new ComboData
             {
@@ -148,7 +148,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(1, false),
-            Color = Color.blue, // TODO: specify blue
+            Color = new Color(0.25f, 0.52f, 0.96f),
             MetaEffectDescription = $"flips the polarity of the spell and multiplies its effect by {1/MULT}",
             MainCombos = new ComboData
             {
@@ -206,7 +206,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(2, false),
-            Color = Color.magenta, // TODO: placeholder. want an orange
+            Color = new Color(0.98f, 0.58f, 0.01f),
             MetaEffectDescription = $"increases the effect of the spell by {ADD}",
             MainCombos = new ComboData
             {
