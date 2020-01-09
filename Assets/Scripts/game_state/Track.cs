@@ -121,7 +121,7 @@ public class Track
         FailedLastCard = true;
     }
 
-    public bool FirstCardHasBeat (int positionWithinMeasure)
+    public bool CurrentCardHasBeat (int positionWithinMeasure)
     {
         if (positionWithinMeasure < 0 || positionWithinMeasure >= BEATS_PER_MEASURE)
         {

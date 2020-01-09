@@ -51,7 +51,7 @@ public class Rhythm
             closestBeatAttempted = true;
 
             // is this even a valid beat
-            if (!Track.FirstCardHasBeat(closestBeatPosition % Track.BEATS_PER_MEASURE)) return false;
+            if (!Track.CurrentCardHasBeat(closestBeatPosition % Track.BEATS_PER_MEASURE)) return false;
 
             // if we're out of range
             if (Math.Abs(CurrentPositionInMeasure - closestBeatPosition) > SUCCESS_RANGE_BEATS) return false;
@@ -98,7 +98,7 @@ public class Rhythm
             handledEndOfBeat = true;
 
             // if the player completely skipped this beat when they shouldn't have, fail
-            if (Track.FirstCardHasBeat(TruncatedPositionInMeasure) && !closestBeatAttempted) FailCombo();
+            if (Track.CurrentCardHasBeat(TruncatedPositionInMeasure) && !closestBeatAttempted) FailCombo();
 
             closestBeatAttempted = false;
         }
