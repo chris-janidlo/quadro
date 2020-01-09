@@ -15,7 +15,7 @@ public class Rhythm
     public double Latency; // TODO: use this
 
     int beatTicker, cardSpawnTicker;
-    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat, shouldSpawnCard;
+    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat;
 
     // needs to be updated by external driver
     double _beatPos;
@@ -106,12 +106,6 @@ public class Rhythm
         {
             handledEndOfBeat = false;
         }
-
-        if (shouldSpawnCard)
-        {
-            shouldSpawnCard = false;
-            Track.SpawnCards(1);
-        }
     }
 
     void updateCardState ()
@@ -128,7 +122,7 @@ public class Rhythm
 
         if (cardSpawnTicker >= Track.BeatsPerCard)
         {
-            shouldSpawnCard = true;
+            Track.SpawnCards(1);
             cardSpawnTicker = 0;
         }
     }
