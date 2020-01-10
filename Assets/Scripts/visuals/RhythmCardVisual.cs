@@ -11,19 +11,23 @@ public class RhythmCardVisual : MonoBehaviour
 
     const int horSpace = 4;
 
-    public void Initialize (RhythmCard card, bool addBottomLine)
+    public void Initialize (RhythmCard card)
     {
-        Text.text = makeText(card, addBottomLine);
+        Text.text = makeText(card);
     }
 
-    string makeText (RhythmCard card, bool addBottomLine)
+    public void Initialize (int emptyLines)
+    {
+        Text.text = "";
+        for (int i = 0; i < emptyLines; i++) Text.text += "\n   ";
+    }
+
+    string makeText (RhythmCard card)
     {
         int beats = card.BeatValues.Count;
 
-        string line = makeBeatLineText(false, 0, beats, '-');
+        string output = makeBeatLineText(false, 0, beats, '-');
         string spacer = makeBeatLineText(false, 0, beats, ' ');
-
-        string output = line;
 
         for (int i = beats - 1; i >= 0; i--)
         {
@@ -31,8 +35,6 @@ public class RhythmCardVisual : MonoBehaviour
 
             if (i > 0) output += "\n" + spacer;
         }
-
-        if (addBottomLine) output += "\n" + line;
 
         return output;
     }

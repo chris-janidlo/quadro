@@ -6,59 +6,51 @@ using UnityEngine;
 public class TrackVisualizer : MonoBehaviour
 {
     public ADriver Driver;
-    public Transform MainTrackContainer, PreviewContainer;
+    public Transform RealCardContainer, PreviewContainer;
     public RhythmCardVisual CardVisualPrefab;
 
     public int PreviewBeats;
 
     Track track => Driver.State.Track;
 
-    List<RhythmCard> cardCache = new List<RhythmCard>();
+    RectTransform firstChild => firstRect(RealCardContainer) ?? firstRect(PreviewContainer);
+
+    void Start ()
+    {
+        track.CardAdded += addCard;
+        track.CardRemoved += removeCard;
+    }
 
     void Update ()
     {
         if (Driver.State.Rhythm.BeatsUntilNextSpawn <= PreviewBeats && PreviewContainer.childCount == 0)
         {
-            Instantiate(CardVisualPrefab, PreviewContainer).Initialize(track.NextToSpawn, true);
+            Instantiate(CardVisualPrefab, PreviewContainer).Initialize(track.NextToSpawn);
         }
         if (Driver.State.Rhythm.BeatsUntilNextSpawn > PreviewBeats && PreviewContainer.childCount != 0)
         {
-            Destroy(PreviewContainer.GetChild(0).gameObject);
+            foreach (Transform child in PreviewContainer) Destroy(child.gameObject);
         }
 
-        if (track.Cards == null || track.Cards.Count == 0)
-        {
-            if (MainTrackContainer.childCount != 0) destroyCardVisuals();
-            return;
-        }
+        if (firstChild == null) return;
 
-        if (!cardCache.SequenceEqual(track.Cards))
-        {
-            cardCache = new List<RhythmCard>(track.Cards);
-            destroyCardVisuals();
-            createCardVisuals();
-        }
+        float offsetScale = firstChild.rect.height / Track.BEATS_PER_MEASURE;
 
-        float height = ((RectTransform) MainTrackContainer.GetChild(0)).rect.height;
-        float offsetScale = height / Track.BEATS_PER_MEASURE;
-
-        MainTrackContainer.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;
+        RealCardContainer.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;
     }
 
-    void destroyCardVisuals ()
+    void addCard ()
     {
-        foreach (Transform child in MainTrackContainer)
-        {
-            Destroy(child.gameObject);
-        }
+        var card = Instantiate(CardVisualPrefab, RealCardContainer);
+        card.Initialize(track.Cards[track.Cards.Count - 1]);
+        card.gameObject.transform.SetAsFirstSibling();
     }
 
-    void createCardVisuals ()
+    void removeCard ()
     {
-        int upper = cardCache.Count - 1;
-		for (int i = upper; i >= 0; i--)
-        {
-			Instantiate(CardVisualPrefab, MainTrackContainer).Initialize(cardCache[i], false);
-        }
+        Destroy(RealCardContainer.GetChild(RealCardContainer.childCount - 1).gameObject);
     }
+
+    RectTransform firstRect (Transform parent) =>
+        parent.childCount > 0 ? (RectTransform) parent.GetChild(0) : null;
 }

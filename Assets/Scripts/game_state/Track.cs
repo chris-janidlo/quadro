@@ -8,6 +8,8 @@ using crass;
 
 public class Track
 {
+    public event Action CardAdded, CardRemoved;
+
     public const int CARDS_UNTIL_DEAD = 32;
     public const int BEATS_PER_MEASURE = 4; // also the subdivisions in every card
 
@@ -17,7 +19,7 @@ public class Track
     public const int BPM_PER_BSTEP = 5;
     public const int MIN_BSTEPS = 12;
     public const int MAX_BSTEPS = 40;
-    public const int STARTING_BSTEPS = 16;
+    public const int STARTING_BSTEPS = 40;
 
     public const int MAX_BEATS_PER_CARD = 16;
     public const int STARTING_BEATS_PER_CARD = 8;
@@ -85,6 +87,7 @@ public class Track
         for (int i = 0; i < numCards; i++)
         {
             cards.Add(cardBag.GetNext());
+            CardAdded?.Invoke();
         }
     }
 
@@ -100,6 +103,7 @@ public class Track
             if (cards.Count == 0) break;
 
             cards.RemoveAt(0);
+            CardRemoved?.Invoke();
 
             CardsCleared++;
             if (CardsCleared % CARDS_PER_DIFFICULTY_INCREASE == 0)
@@ -115,8 +119,12 @@ public class Track
         if (cards.Count == 0) return;
 
         RhythmCard card = cards[0];
+
         cards.RemoveAt(0);
+        CardRemoved?.Invoke();
+
         cards.Add(card);
+        CardAdded?.Invoke();
 
         FailedLastCard = true;
     }

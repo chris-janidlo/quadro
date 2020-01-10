@@ -1572,7 +1572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Driver: {fileID: 1945056371}
-  MainTrackContainer: {fileID: 1169077335}
+  RealCardContainer: {fileID: 1169077335}
   PreviewContainer: {fileID: 1643002450}
   CardVisualPrefab: {fileID: 2512596167675741143, guid: d8fd5a8a38e1b4d3dabe51c39843c103,
     type: 3}
