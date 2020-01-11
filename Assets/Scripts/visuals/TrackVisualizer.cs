@@ -2,18 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TrackVisualizer : MonoBehaviour
 {
     public ADriver Driver;
-    public Transform RealCardContainer, PreviewContainer;
+    public Transform TrackMover, RealCardContainer, PreviewContainer;
+    public CanvasGroup PreviewGroup;
     public RhythmCardVisual CardVisualPrefab;
 
-    public int PreviewBeats;
-
     Track track => Driver.State.Track;
-
-    RectTransform firstChild => firstRect(RealCardContainer) ?? firstRect(PreviewContainer);
 
     void Start ()
     {
@@ -23,20 +21,31 @@ public class TrackVisualizer : MonoBehaviour
 
     void Update ()
     {
-        if (Driver.State.Rhythm.BeatsUntilNextSpawn <= PreviewBeats && PreviewContainer.childCount == 0)
+        bool inPreviewTime = Driver.State.Rhythm.BeatsUntilNextSpawn <= Track.BEATS_PER_MEASURE;
+
+        if (inPreviewTime && PreviewContainer.childCount == 0)
         {
             Instantiate(CardVisualPrefab, PreviewContainer).Initialize(track.NextToSpawn);
+
+            if (track.Cards.Count == 0)
+            {
+                // empty preview card for spacing
+                Instantiate(CardVisualPrefab, PreviewContainer).Initialize(Track.BEATS_PER_MEASURE);
+            }
         }
-        if (Driver.State.Rhythm.BeatsUntilNextSpawn > PreviewBeats && PreviewContainer.childCount != 0)
+        if (!inPreviewTime && PreviewContainer.childCount != 0)
         {
             foreach (Transform child in PreviewContainer) Destroy(child.gameObject);
         }
 
+        PreviewGroup.alpha = Mathf.Min((float) Driver.State.Rhythm.CurrentPositionInMeasure, Track.BEATS_PER_MEASURE - 1) / Track.BEATS_PER_MEASURE;
+
+        RectTransform firstChild = firstCardObject();
         if (firstChild == null) return;
 
         float offsetScale = firstChild.rect.height / Track.BEATS_PER_MEASURE;
 
-        RealCardContainer.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;
+        TrackMover.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;
     }
 
     void addCard ()
@@ -51,6 +60,11 @@ public class TrackVisualizer : MonoBehaviour
         Destroy(RealCardContainer.GetChild(RealCardContainer.childCount - 1).gameObject);
     }
 
-    RectTransform firstRect (Transform parent) =>
-        parent.childCount > 0 ? (RectTransform) parent.GetChild(0) : null;
+    RectTransform firstCardObject ()
+    {
+        RectTransform first (Transform parent) =>
+            parent.childCount > 0 ? (RectTransform) parent.GetChild(parent.childCount - 1) : null;
+
+        return first(RealCardContainer) ?? first(PreviewContainer);
+    }
 }

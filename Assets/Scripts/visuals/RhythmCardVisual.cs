@@ -18,8 +18,7 @@ public class RhythmCardVisual : MonoBehaviour
 
     public void Initialize (int emptyLines)
     {
-        Text.text = "";
-        for (int i = 0; i < emptyLines; i++) Text.text += "\n   ";
+        Text.text = makeText(new RhythmCard(new bool[emptyLines]));
     }
 
     string makeText (RhythmCard card)
