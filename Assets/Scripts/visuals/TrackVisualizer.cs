@@ -27,11 +27,8 @@ public class TrackVisualizer : MonoBehaviour
         {
             Instantiate(CardVisualPrefab, PreviewContainer).Initialize(track.NextToSpawn);
 
-            if (track.Cards.Count == 0)
-            {
-                // empty preview card for spacing
-                Instantiate(CardVisualPrefab, PreviewContainer).Initialize(Track.BEATS_PER_MEASURE);
-            }
+            // empty preview card for spacing
+            Instantiate(CardVisualPrefab, PreviewContainer).Initialize(Track.BEATS_PER_MEASURE);
         }
         if (!inPreviewTime && PreviewContainer.childCount != 0)
         {
