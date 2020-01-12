@@ -2,6 +2,9 @@ FIXME:
 turn based driver
 
 TODO:
+FAILURE MAKE PLAYERS DIE AND SHIT
+IT AIN'T A GAME OTHERWISE
+
 for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
 
 dial up music! figure out how dial up works and use that
@@ -21,9 +24,11 @@ charge system
 	every time you miss a beat or hit when you shouldn't, the charge decreases
 	when the charge meter fills up, the current spell gets a bonus to the magnitude of its effectiveness, and the meter resets back to zero
 
-make cast dependent on mana
+make cast dependent on mana ?????
 	get one mana per card clear
 	mana of spell is based solely off main note
+
+decide if we want to increase the number of notes to 8 per player
 
 split card rng in two - main rng and garbage rng
 	main rng is used on the regular every-few-beats spawns
