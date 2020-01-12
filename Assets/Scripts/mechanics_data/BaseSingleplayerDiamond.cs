@@ -28,6 +28,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(3, false),
+            Symbols = new List<BeatSymbol> { BeatSymbol.Six, BeatSymbol.Seven },
             Color = Color.red,
             MetaEffectDescription = $"multiplies the effect of the spell by {MULT}",
             MainCombos = new ComboData
@@ -85,6 +86,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(3, false),
+            Symbols = new List<BeatSymbol> { BeatSymbol.Two, BeatSymbol.Three, BeatSymbol.Four, BeatSymbol.Five, BeatSymbol.Six },
             Color = new Color(0.87f, 1, 0.99f),
             MetaEffectDescription = $"decreases the effect of the spell by {ADD}",
             MainCombos = new ComboData
@@ -148,6 +150,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(1, false),
+            Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One, BeatSymbol.Two, BeatSymbol.Three },
             Color = new Color(0.25f, 0.52f, 0.96f),
             MetaEffectDescription = $"flips the polarity of the spell and multiplies its effect by {1/MULT}",
             MainCombos = new ComboData
@@ -206,6 +209,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(2, false),
+            Symbols = new List<BeatSymbol> { BeatSymbol.Two, BeatSymbol.Three, BeatSymbol.Four, BeatSymbol.Five, BeatSymbol.Six },
             Color = new Color(0.98f, 0.58f, 0.01f),
             MetaEffectDescription = $"increases the effect of the spell by {ADD}",
             MainCombos = new ComboData

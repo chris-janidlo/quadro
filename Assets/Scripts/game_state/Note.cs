@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public abstract class Note
@@ -43,6 +44,9 @@ public abstract class Note
             // the initial state of the value that meta notes manipulate
             public EffectVector InitialVector;
 
+            // the symbols that this note can clear
+            public List<BeatSymbol> Symbols;
+
             // helps to have a color for consistent visual language
             public Color Color;
 
@@ -63,6 +67,7 @@ public abstract class Note
 
         public InputDirection Direction => data.Direction;
         public EffectVector InitialVector => data.InitialVector;
+        public ReadOnlyCollection<BeatSymbol> Symbols => data.Symbols.AsReadOnly();
         public Color Color => data.Color;
         public string MetaEffectDescription => data.MetaEffectDescription;
 
@@ -74,6 +79,11 @@ public abstract class Note
         public bool GetMetaComboData (InputDirection mainDirection, InputDirection nextDirection)
         {
             return data.MetaCombos?[mainDirection]?[nextDirection] ?? false;
+        }
+
+        public bool CanClear (BeatSymbol symbol)
+        {
+            return Symbols.Contains(symbol);
         }
 
         public abstract void MainEffect (Track input, EffectVector vector);

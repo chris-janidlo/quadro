@@ -18,15 +18,15 @@ public class RhythmCardVisual : MonoBehaviour
 
     public void Initialize (int emptyLines)
     {
-        Text.text = makeText(new RhythmCard(new bool[emptyLines]));
+        Text.text = makeText(new RhythmCard(new BeatSymbol?[emptyLines]));
     }
 
     string makeText (RhythmCard card)
     {
         int beats = card.BeatValues.Count;
 
-        string output = makeBeatLineText(false, 0, beats, '-');
-        string spacer = makeBeatLineText(false, 0, beats, ' ');
+        string output = makeBeatLineText(null, 0, beats, '-');
+        string spacer = makeBeatLineText(null, 0, beats, ' ');
 
         for (int i = beats - 1; i >= 0; i--)
         {
@@ -38,14 +38,14 @@ public class RhythmCardVisual : MonoBehaviour
         return output;
     }
 
-    string makeBeatLineText (bool on, int positionInMeasure, int measureLength, char spacer)
+    string makeBeatLineText (BeatSymbol? symbol, int positionInMeasure, int measureLength, char spacer)
     {
         char[] chars = new char[(measureLength + 1) * horSpace + 1];
 
         for (int i = 0; i < chars.Length; i++)
         {
-            if (on && i == (positionInMeasure + 1) * horSpace)
-                chars[i] = positionInMeasure.ToString()[0];
+            if (symbol != null && i == (positionInMeasure + 1) * horSpace)
+                chars[i] = symbol.ToRadixRepresentation();
             else
                 chars[i] = spacer;
         }

@@ -25,7 +25,7 @@ public class Track
     public const int STARTING_BEATS_PER_CARD = 8;
 
     List<RhythmCard> cards = new List<RhythmCard>();
-    BagRandomizer<RhythmCard> cardBag;
+    RhythmCardGenerator generator;
 
     int _bSteps = STARTING_BSTEPS;
     public int BSteps
@@ -56,7 +56,7 @@ public class Track
         }
     }
 
-    public RhythmCard NextToSpawn => cardBag.PeekNext();
+    public RhythmCard NextToSpawn => generator.Peek;
 
     public int CardsCleared { get; private set; }
     public bool Dead { get; private set; }
@@ -68,13 +68,12 @@ public class Track
 
     public Track ()
     {
-        // there are 2^n permutations of any pattern with n values that are either on or off, like a beat pattern. subtract 1 because we don't include the all-off pattern
-        int uniqueCardPermutations = (1 << BEATS_PER_MEASURE) - 1;
+        generator = new RhythmCardGenerator(BEATS_PER_MEASURE);
+    }
 
-        // start at 1 to avoid the all-off pattern
-        List<RhythmCard> allPossibleCards = Enumerable.Range(1, uniqueCardPermutations).Select(i => indexToCard(i)).ToList();
-
-        cardBag = new BagRandomizer<RhythmCard> { Items = allPossibleCards };
+    public Track (int randomSeed)
+    {
+        generator = new RhythmCardGenerator(BEATS_PER_MEASURE, randomSeed);
     }
 
     public void SpawnCards (int numCards)
@@ -86,7 +85,7 @@ public class Track
 
         for (int i = 0; i < numCards; i++)
         {
-            cards.Add(cardBag.GetNext());
+            cards.Add(generator.GetNext());
             CardAdded?.Invoke();
         }
     }
@@ -129,21 +128,15 @@ public class Track
         FailedLastCard = true;
     }
 
-    public bool CurrentCardHasBeat (int positionWithinMeasure)
+    public BeatSymbol? CurrentCardAtBeat (int positionWithinMeasure)
     {
         if (positionWithinMeasure < 0 || positionWithinMeasure >= BEATS_PER_MEASURE)
         {
             throw new ArgumentException("beat position must be within 0 and " + BEATS_PER_MEASURE);
         }
 
-        if (Cards.Count == 0) return false;
+        if (Cards.Count == 0) return null;
 
         return Cards[0][positionWithinMeasure];
-    }
-
-    RhythmCard indexToCard (int index)
-    {
-        string paddedBinary = Convert.ToString(index, 2).PadLeft(BEATS_PER_MEASURE, '0');
-        return new RhythmCard(paddedBinary.Select(c => c == '1').ToArray());
     }
 }

@@ -7,17 +7,17 @@ using UnityEngine;
 
 public class RhythmCard
 {
-    public readonly ReadOnlyCollection<bool> BeatValues;
+    public readonly ReadOnlyCollection<BeatSymbol?> BeatValues;
 
-    public bool this[int i] => BeatValues[i];
+    public BeatSymbol? this[int i] => BeatValues[i];
 
-    public RhythmCard (IList<bool> beatValues)
+    public RhythmCard (IList<BeatSymbol?> beatValues)
     {
-        BeatValues = new ReadOnlyCollection<bool>(beatValues);
+        BeatValues = new ReadOnlyCollection<BeatSymbol?>(beatValues);
     }
 
     public override string ToString ()
     {
-        return new String(BeatValues.Select(b => b ? 'X' : '_').ToArray());
+        return new String(BeatValues.Select(b => b == null ? '_' : b.ToRadixRepresentation()).ToArray());
     }
 }

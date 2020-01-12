@@ -29,6 +29,6 @@ public class TurnBasedDriver : ADriver
             State.Rhythm.CurrentPositionInMeasure++;
             State.Rhythm.CurrentPositionInMeasure %= Track.BEATS_PER_MEASURE;
         }
-        while (State.Track.CurrentCardHasBeat(State.Rhythm.TruncatedPositionInMeasure));
+        while (State.Track.CurrentCardAtBeat(State.Rhythm.TruncatedPositionInMeasure) == null);
     }
 }

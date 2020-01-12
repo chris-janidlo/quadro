@@ -26,6 +26,8 @@ public class PlayerState
         if (input != NoteInput.Cast)
         {
             playDirection((InputDirection) input, comboWasZero);
+
+            if (!innerSpell.LastNote.CanClear((BeatSymbol) Track.CurrentCardAtBeat(Rhythm.TruncatedPositionInMeasure))) Rhythm.FailCard();
         }
         else if (Rhythm.IsDownbeat())
         {
@@ -33,7 +35,7 @@ public class PlayerState
         }
         else
         {
-            Rhythm.FailCombo();
+            Rhythm.FailComboAndCard();
         }
     }
 
@@ -56,7 +58,7 @@ public class PlayerState
         }
         else
         {
-            Rhythm.FailCombo();
+            Rhythm.FailComboAndCard();
         }
     }
 
@@ -69,7 +71,7 @@ public class PlayerState
         }
         else
         {
-            Rhythm.FailCombo();
+            Rhythm.FailComboAndCard();
         }
     }
 }

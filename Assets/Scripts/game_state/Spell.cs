@@ -18,6 +18,9 @@ public class Spell
 
     public ReadOnlyCollection<Note> AllNotes => 
         new List<Note> { MainNote }.Concat(MetaNotes).ToList().AsReadOnly();
+    
+    public Note LastNote =>
+        MetaNotes.Count == 0 ? MainNote : MetaNotes.Last();
 
     public Spell (Note mainNote)
     {
