@@ -2,7 +2,7 @@ using System;
 
 public enum BeatSymbol
 {
-	Zero, One, Two, Three, Four, Five, Six, Seven
+	Zero, One, Two, Three
 }
 
 public static class BeatSymbolExtensions
