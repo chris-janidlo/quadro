@@ -39,3 +39,5 @@ split card rng in two - main rng and garbage rng
 determine whether or not to simplify meta combos so that they no longer depend on the main note
 
 better immediate feedback (failure/success per note)
+
+change how we handle bpm difficulty: up the size of the inner Track difficulty increases, while notes/spells can manipulate bpm with about the same granularity they currently have

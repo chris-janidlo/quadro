@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // requires that TimingSource has a clip of 4 seconds of silence (one 4/4 measure at 60 BPM) set to loop
+// TODO: set up a dictionary or something for other measure lengths (for like 2-7)
 public class RealtimeDriver : ADriver
 {
     public AudioSource TimingSource, BeatSource;
