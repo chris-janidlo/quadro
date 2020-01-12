@@ -187,12 +187,12 @@ public class BaseSingleplayerDiamond : NoteDiamond
 		public override string DescribeMainEffect (EffectVector vector)
 		{
             int effect = vector.IntPower;
-            return $"increases the time between card spawns by {effect} beat{(effect > 1 ? "s" : "")}";
+            return $"reduces the number of cards spawned every measure by {effect}";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.BeatsPerCard += vector.IntPower;
+            input.CardsPerSpawn -= vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)

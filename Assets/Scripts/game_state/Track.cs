@@ -21,8 +21,8 @@ public class Track
     public const int MAX_BSTEPS = 40;
     public const int STARTING_BSTEPS = 16;
 
-    public const int MAX_BEATS_PER_CARD = 16;
-    public const int STARTING_BEATS_PER_CARD = 8;
+    public const int MAX_CARDS_PER_SPAWN = 16;
+    public const int STARTING_CARDS_PER_SPAWN = 1;
 
     List<RhythmCard> cards = new List<RhythmCard>();
     RhythmCardGenerator generator;
@@ -34,11 +34,11 @@ public class Track
         set => _bSteps = Mathf.Clamp(value, MIN_BSTEPS, MAX_BSTEPS);
     }
 
-    int _beatsPerCard = STARTING_BEATS_PER_CARD;
-    public int BeatsPerCard
+    int _cardsPerSpawn = STARTING_CARDS_PER_SPAWN;
+    public int CardsPerSpawn
     {
-        get => _beatsPerCard;
-        set => _beatsPerCard = Mathf.Clamp(value, 1, MAX_BEATS_PER_CARD);
+        get => _cardsPerSpawn;
+        set => _cardsPerSpawn = Mathf.Clamp(value, 1, MAX_CARDS_PER_SPAWN);
     }
 
     bool _failedLastCard;
@@ -108,20 +108,23 @@ public class Track
             if (CardsCleared % CARDS_PER_DIFFICULTY_INCREASE == 0)
             {
                 BSteps++;
-                BeatsPerCard--;
+                CardsPerSpawn++;
             }
         }
     }
 
-    public void FailCard ()
+    public RhythmCard RemoveFailedCard ()
     {
-        if (cards.Count == 0) return;
-
         RhythmCard card = cards[0];
 
         cards.RemoveAt(0);
         CardRemoved?.Invoke();
 
+        return card;
+    }
+
+    public void RespawnFailedCard (RhythmCard card)
+    {
         cards.Add(card);
         CardAdded?.Invoke();
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class TrackVisualizer : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class TrackVisualizer : MonoBehaviour
 
     Track track => Driver.State.Track;
 
+    bool handledPreview = false;
+
     void Start ()
     {
         track.CardAdded += addCard;
@@ -21,21 +24,23 @@ public class TrackVisualizer : MonoBehaviour
 
     void Update ()
     {
-        bool inPreviewTime = Driver.State.Rhythm.BeatsUntilNextSpawn <= Track.BEATS_PER_MEASURE;
-
-        if (inPreviewTime && PreviewContainer.childCount == 0)
+        if (Driver.State.Rhythm.TruncatedPositionInMeasure == 0 && !handledPreview)
         {
+            handledPreview = true;
+
+            foreach (Transform child in PreviewContainer) Destroy(child.gameObject);
+            
             Instantiate(CardVisualPrefab, PreviewContainer).Initialize(track.NextToSpawn);
 
-            // empty preview card for spacing
-            Instantiate(CardVisualPrefab, PreviewContainer).Initialize(Track.BEATS_PER_MEASURE);
+            if (track.Cards.Count == 0)
+                Instantiate(CardVisualPrefab, PreviewContainer).Initialize(Track.BEATS_PER_MEASURE);
         }
-        if (!inPreviewTime && PreviewContainer.childCount != 0)
+        else if (Driver.State.Rhythm.TruncatedPositionInMeasure != 0)
         {
-            foreach (Transform child in PreviewContainer) Destroy(child.gameObject);
+            handledPreview = false;
         }
 
-        PreviewGroup.alpha = Mathf.Min((float) Driver.State.Rhythm.CurrentPositionInMeasure, Track.BEATS_PER_MEASURE - 1) / Track.BEATS_PER_MEASURE;
+        PreviewGroup.alpha = (float) Driver.State.Rhythm.CurrentPositionInMeasure / Track.BEATS_PER_MEASURE;
 
         RectTransform firstChild = firstCardObject();
         if (firstChild == null) return;

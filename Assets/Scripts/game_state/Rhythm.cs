@@ -14,7 +14,7 @@ public class Rhythm
 
     public double Latency; // TODO: use this
 
-    int beatTicker, cardSpawnTicker;
+    int beatTicker;
     bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat;
 
     // needs to be updated by external driver
@@ -36,8 +36,6 @@ public class Rhythm
 
     public int ComboCounter { get; private set; }
     public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
-
-    public int BeatsUntilNextSpawn => Track.BeatsPerCard - cardSpawnTicker;
 
     // may be outside of measure, ie when CurrentPositionInMeasure > Track.BEATS_PER_MEASURE + 0.5
     int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
@@ -115,20 +113,17 @@ public class Rhythm
 
     void updateCardState ()
     {
-        if (TruncatedPositionInMeasure == 0)
-        {
-            if (failedDuringLatestCard) Track.FailCard();
-            else Track.ClearCards(1);
+        if (TruncatedPositionInMeasure != 0) return;
 
-            failedDuringLatestCard = false;
-        }
+        RhythmCard failedCard = null;
 
-        cardSpawnTicker++;
+        if (failedDuringLatestCard) failedCard = Track.RemoveFailedCard();
+        else Track.ClearCards(1);
 
-        if (cardSpawnTicker >= Track.BeatsPerCard)
-        {
-            Track.SpawnCards(1);
-            cardSpawnTicker = 0;
-        }
+        failedDuringLatestCard = false;
+
+        Track.SpawnCards(Track.CardsPerSpawn);
+
+        if (failedCard != null) Track.RespawnFailedCard(failedCard);
     }
 }
