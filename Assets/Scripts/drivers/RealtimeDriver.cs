@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // requires that TimingSource has a clip of 4 seconds of silence (one 4/4 measure at 60 BPM) set to loop
-// TODO: set up a dictionary or something for other measure lengths (for like 2-7)
 public class RealtimeDriver : ADriver
 {
     public AudioSource TimingSource, BeatSource;
 
     public AudioClip Downbeat, Beat;
 
-    float inverseAudioFrequency;
+    float positionScale;
 
     void Awake ()
     {
@@ -23,18 +22,22 @@ public class RealtimeDriver : ADriver
     {
         base.Initialize(noteDiamond);
 
-        inverseAudioFrequency = 1f / TimingSource.clip.frequency;
+        var measureScalar = (float) Track.BEATS_PER_MEASURE / 4;
+        var timingScale = measureScalar * 60f;
+
+        var inverseAudioFrequency = 1f / TimingSource.clip.frequency;
+        positionScale = measureScalar * inverseAudioFrequency;
 
         State.Rhythm.Beat += () =>
         {
             BeatSource.PlayOneShot(State.Rhythm.IsDownbeat() ? Downbeat : Beat);
-            TimingSource.pitch = State.Track.BPM / 60f;
+            TimingSource.pitch = State.Track.BPM / timingScale;
         };
     }
 
     void Update ()
     {
-        State.Rhythm.CurrentPositionInMeasure = TimingSource.timeSamples * inverseAudioFrequency;
+        State.Rhythm.CurrentPositionInMeasure = TimingSource.timeSamples * positionScale;
 
         var input = getInput();
 
