@@ -33,7 +33,8 @@ public class PlayerState
         {
             playDirection((InputDirection) input, comboWasZero);
 
-            if (!innerSpell.LastNote.CanClear((BeatSymbol) Track.CurrentCardAtBeat(Rhythm.TruncatedPositionInMeasure))) Rhythm.FailCard();
+            if (!innerSpell.LastNote.CanClear((BeatSymbol) Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure)))
+                Rhythm.FailCard();
         }
         else if (Rhythm.IsDownbeat())
         {

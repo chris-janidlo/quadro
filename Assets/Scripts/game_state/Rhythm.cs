@@ -33,6 +33,7 @@ public class Rhythm
 
     public int ComboCounter { get; private set; }
     public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
+    public int ClosestPositionInMeasure => closestBeatPosition % Track.BEATS_PER_MEASURE;
 
     // may be outside of measure, ie when CurrentPositionInMeasure > Track.BEATS_PER_MEASURE + 0.5
     int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
@@ -47,7 +48,7 @@ public class Rhythm
 
         closestBeatAttempted = true;
 
-        if (hit == null && Track.CurrentCardAtBeat(closestBeatPosition % Track.BEATS_PER_MEASURE) == null)
+        if (hit == null && Track.CurrentCardAtBeat(ClosestPositionInMeasure) == null)
             hit = new HitData(hitDistance, BadHitReason.BeatIsOff);
 
         if (hit == null)
