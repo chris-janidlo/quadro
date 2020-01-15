@@ -21,8 +21,6 @@ reword game text for new hacker mentality
 	track -> network something something
 
 charge system
-	update rhythm to return quality of hit
-		3-tiered system (TODO: labels for tiers)
 	add a meter called the "charge" meter or something similar
 		TODO: figure out lore (stores excess electricity?)
 	every time you hit a beat successfully, the charge increases. the more accurate you are, the better the increase (might even make the least accurate hit-tier not add anything)
