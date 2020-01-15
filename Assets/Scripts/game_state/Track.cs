@@ -115,6 +115,8 @@ public class Track
 
     public RhythmCard RemoveFailedCard ()
     {
+        if (cards.Count == 0) return null;
+
         RhythmCard card = cards[0];
 
         cards.RemoveAt(0);
@@ -125,6 +127,8 @@ public class Track
 
     public void RespawnFailedCard (RhythmCard card)
     {
+        if (card == null) return;
+
         cards.Add(card);
         CardAdded?.Invoke();
 
