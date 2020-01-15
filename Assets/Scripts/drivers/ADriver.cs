@@ -13,6 +13,8 @@ public abstract class ADriver : MonoBehaviour
     public virtual void Initialize (NoteDiamond noteDiamond)
     {
         State = new PlayerState(noteDiamond);
+
+        State.HitAttempted += hit => Debug.Log(hit.ToString());
     }
 
     protected NoteInput? getInput ()

@@ -7,9 +7,6 @@ public class Rhythm
 {
 	public event Action Beat;
 
-    // the percentage of a beat you can "miss" by but still register as a hit. always assumed to be less than half a beat - making it more than a half beat makes no sense if beats can be on right next to each other, and the code isn't written with the potential for exactly half a beat in mind. 0.5 might work, but there might be subtle bugs, so it's highly not recommended.
-    public const double SUCCESS_RANGE_BEATS = 0.3;
-
     public readonly Track Track = new Track();
 
     public double Latency; // TODO: use this
@@ -40,29 +37,26 @@ public class Rhythm
     // may be outside of measure, ie when CurrentPositionInMeasure > Track.BEATS_PER_MEASURE + 0.5
     int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
 
-    public bool TryHitNow ()
+    public HitData TryHitNow ()
     {
-        Func<bool> checkHitInternal = () =>
-        {
-            if (closestBeatAttempted) return false;
+        HitData hit = null;
+        double hitDistance = Math.Abs(CurrentPositionInMeasure - closestBeatPosition);
 
-            closestBeatAttempted = true;
+        if (closestBeatAttempted)
+            hit = new HitData(hitDistance, BadHitReason.AlreadyAttemptedBeat);
 
-            // is this even a valid beat
-            if (Track.CurrentCardAtBeat(closestBeatPosition % Track.BEATS_PER_MEASURE) == null) return false;
+        closestBeatAttempted = true;
 
-            // if we're out of range
-            if (Math.Abs(CurrentPositionInMeasure - closestBeatPosition) > SUCCESS_RANGE_BEATS) return false;
+        if (hit == null && Track.CurrentCardAtBeat(closestBeatPosition % Track.BEATS_PER_MEASURE) == null)
+            hit = new HitData(hitDistance, BadHitReason.BeatIsOff);
 
-            return true;
-        };
+        if (hit == null)
+            hit = new HitData(hitDistance);
 
-        bool passed = checkHitInternal();
-
-        if (passed) ComboCounter++;
+        if (hit.IsSuccessful) ComboCounter++;
         else FailComboAndCard();
 
-        return passed;
+        return hit;
     }
 
     public bool IsDownbeat ()
@@ -96,7 +90,7 @@ public class Rhythm
 
         double fractionalPart = CurrentPositionInMeasure - TruncatedPositionInMeasure;
 
-        if (fractionalPart > SUCCESS_RANGE_BEATS && !handledEndOfBeat)
+        if (fractionalPart > HitQuality.Miss.BeatDistanceRange().x && !handledEndOfBeat)
         {
             handledEndOfBeat = true;
 
@@ -105,7 +99,7 @@ public class Rhythm
 
             closestBeatAttempted = false;
         }
-        else if (fractionalPart <= SUCCESS_RANGE_BEATS)
+        else if (fractionalPart <= HitQuality.Miss.BeatDistanceRange().x)
         {
             handledEndOfBeat = false;
         }
