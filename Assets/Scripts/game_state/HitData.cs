@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,19 +8,19 @@ public class HitData
 {
     public readonly double DistanceFromBeat;
     public readonly HitQuality Quality;
-    public readonly BadHitReason? BadHitReason;
+    public readonly MissReasonEnum? MissReason;
 
-    public bool IsSuccessful => BadHitReason == null && Quality != HitQuality.Miss;
+    public bool IsSuccessful => MissReason == null;
 
-    public HitData (double distanceFromBeat, BadHitReason? badHitReason = null)
+    public HitData (double distanceFromBeat, MissReasonEnum? missReason = null)
     {
         if (distanceFromBeat < 0)
             throw new ArgumentException("hit cannot be closer than 0");
 
         DistanceFromBeat = distanceFromBeat;
-        BadHitReason = badHitReason;
+        MissReason = missReason;
 
-        if (BadHitReason != null)
+        if (MissReason != null)
         {
             Quality = HitQuality.Miss;
             return;
@@ -30,13 +30,18 @@ public class HitData
             var range = hq.BeatDistanceRange();
             return distanceFromBeat > range.x && distanceFromBeat <= range.y;
         });
+
+        if (Quality == HitQuality.Miss)
+        {
+            MissReason = MissReasonEnum.ClosestBeatOutOfRange;
+        }
     }
 
     private HitData () {}
 
     public override string ToString ()
     {
-        return Quality.ToString() + String.Format(" - ({0})", BadHitReason == null ? DistanceFromBeat.ToString("0.##") : BadHitReason.ToString());
+        return Quality.ToString() + String.Format(" - ({0})", MissReason == null ? DistanceFromBeat.ToString("0.##") : MissReason.ToString());
     }
 }
 
@@ -45,9 +50,9 @@ public enum HitQuality
     Miss, Ok, Good, Excellent
 }
 
-public enum BadHitReason
+public enum MissReasonEnum
 {
-    AlreadyAttemptedBeat, BeatIsOff
+    AlreadyAttemptedBeat, NeverAttemptedBeat, ClosestBeatIsOff, ClosestBeatOutOfRange
 }
 
 public static class HitQualityExtensions

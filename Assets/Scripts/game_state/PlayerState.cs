@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PlayerState
 {
-    public event Action<HitData> HitAttempted;
-
     public readonly Rhythm Rhythm = new Rhythm();
     public readonly NoteDiamond NoteDiamond;
 
@@ -24,10 +22,7 @@ public class PlayerState
     {
         bool comboWasZero = Rhythm.ComboCounter == 0;
 
-        HitData hit = Rhythm.TryHitNow();
-
-        HitAttempted?.Invoke(hit);
-        if (!hit.IsSuccessful) return;
+        if (!Rhythm.TryHitNow().IsSuccessful) return;
 
         if (input != NoteInput.Cast)
         {

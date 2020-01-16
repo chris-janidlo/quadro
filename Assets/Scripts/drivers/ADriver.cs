@@ -14,7 +14,7 @@ public abstract class ADriver : MonoBehaviour
     {
         State = new PlayerState(noteDiamond);
 
-        State.HitAttempted += hit => Debug.Log(hit.ToString());
+        State.Rhythm.Hit += hit => Debug.Log(hit.ToString());
     }
 
     protected NoteInput? getInput ()

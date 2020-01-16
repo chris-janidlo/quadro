@@ -6,6 +6,7 @@ using UnityEngine;
 public class Rhythm
 {
 	public event Action Beat;
+    public event Action<HitData> Hit;
 
     public readonly Track Track = new Track();
 
@@ -44,18 +45,20 @@ public class Rhythm
         double hitDistance = Math.Abs(CurrentPositionInMeasure - closestBeatPosition);
 
         if (closestBeatAttempted)
-            hit = new HitData(hitDistance, BadHitReason.AlreadyAttemptedBeat);
+            hit = new HitData(hitDistance, MissReasonEnum.AlreadyAttemptedBeat);
 
         closestBeatAttempted = true;
 
         if (hit == null && Track.CurrentCardAtBeat(ClosestPositionInMeasure) == null)
-            hit = new HitData(hitDistance, BadHitReason.BeatIsOff);
+            hit = new HitData(hitDistance, MissReasonEnum.ClosestBeatIsOff);
 
         if (hit == null)
             hit = new HitData(hitDistance);
 
         if (hit.IsSuccessful) ComboCounter++;
         else FailComboAndCard();
+
+        Hit?.Invoke(hit);
 
         return hit;
     }
@@ -96,7 +99,11 @@ public class Rhythm
             handledEndOfBeat = true;
 
             // if the player completely skipped this beat when they shouldn't have, fail
-            if (Track.CurrentCardAtBeat(TruncatedPositionInMeasure) != null && !closestBeatAttempted) FailComboAndCard();
+            if (Track.CurrentCardAtBeat(TruncatedPositionInMeasure) != null && !closestBeatAttempted)
+            {
+                Hit?.Invoke(new HitData(fractionalPart, MissReasonEnum.NeverAttemptedBeat));
+                FailComboAndCard();
+            }
 
             closestBeatAttempted = false;
         }
