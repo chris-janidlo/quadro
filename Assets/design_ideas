@@ -1,0 +1,35 @@
+"characters"
+	high combo
+		spells all do very little at first, but very slowly build up to eventually huge payoffs
+			spells are based off the combo counter
+			meta notes flip things around? like a jester assassin kinda feel?
+		highly likely to have 8 notes at their disposal
+
+	low combo
+		spells on their own hit fairly hard, but the combos are very short
+			maybe like meta notes immediately cancel out spell effects
+		there are like 1 or 2 combos that have 2 notes but all the rest are just single note
+		in order to balance out the requirement to hit cast at every other beat, make it hard to clear notes in general
+			like you should have to look a couple notes ahead to plan
+
+	chaotic/complex
+		the options available to you every note are based on rng and have complex interactions with one another
+		likes playing at low BPMs
+
+	debuffer
+		character that has terrible tools for dealing with their own negative gamestate, but who can easily mess with the opponent's gamestate
+		shouldn't be great at killing, but should be really annoying to play against
+
+	basic man
+		token basic character that is bad at nothing but also good at nothing
+		beginner character/model for the rest of the game
+
+	state machine
+		character with unique and finicky resource pool in the form of a super basic cpu-like system
+		has N registers that it can manipulate with instructions, and spells that depend on the states of those N registers
+	
+	at least one character with a non-4/4 measure length
+
+what spells are shared between characters?
+
+charge meter as special finisher
