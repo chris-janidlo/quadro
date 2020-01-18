@@ -45,6 +45,8 @@ public class TrackVisualizer : MonoBehaviour
         RectTransform firstChild = firstCardObject();
         if (firstChild == null) return;
 
+        firstChild.GetComponent<RhythmCardVisual>().Text.color = Driver.State.Rhythm.FailedDuringLatestCard ? Colors.Instance.Bad : Colors.Instance.Neutral;
+
         float offsetScale = firstChild.rect.height / Track.BEATS_PER_MEASURE;
 
         TrackMover.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;

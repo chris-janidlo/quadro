@@ -13,7 +13,7 @@ public class Rhythm
     public double Latency; // TODO: use this
 
     int beatTicker;
-    bool closestBeatAttempted, failedDuringLatestCard, handledEndOfBeat;
+    bool closestBeatAttempted, handledEndOfBeat;
 
     // needs to be updated by external driver
     double _beatPos;
@@ -33,6 +33,8 @@ public class Rhythm
     }
 
     public int ComboCounter { get; private set; }
+
+    public bool FailedDuringLatestCard { get; private set; }
 
     public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
     public int ClosestPositionInMeasure => closestBeatPosition % Track.BEATS_PER_MEASURE;
@@ -78,7 +80,7 @@ public class Rhythm
 
     public void FailCard ()
     {
-        failedDuringLatestCard = true;
+        FailedDuringLatestCard = true;
     }
 
     void audioTimeDidUpdate ()
@@ -119,10 +121,10 @@ public class Rhythm
 
         RhythmCard failedCard = null;
 
-        if (failedDuringLatestCard) failedCard = Track.RemoveFailedCard();
+        if (FailedDuringLatestCard) failedCard = Track.RemoveFailedCard();
         else Track.ClearCards(1);
 
-        failedDuringLatestCard = false;
+        FailedDuringLatestCard = false;
 
         Track.SpawnCards(Track.CardsPerSpawn);
 
