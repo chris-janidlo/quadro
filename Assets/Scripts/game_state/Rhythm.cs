@@ -33,8 +33,10 @@ public class Rhythm
     }
 
     public int ComboCounter { get; private set; }
+
     public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
     public int ClosestPositionInMeasure => closestBeatPosition % Track.BEATS_PER_MEASURE;
+    public double FractionalPartOfPosition => CurrentPositionInMeasure - TruncatedPositionInMeasure;
 
     // may be outside of measure, ie when CurrentPositionInMeasure > Track.BEATS_PER_MEASURE + 0.5
     int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
@@ -92,22 +94,20 @@ public class Rhythm
             Beat?.Invoke();
         }
 
-        double fractionalPart = CurrentPositionInMeasure - TruncatedPositionInMeasure;
-
-        if (fractionalPart > HitQuality.Miss.BeatDistanceRange().x && !handledEndOfBeat)
+        if (FractionalPartOfPosition > HitQuality.Miss.BeatDistanceRange().x && !handledEndOfBeat)
         {
             handledEndOfBeat = true;
 
             // if the player completely skipped this beat when they shouldn't have, fail
             if (Track.CurrentCardAtBeat(TruncatedPositionInMeasure) != null && !closestBeatAttempted)
             {
-                Hit?.Invoke(new HitData(fractionalPart, MissReasonEnum.NeverAttemptedBeat));
+                Hit?.Invoke(new HitData(FractionalPartOfPosition, MissReasonEnum.NeverAttemptedBeat));
                 FailComboAndCard();
             }
 
             closestBeatAttempted = false;
         }
-        else if (fractionalPart <= HitQuality.Miss.BeatDistanceRange().x)
+        else if (FractionalPartOfPosition <= HitQuality.Miss.BeatDistanceRange().x)
         {
             handledEndOfBeat = false;
         }

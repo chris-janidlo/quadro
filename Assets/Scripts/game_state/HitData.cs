@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,6 +43,46 @@ public class HitData
     {
         return Quality.ToString() + String.Format(" - ({0})", MissReason == null ? DistanceFromBeat.ToString("0.##") : MissReason.ToString());
     }
+
+    public string ShortDescription ()
+    {
+        if (MissReason != null)
+        {
+            if (MissReason.Value == MissReasonEnum.NoteCantCombo || MissReason.Value == MissReasonEnum.InvalidCastInput)
+                return "Invalid";
+
+            if (MissReason.Value == MissReasonEnum.NoteCantClearAttemptedBeat)
+                return "Flub";
+        }
+
+        return Quality.ToString();
+    }
+
+    public HitData WithMissReason (MissReasonEnum missReason)
+    {
+        return new HitData(DistanceFromBeat, missReason);
+    }
+
+    public Color Color ()
+    {
+        switch (Quality)
+        {
+            case HitQuality.Miss:
+                return MissReason.Value == MissReasonEnum.NoteCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
+
+            case HitQuality.Ok:
+                return Colors.Instance.Ok;
+
+            case HitQuality.Good:
+                return Colors.Instance.Good;
+
+            case HitQuality.Excellent:
+                return Colors.Instance.Excellent;
+
+            default:
+                throw new InvalidOperationException("unexpected HitQuality value " + Quality);
+        }
+    }
 }
 
 public enum HitQuality
@@ -52,7 +92,13 @@ public enum HitQuality
 
 public enum MissReasonEnum
 {
-    AlreadyAttemptedBeat, NeverAttemptedBeat, ClosestBeatIsOff, ClosestBeatOutOfRange
+    AlreadyAttemptedBeat,
+    NeverAttemptedBeat,
+    ClosestBeatIsOff,
+    ClosestBeatOutOfRange,
+    NoteCantCombo,
+    NoteCantClearAttemptedBeat,
+    InvalidCastInput
 }
 
 public static class HitQualityExtensions
