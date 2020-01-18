@@ -1,4 +1,4 @@
-"characters"
+signal jammers
 	high combo
 		spells all do very little at first, but very slowly build up to eventually huge payoffs
 			spells are based off the combo counter
@@ -17,19 +17,19 @@
 		likes playing at low BPMs
 
 	debuffer
-		character that has terrible tools for dealing with their own negative gamestate, but who can easily mess with the opponent's gamestate
+		jammer that has terrible tools for dealing with their own negative gamestate, but who can easily mess with the opponent's gamestate
 		shouldn't be great at killing, but should be really annoying to play against
 
 	basic man
-		token basic character that is bad at nothing but also good at nothing
-		beginner character/model for the rest of the game
+		token basic jammer that is bad at nothing but also good at nothing
+		beginner jammer/model for the rest of the game
 
 	state machine
-		character with unique and finicky resource pool in the form of a super basic cpu-like system
+		jammer with unique and finicky resource pool in the form of a super basic cpu-like system
 		has N registers that it can manipulate with instructions, and spells that depend on the states of those N registers
 	
-	at least one character with a non-4/4 measure length
+	at least one jammer with a non-4/4 measure length
 
-what spells are shared between characters?
+what commands are shared between jammers?
 
 charge meter as special finisher
