@@ -20,6 +20,8 @@ public class BaseSingleplayerDiamond : NoteDiamond
         };
 	}
 
+    static string polarityEffect (int power) => (power < 0 ? "-" : "+") + " " + Mathf.Abs(power);
+
     // main: bpm up
     // meta: multiply
 	class Up : Note
@@ -30,7 +32,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
             InitialVector = new EffectVector(3, false),
             Symbols = new List<BeatSymbol> { BeatSymbol.Two, BeatSymbol.Three },
             Color = Color.red,
-            MetaEffectDescription = $"multiplies the effect of the spell by {MULT}",
+            MetaEffectDescription = $"Power * {MULT}",
             MainCombos = new ComboData
             {
                 Left = true,
@@ -64,7 +66,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"increases your track's BPM by {vector.IntPower} steps ({vector.IntPower * Track.BPM_PER_BSTEP} BPM)";
+            return "BPM " + polarityEffect(vector.IntPower);
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
@@ -85,10 +87,10 @@ public class BaseSingleplayerDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = InputDirection.Left,
-            InitialVector = new EffectVector(3, false),
+            InitialVector = new EffectVector(-3, false),
             Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.Two },
             Color = new Color(0.87f, 1, 0.99f),
-            MetaEffectDescription = $"decreases the effect of the spell by {ADD}",
+            MetaEffectDescription = $"Power - {ADD}",
             MainCombos = new ComboData
             {
                 Left = true
@@ -121,18 +123,18 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"clears {vector.IntPower} cards from your track";
+            return "Packets " + polarityEffect(vector.IntPower);
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
             if (vector.Power > 0)
             {
-                input.ClearCards(vector.IntPower);
+                input.SpawnCards(vector.IntPower);
             }
             else
             {
-                input.SpawnCards(-vector.IntPower);
+                input.ClearCards(-vector.IntPower);
             }
 		}
 
@@ -152,7 +154,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
             InitialVector = new EffectVector(1, false),
             Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One },
             Color = new Color(0.25f, 0.52f, 0.96f),
-            MetaEffectDescription = $"flips the polarity of the spell and multiplies its effect by {1/MULT}",
+            MetaEffectDescription = $"Power * -{1/MULT}",
             MainCombos = new ComboData
             {
                 Left = true,
@@ -186,8 +188,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            int effect = vector.IntPower;
-            return $"reduces the number of cards spawned every measure by {effect}";
+            return "Scan rate " + polarityEffect(-vector.IntPower);;
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
@@ -211,7 +212,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
             InitialVector = new EffectVector(2, false),
             Symbols = new List<BeatSymbol> { BeatSymbol.One, BeatSymbol.Three },
             Color = new Color(0.98f, 0.58f, 0.01f),
-            MetaEffectDescription = $"increases the effect of the spell by {ADD}",
+            MetaEffectDescription = $"Power + {ADD}",
             MainCombos = new ComboData
             {
                 Up = true,
@@ -245,7 +246,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"adds {vector.IntPower} cards to your track";
+            return "Packets " + polarityEffect(vector.IntPower);
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
