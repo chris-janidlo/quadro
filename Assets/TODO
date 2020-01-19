@@ -17,11 +17,6 @@ for future non-track spell targets: make ISpellTarget (or something similar) to 
 dial up music! figure out how dial up works and use that
 	chilled out nostalgic chords seem to work well
 
-reword game text for new hacker mentality
-	spell -> command?
-	card -> packet
-	track -> network something something
-
 charge system
 	add a meter called the "charge" meter or something similar
 		TODO: figure out lore (stores excess electricity?)
