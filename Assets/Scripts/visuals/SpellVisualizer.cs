@@ -14,7 +14,7 @@ public class SpellVisualizer : MonoBehaviour
 
     void Update ()
     {
-        DescriptionText.text = $"Spell: {(spell != null ? spell.Description : "<null>")}";
+        DescriptionText.text = $"Command: {(spell != null ? spell.Description : "<null>")}";
         ChipText.text = spell != null
             ? String.Join("", spell.AllNotes.Select(n => fancyChip(n)))
             : "";
