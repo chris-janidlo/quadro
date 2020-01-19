@@ -68,12 +68,12 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) vector.Power} cards to your track.";
+            return $"Adds {vector.IntPower} cards to your track.";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.SpawnCards((int) vector.Power);
+            input.SpawnCards(vector.IntPower);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -133,12 +133,12 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) vector.Power} cards to your track.";
+            return $"Adds {vector.IntPower} cards to your track.";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.SpawnCards((int) vector.Power);
+            input.SpawnCards(vector.IntPower);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -198,12 +198,12 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) vector.Power} cards to your track.";
+            return $"Adds {vector.IntPower} cards to your track.";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.SpawnCards((int) vector.Power);
+            input.SpawnCards(vector.IntPower);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -263,12 +263,12 @@ public class ExampleNoteDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return $"Adds {(int) vector.Power} cards to your track.";
+            return $"Adds {vector.IntPower} cards to your track.";
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.SpawnCards((int) vector.Power);
+            input.SpawnCards(vector.IntPower);
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
