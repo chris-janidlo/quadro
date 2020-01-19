@@ -10,7 +10,7 @@ public class Track
 {
     public event Action CardAdded, CardRemoved;
 
-    public const int CARDS_UNTIL_DEAD = 32;
+    public const int CARDS_UNTIL_DEAD = 16;
     public const int BEATS_PER_MEASURE = 4; // also the subdivisions in every card
 
     public const int CARDS_PER_DIFFICULTY_INCREASE = 8; // every time we clear this many cards, increase the BPM and the card spawn rate

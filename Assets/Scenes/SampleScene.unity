@@ -297,8 +297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35ba3f860cff4009af2f7e6d654b021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WarningDistance: 8
-  DangerDistance: 4
+  WarningDistance: 6
+  DangerDistance: 2
   SegmentPrefab: {fileID: 2788092675686695643, guid: 50852807b9aaf4d94b79a2d319f80f57,
     type: 3}
   Driver: {fileID: 1945056371}
