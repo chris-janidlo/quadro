@@ -1,10 +1,5 @@
 FIXME:
 turn based driver
-sometimes get null pointer error when hitting close to the boundary of a beat and an empty beat (line numbers accurate as of time of committing this message)
-	InvalidOperationException: Nullable object must have a value.
-	System.Nullable`1[T].get_Value () (at <599589bf4ce248909b8a14cbe4a2034e>:0)
-	PlayerState.DoNoteInput (NoteInput input) (at Assets/Scripts/game_state/PlayerState.cs:30)
-	RealtimeDriver.Update () (at Assets/Scripts/drivers/RealtimeDriver.cs:41)
 
 TODO:
 convert all nullable casts to .Value calls
