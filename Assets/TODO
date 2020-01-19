@@ -3,8 +3,6 @@ turn based driver
 removing cards is super broken on the visualization side
 
 TODO:
-convert all nullable casts to .Value calls
-
 FAILURE MAKE PLAYERS DIE AND SHIT
 IT AIN'T A GAME OTHERWISE
 

@@ -17,7 +17,7 @@ public class TurnBasedDriver : ADriver
 
         if (input != null)
         {
-            State.DoNoteInput((NoteInput) input);
+            State.DoNoteInput(input.Value);
             fastForward();
         }
     }

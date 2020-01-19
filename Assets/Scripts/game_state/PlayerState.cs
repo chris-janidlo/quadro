@@ -45,7 +45,7 @@ public class PlayerState
             {
                 hit = hit.WithMissReason(MissReasonEnum.NoteCantCombo);
             }
-            else if (!innerSpell.LastNote.CanClear((BeatSymbol) Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure)))
+            else if (!innerSpell.LastNote.CanClear(Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure).Value))
             {
                 hit = hit.WithMissReason(MissReasonEnum.NoteCantClearAttemptedBeat);
                 Rhythm.FailCard();

@@ -13,7 +13,7 @@ public static class BeatSymbolExtensions
 		"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"[(int) bs];
 
 	public static char ToRadixRepresentation (this BeatSymbol? bs) =>
-		bs == null ? ' ' : ToRadixRepresentation((BeatSymbol) bs);
+		bs == null ? ' ' : ToRadixRepresentation(bs.Value);
 	
 	public static BeatSymbol Next (this BeatSymbol bs) => (BeatSymbol) (((int) bs + 1) % NUM_SYMBOLS);
 

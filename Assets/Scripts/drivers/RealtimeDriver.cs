@@ -41,6 +41,6 @@ public class RealtimeDriver : ADriver
 
         var input = getInput();
 
-        if (input != null) State.DoNoteInput((NoteInput) input);
+        if (input != null) State.DoNoteInput(input.Value);
     }
 }
