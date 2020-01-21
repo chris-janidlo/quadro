@@ -87,20 +87,22 @@ public class BaseSingleplayerDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = InputDirection.Left,
-            InitialVector = new EffectVector(-3, false),
+            InitialVector = new EffectVector(-1, false),
             Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.Two },
             Color = new Color(0.87f, 1, 0.99f),
             MetaEffectDescription = $"Power - {ADD}",
             MainCombos = new ComboData
             {
-                Left = true
+                Left = true,
+                Down = true
             },
+            // max clear is 3 cards at a 7 note combo (LLDURDU). after that notes can only decrease clear amount. also a couple stalls (LR, DU)
             MetaCombos = new MetaComboData
             {
                 Up = new ComboData
                 {
-                    Left = true,
                     Down = true,
+                    Right = true
                 },
                 Left = new ComboData
                 {
@@ -109,14 +111,13 @@ public class BaseSingleplayerDiamond : NoteDiamond
                 },
                 Right = new ComboData
                 {
-                    Up = true,
-                    Down = true
+                    Left = true,
+                    Down = true,
                 },
                 Down = new ComboData
                 {
                     Up = true,
-                    Left = true,
-                    Right = true
+                    Down = true
                 }
             }
         };
@@ -222,8 +223,8 @@ public class BaseSingleplayerDiamond : NoteDiamond
             {
                 Up = new ComboData
                 {
-                    Left = true,
                     Down = true,
+                    Right = true
                 },
                 Left = new ComboData
                 {
@@ -232,14 +233,13 @@ public class BaseSingleplayerDiamond : NoteDiamond
                 },
                 Right = new ComboData
                 {
-                    Up = true,
-                    Down = true
+                    Left = true,
+                    Down = true,
                 },
                 Down = new ComboData
                 {
                     Up = true,
-                    Left = true,
-                    Right = true
+                    Down = true
                 }
             }
         };
