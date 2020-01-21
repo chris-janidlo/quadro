@@ -1,6 +1,7 @@
 FIXME:
 turn based driver
 removing cards is super broken on the visualization side
+	probable fix: change all card spawning to a queue system, where throughout the course of the measure the track is told how many cards to spawn/clear and also whether or not the current card is cleared, then the track handles all of that on its own terms at the end of the measure
 
 TODO:
 FAILURE MAKE PLAYERS DIE AND SHIT
@@ -10,19 +11,17 @@ for future non-track spell targets: make ISpellTarget (or something similar) to 
 
 dial up music! figure out how dial up works and use that
 	chilled out nostalgic chords seem to work well
+	double time break beat sample + slammed 2/2 kick-snare pattern (hihat pattern?)
 
 charge system
 	add a meter called the "charge" meter or something similar
 		TODO: figure out lore (stores excess electricity?)
 	every time you hit a beat successfully, the charge increases. the more accurate you are, the better the increase (might even make the least accurate hit-tier not add anything)
 	every time you miss a beat or hit when you shouldn't, the charge decreases
-	when the charge meter fills up, the current spell gets a bonus to the magnitude of its effectiveness, and the meter resets back to zero
+	when the charge meter fills up, a character-dependent finisher happens, and the meter resets back to zero
+		base singleplayer finisher: clear all cards
 
-make cast dependent on mana ?????
-	get one mana per card clear
-	mana of spell is based solely off main note
-
-decide if we want to increase the number of notes to 8 per player
+make cast input valid for all beats as long as there's a spell being built up, but it no longer resets the combo
 
 split card rng in two - main rng and garbage rng
 	main rng is used on the regular every-few-beats spawns
@@ -33,3 +32,5 @@ split card rng in two - main rng and garbage rng
 determine whether or not to simplify meta combos so that they no longer depend on the main note
 
 change how we handle bpm difficulty: up the size of the inner Track difficulty increases, while notes/spells can manipulate bpm with about the same granularity they currently have
+
+figure out how to handle card difficulty - starting at 1 card per measure and increasing that every difficulty up is bad unless literally every character has a way to reduce their own spawn rate
