@@ -2,33 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// FIXME:
+// currently for debugging purposes only; not suitable for public consumption
 public class TurnBasedDriver : ADriver
 {
+    int lastPositionInMeasure = -1;
+
     void Awake ()
     {
         Initialize(new BaseSingleplayerDiamond());
-        fastForward();
     }
 
-    void Update ()
+    IEnumerator Start ()
     {
-        var input = getInput();
-
-        if (input != null)
+        while (!State.Track.Dead)
         {
+            while (State.Rhythm.TruncatedPositionInMeasure == lastPositionInMeasure || State.Track.CurrentCardAtBeat(State.Rhythm.TruncatedPositionInMeasure) == null)
+            {
+                addToMeasurePosition(Time.deltaTime);
+                yield return null;
+            }
+
+            NoteInput? input;
+
+            do
+            {
+                input = getInput();
+                yield return null;
+            }
+            while (input == null);
+
             State.DoNoteInput(input.Value);
-            fastForward();
+
+            lastPositionInMeasure = State.Rhythm.TruncatedPositionInMeasure;
         }
     }
 
-    void fastForward ()
+    void addToMeasurePosition (double amount)
     {
-        do
-        {
-            State.Rhythm.CurrentPositionInMeasure++;
-            State.Rhythm.CurrentPositionInMeasure %= Track.BEATS_PER_MEASURE;
-        }
-        while (State.Track.CurrentCardAtBeat(State.Rhythm.TruncatedPositionInMeasure) == null);
+        State.Rhythm.CurrentPositionInMeasure = (State.Rhythm.CurrentPositionInMeasure + amount) % Track.BEATS_PER_MEASURE;
     }
 }
