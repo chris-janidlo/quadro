@@ -95,9 +95,10 @@ public class Track
         {
             failedCard = removeCard();
         }
-        else
+        else if (Cards.Count != 0)
         {
-            changeCounter++;
+            removeCard();
+            CardsCleared++;
         }
 
         while (changeCounter > 0)
