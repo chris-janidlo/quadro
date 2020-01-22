@@ -117,7 +117,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
                 Down = new ComboData
                 {
                     Up = true,
-                    Down = true
+                    Left = true
                 }
             }
         };
@@ -232,7 +232,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
                 Down = new ComboData
                 {
                     Up = true,
-                    Down = true
+                    Right = true
                 }
             }
         };
