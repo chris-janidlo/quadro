@@ -48,7 +48,7 @@ public class PlayerState
             else if (!innerSpell.LastNote.CanClear(Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure).Value))
             {
                 hit = hit.WithMissReason(MissReasonEnum.NoteCantClearAttemptedBeat);
-                Rhythm.FailCard();
+                Track.FailCurrentCard();
             }
         }
         else if (Rhythm.IsDownbeat())

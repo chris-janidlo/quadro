@@ -8,7 +8,7 @@ using crass;
 
 public class Track
 {
-    public event Action CardAdded, CardRemoved;
+    public event Action CardsBatchUpdated, CardAdded, CardRemoved;
 
     public const int CARDS_UNTIL_DEAD = 16;
     public const int BEATS_PER_MEASURE = 4; // also the subdivisions in every card
@@ -21,11 +21,19 @@ public class Track
     public const int MAX_BSTEPS = 40;
     public const int STARTING_BSTEPS = 16;
 
-    public const int MAX_CARDS_PER_SPAWN = 16;
-    public const int STARTING_CARDS_PER_SPAWN = 1;
+    public const float MAX_CARD_SPAWN_RATE = 4;
+    public const float MIN_CARD_SPAWN_RATE = 0.5f;
+    public const float STARTING_CARD_SPAWN_RATE = 0.5f;
 
     List<RhythmCard> cards = new List<RhythmCard>();
     RhythmCardGenerator generator;
+
+    float _cardDelta;
+    public float CardDelta
+    {
+        get => _cardDelta;
+        set => _cardDelta = Mathf.Clamp(value, -CARDS_UNTIL_DEAD, CARDS_UNTIL_DEAD);
+    }
 
     int _bSteps = STARTING_BSTEPS;
     public int BSteps
@@ -34,12 +42,14 @@ public class Track
         set => _bSteps = Mathf.Clamp(value, MIN_BSTEPS, MAX_BSTEPS);
     }
 
-    int _cardsPerSpawn = STARTING_CARDS_PER_SPAWN;
-    public int CardsPerSpawn
+    float _cardsPerSpawn = STARTING_CARD_SPAWN_RATE;
+    public float CardsPerSpawn
     {
         get => _cardsPerSpawn;
-        set => _cardsPerSpawn = Mathf.Clamp(value, 1, MAX_CARDS_PER_SPAWN);
+        set => _cardsPerSpawn = Mathf.Clamp(value, MIN_CARD_SPAWN_RATE, MAX_CARD_SPAWN_RATE);
     }
+
+    public bool FailedCurrentCard { get; private set; }
 
     bool _failedLastCard;
     public bool FailedLastCard
@@ -76,63 +86,52 @@ public class Track
         generator = new RhythmCardGenerator(BEATS_PER_MEASURE, randomSeed);
     }
 
-    public void SpawnCards (int numCards)
+    public void HandleEndOfMeasure ()
     {
-        if (numCards != 0)
+        int changeCounter = (int) Mathf.Abs(CardDelta);
+        RhythmCard failedCard = null;
+
+        if (FailedCurrentCard)
         {
-            FailedLastCard = false;
+            failedCard = removeCard();
+        }
+        else
+        {
+            changeCounter++;
         }
 
-        for (int i = 0; i < numCards; i++)
+        while (changeCounter > 0)
         {
-            cards.Add(generator.GetNext());
-            CardAdded?.Invoke();
-        }
-    }
-
-    public void ClearCards (int numCards)
-    {
-        if (numCards != 0)
-        {
-            FailedLastCard = false;
-        }
-
-        for (int i = 0; i < numCards; i++)
-        {
-            if (cards.Count == 0) break;
-
-            cards.RemoveAt(0);
-            CardRemoved?.Invoke();
-
-            CardsCleared++;
-            if (CardsCleared % CARDS_PER_DIFFICULTY_INCREASE == 0)
+            if (CardDelta > 0)
             {
-                BSteps++;
-                CardsPerSpawn++;
+                addCard(generator.GetNext());
             }
+            else
+            {
+                if (cards.Count == 0) break;
+
+                removeCard();
+                CardsCleared++;
+            }
+
+            changeCounter--;
         }
+
+        if (failedCard != null) addCard(failedCard);
+
+        CardDelta -= (int) CardDelta;
+
+        CardDelta += CardsPerSpawn;
+
+        CardsBatchUpdated?.Invoke();
+
+        FailedLastCard = FailedCurrentCard;
+        FailedCurrentCard = false;
     }
 
-    public RhythmCard RemoveFailedCard ()
+    public void FailCurrentCard ()
     {
-        if (cards.Count == 0) return null;
-
-        RhythmCard card = cards[0];
-
-        cards.RemoveAt(0);
-        CardRemoved?.Invoke();
-
-        return card;
-    }
-
-    public void RespawnFailedCard (RhythmCard card)
-    {
-        if (card == null) return;
-
-        cards.Add(card);
-        CardAdded?.Invoke();
-
-        FailedLastCard = true;
+        FailedCurrentCard = true;
     }
 
     public BeatSymbol? CurrentCardAtBeat (int positionWithinMeasure)
@@ -145,5 +144,21 @@ public class Track
         if (Cards.Count == 0) return null;
 
         return Cards[0][positionWithinMeasure];
+    }
+
+    void addCard (RhythmCard card)
+    {
+        cards.Add(card);
+        CardAdded?.Invoke();
+    }
+
+    RhythmCard removeCard ()
+    {
+        var card = cards[0];
+
+        cards.RemoveAt(0);
+        CardRemoved?.Invoke();
+
+        return card;
     }
 }

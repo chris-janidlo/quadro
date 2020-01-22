@@ -34,8 +34,6 @@ public class Rhythm
 
     public int ComboCounter { get; private set; }
 
-    public bool FailedDuringLatestCard { get; private set; }
-
     public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
     public int ClosestPositionInMeasure => closestBeatPosition % Track.BEATS_PER_MEASURE;
     public double FractionalPartOfPosition => CurrentPositionInMeasure - TruncatedPositionInMeasure;
@@ -75,12 +73,7 @@ public class Rhythm
     public void FailComboAndCard ()
     {
         ComboCounter = 0;
-        FailCard();
-    }
-
-    public void FailCard ()
-    {
-        FailedDuringLatestCard = true;
+        Track.FailCurrentCard();
     }
 
     void audioTimeDidUpdate ()
@@ -91,9 +84,9 @@ public class Rhythm
             else if (TruncatedPositionInMeasure == 0) beatTicker = 0; // loop
             else throw new InvalidOperationException("something fucky with beats");
 
-            updateCardState();
-
             Beat?.Invoke();
+
+            if (TruncatedPositionInMeasure == 0) Track.HandleEndOfMeasure();
         }
 
         if (FractionalPartOfPosition > HitQuality.Miss.BeatDistanceRange().x && !handledEndOfBeat)
@@ -113,21 +106,5 @@ public class Rhythm
         {
             handledEndOfBeat = false;
         }
-    }
-
-    void updateCardState ()
-    {
-        if (TruncatedPositionInMeasure != 0) return;
-
-        RhythmCard failedCard = null;
-
-        if (FailedDuringLatestCard) failedCard = Track.RemoveFailedCard();
-        else Track.ClearCards(1);
-
-        FailedDuringLatestCard = false;
-
-        Track.SpawnCards(Track.CardsPerSpawn);
-
-        if (failedCard != null) Track.RespawnFailedCard(failedCard);
     }
 }

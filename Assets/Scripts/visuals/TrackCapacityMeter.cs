@@ -36,32 +36,14 @@ public class TrackCapacityMeter : MonoBehaviour
             }
         }
 
-        Driver.State.Track.CardAdded += addCard;
-        Driver.State.Track.CardRemoved += removeCard;
+        Driver.State.Track.CardsBatchUpdated += cardUpdate;
     }
 
-    void addCard ()
+    void cardUpdate ()
     {
-        if (index >= 0)
+        for (int i = 0; i < meterParent.childCount; i++)
         {
-            setSegmentStateForMostRecentCard(false);
+            meterParent.GetChild(i).GetComponent<TrackCapacitySegment>().SetActive(i < Driver.State.Track.Cards.Count);
         }
-
-        index--;
-    }
-
-    void removeCard ()
-    {
-        index++;
-
-        if (index >= 0)
-        {
-            setSegmentStateForMostRecentCard(true);
-        }
-    }
-
-    void setSegmentStateForMostRecentCard (bool value)
-    {
-        meterParent.GetChild(index).GetComponent<TrackCapacitySegment>().SetActive(value);
     }
 }

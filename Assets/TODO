@@ -1,7 +1,5 @@
 FIXME:
 turn based driver
-removing cards is super broken on the visualization side
-	probable fix: change all card spawning to a queue system, where throughout the course of the measure the track is told how many cards to spawn/clear and also whether or not the current card is cleared, then the track handles all of that on its own terms at the end of the measure
 
 TODO:
 ===== GAMEPLAY =====
@@ -32,6 +30,8 @@ TODO:
 		always give the players an empty measure after multiple clears?
 
 ===== CODE =====
+	redo track visualizer -> every batch card update, completely redo the track
+
 	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
 
 	driver dependency injection
@@ -58,7 +58,3 @@ TODO:
 	add meter for card delta system
 		segmented meter twice as long as the length of a bar
 		dash in the middle
-		if any segments above the dash are completely filled in at the end of a bar, that many cards are spawned
-		likewise with any below the dash; those are cleared
-		after spawning/clearing, all completely-filled segments are completely cleared
-		partially filled segments remain uncleared

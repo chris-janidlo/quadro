@@ -20,7 +20,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
         };
 	}
 
-    static string polarityEffect (int power) => (power < 0 ? "-" : "+") + " " + Mathf.Abs(power);
+    static string polarityEffect (float power) => (power < 0 ? "-" : "+") + " " + Mathf.Abs(power);
 
     // main: bpm up
     // meta: multiply
@@ -124,19 +124,12 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "Packets " + polarityEffect(vector.IntPower);
+            return "Packets " + polarityEffect(vector.Power);
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            if (vector.Power > 0)
-            {
-                input.SpawnCards(vector.IntPower);
-            }
-            else
-            {
-                input.ClearCards(-vector.IntPower);
-            }
+            input.CardDelta += vector.Power;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -246,19 +239,12 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "Packets " + polarityEffect(vector.IntPower);
+            return "Packets " + polarityEffect(vector.Power);
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            if (vector.Power > 0)
-            {
-                input.SpawnCards(vector.IntPower);
-            }
-            else
-            {
-                input.ClearCards(-vector.IntPower);
-            }
+            input.CardDelta += vector.Power;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
