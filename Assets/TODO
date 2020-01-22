@@ -4,9 +4,6 @@ removing cards is super broken on the visualization side
 	probable fix: change all card spawning to a queue system, where throughout the course of the measure the track is told how many cards to spawn/clear and also whether or not the current card is cleared, then the track handles all of that on its own terms at the end of the measure
 
 TODO:
-FAILURE MAKE PLAYERS DIE AND SHIT
-IT AIN'T A GAME OTHERWISE
-
 for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
 
 dial up music! figure out how dial up works and use that
