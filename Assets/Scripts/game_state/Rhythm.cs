@@ -89,7 +89,7 @@ public class Rhythm
             if (TruncatedPositionInMeasure == 0) Track.HandleEndOfMeasure();
         }
 
-        if (FractionalPartOfPosition > HitQuality.Miss.BeatDistanceRange().x && !handledEndOfBeat)
+        if (FractionalPartOfPosition >= HitQuality.Miss.BeatDistanceRange().x && !handledEndOfBeat)
         {
             handledEndOfBeat = true;
 

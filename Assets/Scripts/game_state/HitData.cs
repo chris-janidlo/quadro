@@ -28,7 +28,7 @@ public class HitData
 
         Quality = Enum.GetValues(typeof(HitQuality)).Cast<HitQuality>().Single(hq => {
             var range = hq.BeatDistanceRange();
-            return distanceFromBeat > range.x && distanceFromBeat <= range.y;
+            return distanceFromBeat >= range.x && distanceFromBeat <= range.y;
         });
 
         if (Quality == HitQuality.Miss)
