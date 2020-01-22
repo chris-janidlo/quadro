@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,8 +19,7 @@ public class TrackVisualizer : MonoBehaviour, IDriverSubscriber
 
     void Start ()
     {
-        track.CardAdded += addCard;
-        track.CardRemoved += removeCard;
+        track.CardsBatchUpdated += updateVisuals;
     }
 
     void Update ()
@@ -53,16 +52,14 @@ public class TrackVisualizer : MonoBehaviour, IDriverSubscriber
         TrackMover.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;
     }
 
-    void addCard ()
+    void updateVisuals ()
     {
-        var card = Instantiate(CardVisualPrefab, RealCardContainer);
-        card.Initialize(track.Cards[track.Cards.Count - 1]);
-        card.gameObject.transform.SetAsFirstSibling();
-    }
+        foreach (Transform child in RealCardContainer) Destroy(child.gameObject);
 
-    void removeCard ()
-    {
-        Destroy(RealCardContainer.GetChild(RealCardContainer.childCount - 1).gameObject);
+        for (int i = track.Cards.Count - 1; i >= 0; i--)
+        {
+            Instantiate(CardVisualPrefab, RealCardContainer).Initialize(track.Cards[i]);
+        }
     }
 
     RectTransform firstCardObject ()

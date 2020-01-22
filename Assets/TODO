@@ -30,8 +30,6 @@ TODO:
 		always give the players an empty measure after multiple clears?
 
 ===== CODE =====
-	redo track visualizer -> every batch card update, completely redo the track
-
 	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
 
 	make driver dependency injection generic enough to work with any number of players
