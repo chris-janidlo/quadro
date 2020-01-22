@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using crass;
 
-public class DangerTunnelVision : MonoBehaviour
+public class DangerTunnelVision : MonoBehaviour, IDriverSubscriber
 {
-    public ADriver Driver;
+	public ADriver Driver { get; set; }
+
     public Image LeftVisual, RightVisual;
     public SpriteBag Frames;
 

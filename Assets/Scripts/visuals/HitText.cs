@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class HitText : MonoBehaviour
+public class HitText : MonoBehaviour, IDriverSubscriber
 {
+	public ADriver Driver { get; set; }
+
     public float InitialTime, FadeTime;
 
-    public ADriver Driver;
     public TextMeshProUGUI Text;
 
     void Start ()

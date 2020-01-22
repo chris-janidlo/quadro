@@ -6,9 +6,10 @@ using UnityEngine.UI;
 using crass;
 using TMPro;
 
-public class NoteDiamondVisualizer : MonoBehaviour
+public class NoteDiamondVisualizer : MonoBehaviour, IDriverSubscriber
 {
-    public ADriver Driver;
+	public ADriver Driver { get; set; }
+
     public TextMeshProUGUI Text;
 
     void Update ()

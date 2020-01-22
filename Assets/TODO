@@ -34,10 +34,7 @@ TODO:
 
 	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
 
-	driver dependency injection
-		create interface with ADriver get/set property
-		make a monobehaviour find all the appropriate interface instances (all children? only things marked a certain way?) and set the property to that
-		make it generic enough to work between single and any number of multiple players
+	make driver dependency injection generic enough to work with any number of players
 
 ===== MUSIC =====
 	create basic beat

@@ -1,13 +1,14 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class TrackVisualizer : MonoBehaviour
+public class TrackVisualizer : MonoBehaviour, IDriverSubscriber
 {
-    public ADriver Driver;
+	public ADriver Driver { get; set; }
+
     public Transform TrackMover, RealCardContainer, PreviewContainer;
     public CanvasGroup PreviewGroup;
     public RhythmCardVisual CardVisualPrefab;

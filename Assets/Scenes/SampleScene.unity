@@ -244,7 +244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e7278871fc14a3182a211cc24d6ea0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Driver: {fileID: 1945056371}
   DescriptionText: {fileID: 2085311370}
   ChipText: {fileID: 1958055702}
 --- !u!1 &112289846
@@ -276,7 +275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e222ea6bcae8647aea00e1a646a556aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Driver: {fileID: 1945056371}
 --- !u!4 &112289848
 Transform:
   m_ObjectHideFlags: 0
@@ -345,7 +343,6 @@ MonoBehaviour:
   DangerDistance: 2
   SegmentPrefab: {fileID: 2788092675686695643, guid: 50852807b9aaf4d94b79a2d319f80f57,
     type: 3}
-  Driver: {fileID: 1945056371}
   MeterGroup: {fileID: 2009682853}
 --- !u!1 &233241239
 GameObject:
@@ -907,7 +904,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b10d34af49e84775b05250d1783346d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Driver: {fileID: 1945056371}
   Text: {fileID: 857901611}
 --- !u!1 &890833263
 GameObject:
@@ -1528,6 +1524,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261413071}
   m_CullTransparentMesh: 0
+--- !u!1 &1279171413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1279171415}
+  - component: {fileID: 1279171414}
+  m_Layer: 0
+  m_Name: Driver Injector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1279171414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279171413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab0490e898664909912859649540c9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Driver: {fileID: 1671063716}
+--- !u!4 &1279171415
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279171413}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1945056373}
+  - {fileID: 1671063715}
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1357479607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,7 +1621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f656e54a461e4937af3ed4a94333564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Driver: {fileID: 1945056371}
   LeftVisual: {fileID: 1261413073}
   RightVisual: {fileID: 1885713891}
   Frames:
@@ -1798,6 +1839,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 53.18, y: 71.9}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &1671063714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1671063715}
+  - component: {fileID: 1671063716}
+  m_Layer: 0
+  m_Name: Turn Based Driver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1671063715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671063714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1279171415}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1671063716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671063714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e9d4b1b752bd479aab60110cafa7abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DirectionalKeys:
+    Up: up
+    Left: left
+    Down: down
+    Right: right
+  CastKey: space
 --- !u!1 &1698212462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,7 +2060,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialTime: 0.25
   FadeTime: 0.75
-  Driver: {fileID: 1945056371}
   Text: {fileID: 1698212464}
 --- !u!1 &1775903729
 GameObject:
@@ -2222,7 +2311,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  Driver: {fileID: 1945056371}
   Graphic: {fileID: 1793634375}
 --- !u!1 &1810737281
 GameObject:
@@ -2441,7 +2529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1945056371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2471,14 +2559,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945056370}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1810737283}
   - {fileID: 233241241}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1279171415}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1946198194
 GameObject:
@@ -2530,7 +2618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361342db9754447a69cf45f75cd2a33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Driver: {fileID: 1945056371}
   TrackMover: {fileID: 1079028174}
   RealCardContainer: {fileID: 1169077335}
   PreviewContainer: {fileID: 890833264}

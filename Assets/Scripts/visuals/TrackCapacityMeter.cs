@@ -1,15 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TrackCapacityMeter : MonoBehaviour
+public class TrackCapacityMeter : MonoBehaviour, IDriverSubscriber
 {
+	public ADriver Driver { get; set; }
+
     public int WarningDistance, DangerDistance;
 
     public TrackCapacitySegment SegmentPrefab;
 
-    public ADriver Driver;
     public HorizontalLayoutGroup MeterGroup;
 
     RectTransform meterParent => MeterGroup.GetComponent<RectTransform>();

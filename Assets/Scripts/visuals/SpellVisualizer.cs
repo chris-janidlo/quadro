@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class SpellVisualizer : MonoBehaviour
+public class SpellVisualizer : MonoBehaviour, IDriverSubscriber
 {
-    public ADriver Driver;
+	public ADriver Driver { get; set; }
+
     public TextMeshProUGUI DescriptionText, ChipText;
 
     Spell spell => Driver.State.Spell;

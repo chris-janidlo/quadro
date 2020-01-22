@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SimpleGameOver : MonoBehaviour
+public class SimpleGameOver : MonoBehaviour, IDriverSubscriber
 {
-    public ADriver Driver;
+	public ADriver Driver { get; set; }
 
     void Update ()
     {
