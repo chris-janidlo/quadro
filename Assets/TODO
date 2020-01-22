@@ -27,6 +27,10 @@ TODO:
 
 	figure out how to handle card difficulty - starting at 1 card per measure and increasing that every difficulty up is bad unless literally every character has a way to reduce their own spawn rate
 
+	figure out how to handle previews when multiple cards are cleared
+		preview the card after the multiple clears? (ie if there are 7 cards including the current one and 5 are cleared, show card #7)
+		always give the players an empty measure after multiple clears?
+
 ===== CODE =====
 	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
 
