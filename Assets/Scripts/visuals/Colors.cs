@@ -13,7 +13,7 @@ public class Colors : Singleton<Colors>
         }
         else
         {
-            SingletonSetInstance(this, false);
+            SingletonSetInstance(this, true);
         }
     }
 }
