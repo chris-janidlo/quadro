@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +44,7 @@ public class TrackCapacityMeter : MonoBehaviour, IDriverSubscriber
     {
         for (int i = 0; i < meterParent.childCount; i++)
         {
-            meterParent.GetChild(i).GetComponent<TrackCapacitySegment>().SetActive(i < Driver.State.Track.Cards.Count);
+            meterParent.GetChild(i).GetComponent<TrackCapacitySegment>().SetActive(Track.CARDS_UNTIL_DEAD - i > Driver.State.Track.Cards.Count);
         }
     }
 }
