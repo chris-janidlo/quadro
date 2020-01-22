@@ -4,30 +4,53 @@ removing cards is super broken on the visualization side
 	probable fix: change all card spawning to a queue system, where throughout the course of the measure the track is told how many cards to spawn/clear and also whether or not the current card is cleared, then the track handles all of that on its own terms at the end of the measure
 
 TODO:
-for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
+===== GAMEPLAY =====
+	charge system
+		add a meter called the "charge" meter or something similar
+			TODO: figure out lore (stores excess electricity?)
+		every time you hit a beat successfully, the charge increases. the more accurate you are, the better the increase (might even make the least accurate hit-tier not add anything)
+		every time you miss a beat or hit when you shouldn't, the charge decreases
+		when the charge meter fills up, a character-dependent finisher happens, and the meter resets back to zero
+			base singleplayer finisher: clear half of your current cards
 
-dial up music! figure out how dial up works and use that
-	chilled out nostalgic chords seem to work well
-	double time break beat sample + slammed 2/2 kick-snare pattern (hihat pattern?)
+	make cast input valid for all beats as long as there's a spell being built up, but it no longer resets the combo
 
-charge system
-	add a meter called the "charge" meter or something similar
-		TODO: figure out lore (stores excess electricity?)
-	every time you hit a beat successfully, the charge increases. the more accurate you are, the better the increase (might even make the least accurate hit-tier not add anything)
-	every time you miss a beat or hit when you shouldn't, the charge decreases
-	when the charge meter fills up, a character-dependent finisher happens, and the meter resets back to zero
-		base singleplayer finisher: clear all cards
+	split card rng in two - main rng and garbage rng
+		main rng is used on the regular every-few-beats spawns
+		garbage is used whenever a player manually causes a card spawn (like tetris garbage)
+		main and garbage have their own seeds so they don't cross contaminate
+		seeds should be the same for every player in a multiplayer match
 
-make cast input valid for all beats as long as there's a spell being built up, but it no longer resets the combo
+	determine whether or not to simplify meta combos so that they no longer depend on the main note
 
-split card rng in two - main rng and garbage rng
-	main rng is used on the regular every-few-beats spawns
-	garbage is used whenever a player manually causes a card spawn (like tetris garbage)
-	main and garbage have their own seeds so they don't cross contaminate
-	seeds should be the same for every player in a multiplayer match
+	change how we handle bpm difficulty: up the size of the inner Track difficulty increases, while notes/spells can manipulate bpm with about the same granularity they currently have
 
-determine whether or not to simplify meta combos so that they no longer depend on the main note
+	figure out how to handle card difficulty - starting at 1 card per measure and increasing that every difficulty up is bad unless literally every character has a way to reduce their own spawn rate
 
-change how we handle bpm difficulty: up the size of the inner Track difficulty increases, while notes/spells can manipulate bpm with about the same granularity they currently have
+===== CODE =====
+	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
 
-figure out how to handle card difficulty - starting at 1 card per measure and increasing that every difficulty up is bad unless literally every character has a way to reduce their own spawn rate
+	driver dependency injection
+		create interface with ADriver get/set property
+		make a monobehaviour find all the appropriate interface instances (all children? only things marked a certain way?) and set the property to that
+		make it generic enough to work between single and any number of multiple players
+
+===== MUSIC =====
+	create basic beat
+		going for melodic breakcore style sound
+		breakcore beat pattern, dial-up inspired chords
+		chilled out nostalgic chords seem to work well
+		double time break beat sample + slammed 2/2 kick-snare pattern (hihat pattern?)
+
+===== UI =====
+	complete card redesign
+		want a cleaner outline, like cogmind's UI outlines
+		actual chord symbols?
+
+	add meter for card delta system
+		segmented meter twice as long as the length of a bar
+		dash in the middle
+		if any segments above the dash are completely filled in at the end of a bar, that many cards are spawned
+		likewise with any below the dash; those are cleared
+		after spawning/clearing, all completely-filled segments are completely cleared
+		partially filled segments remain uncleared
