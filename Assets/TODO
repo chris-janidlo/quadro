@@ -45,6 +45,12 @@ TODO:
 		want a cleaner outline, like cogmind's UI outlines
 		actual chord symbols?
 
+	add track meter
+		want sexy transitions to and from the meter
+		little preview cards there too
+
+	reorder UI weight/centering
+
 	rework colors and language to not chide the player for playing a non-beat-clearing note
 		call it something other than "flub"
 		mark non-cleared cards symbolically instead of with colors?
