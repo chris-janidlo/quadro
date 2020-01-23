@@ -91,14 +91,17 @@ public class Track
         int changeCounter = (int) Mathf.Abs(CardDelta);
         RhythmCard failedCard = null;
 
-        if (FailedCurrentCard)
+        if (Cards.Count != 0)
         {
-            failedCard = removeCard();
-        }
-        else if (Cards.Count != 0)
-        {
-            removeCard();
-            CardsCleared++;
+            if (FailedCurrentCard)
+            {
+                failedCard = removeCard();
+            }
+            else
+            {
+                removeCard();
+                CardsCleared++;
+            }
         }
 
         while (changeCounter > 0)
