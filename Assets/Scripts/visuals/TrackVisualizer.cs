@@ -9,64 +9,64 @@ public class TrackVisualizer : MonoBehaviour, IDriverSubscriber
 {
 	public ADriver Driver { get; set; }
 
-    public Transform TrackMover, RealCardContainer, PreviewContainer;
-    public CanvasGroup PreviewGroup;
+    public Transform TrackMover, CardContainer;
     public RhythmCardVisual CardVisualPrefab;
 
     Track track => Driver.State.Track;
 
-    bool handledPreview = false;
+    RhythmCardVisual currentCardVisual, previewCardVisual;
 
     void Start ()
     {
-        track.CardsBatchUpdated += updateVisuals;
+        previewCardVisual = Instantiate(CardVisualPrefab, CardContainer);
+        previewCardVisual.SetCard(RhythmCard.EmptyCard(Track.BEATS_PER_MEASURE));
+
+        currentCardVisual = Instantiate(CardVisualPrefab, CardContainer);
+        currentCardVisual.SetCard(RhythmCard.EmptyCard(Track.BEATS_PER_MEASURE));
     }
 
     void Update ()
     {
-        if (Driver.State.Rhythm.TruncatedPositionInMeasure == 0 && !handledPreview)
+        updateCardVisuals();
+        moveTrack();
+
+        currentCardVisual.Text.color = track.FailedCurrentCard ? Colors.Instance.Bad : Colors.Instance.Neutral;
+    }
+
+    void updateCardVisuals ()
+    {
+        int cardCount = track.Cards.Count;
+        bool cardAboutToSpawn = track.CardDelta >= 1;
+
+        RhythmCard previewCard;
+        if (cardCount > 1)
         {
-            handledPreview = true;
-
-            foreach (Transform child in PreviewContainer) Destroy(child.gameObject);
-            
-            Instantiate(CardVisualPrefab, PreviewContainer).Initialize(track.NextToSpawn);
-
-            if (track.Cards.Count == 0)
-                Instantiate(CardVisualPrefab, PreviewContainer).Initialize(Track.BEATS_PER_MEASURE);
+            previewCard = track.Cards[1];
         }
-        else if (Driver.State.Rhythm.TruncatedPositionInMeasure != 0)
+        else if (cardAboutToSpawn)
         {
-            handledPreview = false;
+            previewCard = track.NextToSpawn;
         }
+        else if (track.FailedCurrentCard)
+        {
+            previewCard = track.Cards[0];
+        }
+        else
+        {
+            previewCard = RhythmCard.EmptyCard(Track.BEATS_PER_MEASURE);
+        }
+        
+        RhythmCard currentCard = cardCount != 0
+            ? track.Cards[0]
+            : RhythmCard.EmptyCard(Track.BEATS_PER_MEASURE);
 
-        PreviewGroup.alpha = (float) Driver.State.Rhythm.CurrentPositionInMeasure / Track.BEATS_PER_MEASURE;
+        previewCardVisual.SetCard(previewCard);
+        currentCardVisual.SetCard(currentCard);
+    }
 
-        RectTransform firstChild = firstCardObject();
-        if (firstChild == null) return;
-
-        firstChild.GetComponent<RhythmCardVisual>().Text.color = Driver.State.Track.FailedCurrentCard ? Colors.Instance.Bad : Colors.Instance.Neutral;
-
-        float offsetScale = firstChild.rect.height / Track.BEATS_PER_MEASURE;
-
+    void moveTrack ()
+    {
+        float offsetScale = currentCardVisual.GetComponent<RectTransform>().rect.height / Track.BEATS_PER_MEASURE;
         TrackMover.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;
-    }
-
-    void updateVisuals ()
-    {
-        foreach (Transform child in RealCardContainer) Destroy(child.gameObject);
-
-        for (int i = track.Cards.Count - 1; i >= 0; i--)
-        {
-            Instantiate(CardVisualPrefab, RealCardContainer).Initialize(track.Cards[i]);
-        }
-    }
-
-    RectTransform firstCardObject ()
-    {
-        RectTransform first (Transform parent) =>
-            parent.childCount > 0 ? (RectTransform) parent.GetChild(parent.childCount - 1) : null;
-
-        return first(RealCardContainer) ?? first(PreviewContainer);
     }
 }
