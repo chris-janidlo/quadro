@@ -47,7 +47,7 @@ public class TrackVisualizer : MonoBehaviour, IDriverSubscriber
         {
             previewCard = track.NextToSpawn;
         }
-        else if (track.FailedCurrentCard)
+        else if (track.FailedCurrentCard && track.Cards.Count != 0)
         {
             previewCard = track.Cards[0];
         }
