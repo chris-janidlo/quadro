@@ -10,8 +10,6 @@ TODO:
 		when the charge meter fills up, a character-dependent finisher happens, and the meter resets back to zero
 			base singleplayer finisher: clear half of your current cards
 
-	make cast input valid for all beats as long as there's a spell being built up, but it no longer resets the combo
-
 	split card rng in two - main rng and garbage rng
 		main rng is used on the regular every-few-beats spawns
 		garbage is used whenever a player manually causes a card spawn (like tetris garbage)

@@ -10,58 +10,40 @@ public class PlayerState
     public readonly Rhythm Rhythm = new Rhythm();
     public readonly NoteDiamond NoteDiamond;
 
-    public Spell Spell => Rhythm.ComboCounter > 0 ? innerSpell : null;
+    public Spell Spell => Rhythm.ComboCounter == 0 || justCast ? null : innerSpell;
     public Track Track => Rhythm.Track;
 
     Spell innerSpell;
+    bool justCast;
 
     public PlayerState (NoteDiamond noteDiamond)
     {
         NoteDiamond = noteDiamond;
 
         Rhythm.Hit += hit => {
-            if (hit.MissReason == null || hit.MissReason.Value != MissReasonEnum.NeverAttemptedBeat) return;
-            Hit?.Invoke(hit);
+            if (hit.MissReason != null && hit.MissReason.Value == MissReasonEnum.NeverAttemptedBeat)
+            {
+                Hit?.Invoke(hit);
+            }
         };
     }
 
     public void DoNoteInput (NoteInput input)
     {
-        bool comboWasZero = Rhythm.ComboCounter == 0;
-
         HitData hit = Rhythm.TryHitNow();
 
         if (!hit.IsSuccessful)
         {
             Hit?.Invoke(hit);
-            return;
         }
-
-        if (input != NoteInput.Cast)
+        else if (input == NoteInput.Cast)
         {
-            bool comboSuccess = tryPlayDirection((InputDirection) input, comboWasZero);
-
-            if (!comboSuccess)
-            {
-                hit = hit.WithMissReason(MissReasonEnum.NoteCantCombo);
-            }
-            else if (!innerSpell.LastNote.CanClear(Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure).Value))
-            {
-                hit = hit.WithMissReason(MissReasonEnum.NoteCantClearAttemptedBeat);
-                Track.FailCurrentCard();
-            }
-        }
-        else if (Rhythm.IsDownbeat())
-        {
-            if (!tryCastSpell()) hit = hit.WithMissReason(MissReasonEnum.InvalidCastInput);
+            tryCastSpell(hit);
         }
         else
         {
-            hit = hit.WithMissReason(MissReasonEnum.InvalidCastInput);
-            Rhythm.FailComboAndCard();
+            tryPlayDirection((InputDirection) input, hit);
         }
-
-        Hit?.Invoke(hit);
     }
 
     public bool CanComboInto (InputDirection direction)
@@ -69,39 +51,46 @@ public class PlayerState
         return innerSpell == null || innerSpell.CanComboInto(direction);
     }
 
-    bool tryPlayDirection (InputDirection direction, bool thisIsMainNote)
+    void tryPlayDirection (InputDirection direction, HitData originalHit)
     {
-        Note next = NoteDiamond[direction];
+        if (CanComboInto(direction))
+        {
+            Note next = NoteDiamond[direction];
+            bool thisIsMainNote = innerSpell == null || Rhythm.ComboCounter == 1 || justCast;
 
-        if (innerSpell == null) // never played a note before / just casted a spell
-        {
-            innerSpell = new Spell(next);
-            return true;
-        }
-        else if (innerSpell.CanComboInto(direction))
-        {
             innerSpell = thisIsMainNote ? new Spell(next) : innerSpell.PlusMetaNote(next);
-            return true;
+            justCast = false;
+
+            if (innerSpell.LastNote.CanClear(Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure).Value))
+            {
+                Hit?.Invoke(originalHit);
+            }
+            else
+            {
+                Track.FailCurrentCard();
+                Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.NoteCantClearAttemptedBeat));
+            }
         }
         else
         {
             Rhythm.FailComboAndCard();
-            return false;
+            Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.NoteCantCombo));
         }
     }
 
-    bool tryCastSpell ()
+    void tryCastSpell (HitData originalHit)
     {
-        if (innerSpell != null)
+        if (!justCast)
         {
             innerSpell.CastOn(Track);
-            innerSpell = null;
-            return true;
+            Hit?.Invoke(originalHit);
         }
         else
         {
             Rhythm.FailComboAndCard();
-            return false;
+            Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.InvalidCastInput));
         }
+
+        justCast = true;
     }
 }
