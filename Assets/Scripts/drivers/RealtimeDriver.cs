@@ -7,11 +7,11 @@ using UnityEngine;
 // requires that TimingSource has a clip of 4 seconds of silence (one 4/4 measure at 60 BPM) set to loop
 public class RealtimeDriver : ADriver
 {
-    public AudioSource TimingSource, BeatSource;
+    public AudioSource TimingSource;
 
-    public AudioClip Downbeat, Beat;
+    public int TimingClipBPM, TimingClipMeasureLength;
 
-    float positionScale;
+    float inverseAudioFrequency;
 
     void Awake ()
     {
@@ -22,22 +22,15 @@ public class RealtimeDriver : ADriver
     {
         base.Initialize(noteDiamond);
 
-        var measureScalar = (float) Track.BEATS_PER_MEASURE / 4;
-        var timingScale = measureScalar * 60f;
-
-        var inverseAudioFrequency = 1f / TimingSource.clip.frequency;
-        positionScale = measureScalar * inverseAudioFrequency;
-
         State.Rhythm.Beat += () =>
         {
-            BeatSource.PlayOneShot(State.Rhythm.IsDownbeat() ? Downbeat : Beat);
-            TimingSource.pitch = State.Track.BPM / timingScale;
+            TimingSource.pitch = (float) State.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
         };
     }
 
     void Update ()
     {
-        State.Rhythm.CurrentPositionInMeasure = TimingSource.timeSamples * positionScale;
+        State.Rhythm.CurrentPositionInMeasure = (float) TimingSource.timeSamples * TimingClipBPM / 60 / TimingSource.clip.frequency;
 
         var input = getInput();
 

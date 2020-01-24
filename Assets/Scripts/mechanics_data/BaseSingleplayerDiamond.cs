@@ -66,7 +66,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "BPM " + polarityEffect(vector.IntPower);
+            return "Scan rate " + polarityEffect(vector.IntPower);
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
@@ -182,7 +182,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "Scan rate " + polarityEffect(vector.IntPower);;
+            return "Bandwidth " + polarityEffect(vector.IntPower);;
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)

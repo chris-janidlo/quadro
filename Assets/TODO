@@ -25,12 +25,12 @@ TODO:
 
 	make driver dependency injection generic enough to work with any number of players
 
+	sync up music sources with timing source
+
 ===== MUSIC =====
 	create basic beat
-		going for melodic breakcore style sound
-		breakcore beat pattern, dial-up inspired chords
+		dial-up inspired chords
 		chilled out nostalgic chords seem to work well
-		double time break beat sample + slammed 2/2 kick-snare pattern (hihat pattern?)
 
 ===== UI =====
 	complete card redesign
