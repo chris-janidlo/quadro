@@ -16,12 +16,6 @@ TODO:
 		main and garbage have their own seeds so they don't cross contaminate
 		seeds should be the same for every player in a multiplayer match
 
-	determine whether or not to simplify meta combos so that they no longer depend on the main note
-
-	change how we handle bpm difficulty: up the size of the inner Track difficulty increases, while notes/spells can manipulate bpm with about the same granularity they currently have
-
-	figure out how to handle card difficulty - starting at 1 card per measure and increasing that every difficulty up is bad unless literally every character has a way to reduce their own spawn rate
-
 	figure out how to handle previews when multiple cards are cleared
 		preview the card after the multiple clears? (ie if there are 7 cards including the current one and 5 are cleared, show card #7)
 		always give the players an empty measure after multiple clears?

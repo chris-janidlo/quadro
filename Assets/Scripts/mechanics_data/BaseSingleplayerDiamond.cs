@@ -145,7 +145,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
 		protected override NoteData data => new NoteData
         {
             Direction = InputDirection.Down,
-            InitialVector = new EffectVector(1, false),
+            InitialVector = new EffectVector(-1, false),
             Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One },
             Color = new Color(0.25f, 0.52f, 0.96f),
             MetaEffectDescription = $"Power * -{1/MULT}",
@@ -182,12 +182,12 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "Scan rate " + polarityEffect(-vector.IntPower);;
+            return "Scan rate " + polarityEffect(vector.IntPower);;
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.CardsPerSpawn -= vector.IntPower;
+            input.CardSpawnRate += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)

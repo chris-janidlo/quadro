@@ -16,12 +16,13 @@ public class Track
     public const int CARDS_PER_DIFFICULTY_INCREASE = 8; // every time we clear this many cards, increase the BPM and the card spawn rate
 
     // a bstep is a made up metrical unit for scaling purposes (since a change of a single BPM is too subtle to be noticed)
-    public const int BPM_PER_BSTEP = 5;
-    public const int MIN_BSTEPS = 12;
-    public const int MAX_BSTEPS = 40;
-    public const int STARTING_BSTEPS = 16;
+    public const int BPM_PER_BSTEP = 10;
+    public const int MIN_BSTEPS = 4;
+    public const int MAX_BSTEPS = 20;
+    public const int STARTING_BSTEPS = 8;
 
-    public const float MAX_CARD_SPAWN_RATE = 4;
+    public const float CARD_SPAWN_INCREASE_PER_DIFFICULTY_UP = 0.5f;
+    public const float MAX_CARD_SPAWN_RATE = 8;
     public const float MIN_CARD_SPAWN_RATE = 0.5f;
     public const float STARTING_CARD_SPAWN_RATE = 0.5f;
 
@@ -42,11 +43,11 @@ public class Track
         set => _bSteps = Mathf.Clamp(value, MIN_BSTEPS, MAX_BSTEPS);
     }
 
-    float _cardsPerSpawn = STARTING_CARD_SPAWN_RATE;
-    public float CardsPerSpawn
+    float _cardSpawnRate = STARTING_CARD_SPAWN_RATE;
+    public float CardSpawnRate
     {
-        get => _cardsPerSpawn;
-        set => _cardsPerSpawn = Mathf.Clamp(value, MIN_CARD_SPAWN_RATE, MAX_CARD_SPAWN_RATE);
+        get => _cardSpawnRate;
+        set => _cardSpawnRate = Mathf.Clamp(value, MIN_CARD_SPAWN_RATE, MAX_CARD_SPAWN_RATE);
     }
 
     public bool FailedCurrentCard { get; private set; }
@@ -95,12 +96,11 @@ public class Track
         {
             if (FailedCurrentCard)
             {
-                failedCard = removeCard();
+                failedCard = removeCard(false);
             }
             else
             {
                 removeCard();
-                CardsCleared++;
             }
         }
 
@@ -113,9 +113,7 @@ public class Track
             else
             {
                 if (cards.Count == 0) break;
-
                 removeCard();
-                CardsCleared++;
             }
 
             changeCounter--;
@@ -125,7 +123,7 @@ public class Track
 
         CardDelta -= (int) CardDelta;
 
-        CardDelta += CardsPerSpawn;
+        CardDelta += CardSpawnRate;
 
         CardsBatchUpdated?.Invoke();
 
@@ -156,11 +154,22 @@ public class Track
         CardAdded?.Invoke();
     }
 
-    RhythmCard removeCard ()
+    RhythmCard removeCard (bool countsTowardsClear = true)
     {
         var card = cards[0];
 
         cards.RemoveAt(0);
+
+        if (countsTowardsClear)
+        {
+            CardsCleared++;
+            if (CardsCleared % CARDS_PER_DIFFICULTY_INCREASE == 0)
+            {
+                BSteps++;
+                CardSpawnRate += CARD_SPAWN_INCREASE_PER_DIFFICULTY_UP;
+            }
+        }
+
         CardRemoved?.Invoke();
 
         return card;
