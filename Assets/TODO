@@ -46,7 +46,3 @@ TODO:
 	rework colors and language to not chide the player for playing a non-beat-clearing note
 		call it something other than "flub"
 		mark non-cleared cards symbolically instead of with colors?
-
-	add meter for card delta system
-		segmented meter twice as long as the length of a bar
-		dash in the middle

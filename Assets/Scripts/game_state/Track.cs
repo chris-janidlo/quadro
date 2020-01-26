@@ -8,6 +8,7 @@ using crass;
 
 public class Track
 {
+    public event Action HandledEndOfMeasure, HandledMiddleOfMeasure;
     public event Action CardsBatchUpdated, CardAdded, CardRemoved;
 
     public const int CARDS_UNTIL_DEAD = 16;
@@ -29,7 +30,7 @@ public class Track
     List<RhythmCard> cards = new List<RhythmCard>();
     RhythmCardGenerator generator;
 
-    float _cardDelta;
+    float _cardDelta = STARTING_CARD_SPAWN_RATE;
     public float CardDelta
     {
         get => _cardDelta;
@@ -123,15 +124,21 @@ public class Track
 
         CardDelta -= (int) CardDelta;
 
-        CardDelta += CardSpawnRate;
-
         CardsBatchUpdated?.Invoke();
 
         FailedLastCard = FailedCurrentCard;
         FailedCurrentCard = false;
+
+        HandledEndOfMeasure?.Invoke();
     }
 
-    public void FailCurrentCard ()
+	public void HandleMiddleOfMeasure ()
+	{
+		CardDelta += CardSpawnRate;
+        HandledMiddleOfMeasure?.Invoke();
+	}
+
+	public void FailCurrentCard ()
     {
         FailedCurrentCard = true;
     }

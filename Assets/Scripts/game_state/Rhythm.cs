@@ -87,6 +87,7 @@ public class Rhythm
             Beat?.Invoke();
 
             if (TruncatedPositionInMeasure == 0) Track.HandleEndOfMeasure();
+            if (TruncatedPositionInMeasure == Track.BEATS_PER_MEASURE / 2) Track.HandleMiddleOfMeasure();
         }
 
         if (FractionalPartOfPosition >= HitQuality.Miss.BeatDistanceRange().x && !handledEndOfBeat)
