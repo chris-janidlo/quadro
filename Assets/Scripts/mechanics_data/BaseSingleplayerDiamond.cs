@@ -182,12 +182,12 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "Bandwidth " + polarityEffect(vector.IntPower);;
+            return "Bandwidth " + polarityEffect(vector.Power);;
 		}
 
 		public override void MainEffect (Track input, EffectVector vector)
 		{
-            input.CardSpawnRate += vector.IntPower;
+            input.CardSpawnRate += vector.Power;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
