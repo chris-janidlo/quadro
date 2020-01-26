@@ -80,9 +80,9 @@ public class PlayerState
 
     void tryCastSpell (HitData originalHit)
     {
-        if (!justCast)
+        if (Spell != null)
         {
-            innerSpell.CastOn(Track);
+            Spell.CastOn(Track);
             Hit?.Invoke(originalHit);
         }
         else
