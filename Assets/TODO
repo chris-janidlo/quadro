@@ -1,24 +1,20 @@
 FIXME:
+turn based driver skips sometimes
 
 TODO:
 ===== GAMEPLAY =====
+	completely get rid of cards. move to health instead
+		make damage measure-based still?
+		make rhythm not locked to the beat
+		add block system a la StS
+			decays over time
+
 	charge system
 		add a meter called the "charge" meter or something similar
 			TODO: figure out lore (stores excess electricity?)
 		every time you hit a beat successfully, the charge increases. the more accurate you are, the better the increase (might even make the least accurate hit-tier not add anything)
 		every time you miss a beat or hit when you shouldn't, the charge decreases
 		when the charge meter fills up, a character-dependent finisher happens, and the meter resets back to zero
-			base singleplayer finisher: clear half of your current cards
-
-	split card rng in two - main rng and garbage rng
-		main rng is used on the regular every-few-beats spawns
-		garbage is used whenever a player manually causes a card spawn (like tetris garbage)
-		main and garbage have their own seeds so they don't cross contaminate
-		seeds should be the same for every player in a multiplayer match
-
-	figure out how to handle previews when multiple cards are cleared
-		preview the card after the multiple clears? (ie if there are 7 cards including the current one and 5 are cleared, show card #7)
-		always give the players an empty measure after multiple clears?
 
 ===== CODE =====
 	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
@@ -33,13 +29,7 @@ TODO:
 		chilled out nostalgic chords seem to work well
 
 ===== UI =====
-	complete card redesign
-		want a cleaner outline, like cogmind's UI outlines
-		actual chord symbols?
-
-	add track meter
-		want sexy transitions to and from the meter
-		little preview cards there too
+	health bar
 
 	reorder UI weight/centering
 
