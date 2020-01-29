@@ -20,7 +20,7 @@ public class DangerTunnelVision : MonoBehaviour, IDriverSubscriber
 
     void Update ()
     {
-        float alpha = CardsToVisualAlpha.Evaluate(Driver.State.Track.Cards.Count);
+        float alpha = CardsToVisualAlpha.Evaluate(Driver.Player.Track.Cards.Count);
 
         LeftVisual.SetA(alpha);
         RightVisual.SetA(alpha);

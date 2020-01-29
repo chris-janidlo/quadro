@@ -11,7 +11,7 @@ public class SpellVisualizer : MonoBehaviour, IDriverSubscriber
 
     public TextMeshProUGUI DescriptionText, ChipText;
 
-    Spell spell => Driver.State.Spell;
+    Spell spell => Driver.Player.Spell;
 
     void Update ()
     {

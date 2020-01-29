@@ -12,7 +12,7 @@ public class TrackVisualizer : MonoBehaviour, IDriverSubscriber
     public Transform TrackMover, CardContainer;
     public RhythmCardVisual CardVisualPrefab;
 
-    Track track => Driver.State.Track;
+    Track track => Driver.Player.Track;
 
     RhythmCardVisual currentCardVisual, previewCardVisual;
 
@@ -67,6 +67,6 @@ public class TrackVisualizer : MonoBehaviour, IDriverSubscriber
     void moveTrack ()
     {
         float offsetScale = currentCardVisual.GetComponent<RectTransform>().rect.height / Track.BEATS_PER_MEASURE;
-        TrackMover.localPosition = Vector2.down * (float) Driver.State.Rhythm.CurrentPositionInMeasure * offsetScale;
+        TrackMover.localPosition = Vector2.down * (float) Driver.Player.Rhythm.CurrentPositionInMeasure * offsetScale;
     }
 }

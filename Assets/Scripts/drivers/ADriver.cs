@@ -8,13 +8,13 @@ public abstract class ADriver : MonoBehaviour
     public ButtonBox DirectionalKeys;
     public string CastKey;
 
-    public PlayerState State { get; private set; }
+    public Player Player { get; private set; }
 
     public virtual void Initialize (NoteDiamond noteDiamond)
     {
-        State = new PlayerState(noteDiamond);
+        Player = new Player(noteDiamond);
 
-        State.Hit += hit => Debug.Log(hit.ToString());
+        Player.Hit += hit => Debug.Log(hit.ToString());
     }
 
     protected NoteInput? getInput ()

@@ -22,18 +22,18 @@ public class RealtimeDriver : ADriver
     {
         base.Initialize(noteDiamond);
 
-        State.Rhythm.Beat += () =>
+        Player.Rhythm.Beat += () =>
         {
-            TimingSource.pitch = (float) State.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
+            TimingSource.pitch = (float) Player.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
         };
     }
 
     void Update ()
     {
-        State.Rhythm.CurrentPositionInMeasure = (float) TimingSource.timeSamples * TimingClipBPM / 60 / TimingSource.clip.frequency;
+        Player.Rhythm.CurrentPositionInMeasure = (float) TimingSource.timeSamples * TimingClipBPM / 60 / TimingSource.clip.frequency;
 
         var input = getInput();
 
-        if (input != null) State.DoNoteInput(input.Value);
+        if (input != null) Player.DoNoteInput(input.Value);
     }
 }

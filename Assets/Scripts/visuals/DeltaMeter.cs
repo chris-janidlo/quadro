@@ -23,7 +23,7 @@ public class DeltaMeter : MonoBehaviour, IDriverSubscriber
         SpawnRateFlasher.AttachMonoBehaviour(this);
 
         SpawnRateDisplay.color = Colors.Instance.Neutral;
-        Driver.State.Track.HandledMiddleOfMeasure += () =>
+        Driver.Player.Track.HandledMiddleOfMeasure += () =>
         {
             SpawnRateFlasher.Value = Colors.Instance.Bad;
             SpawnRateFlasher.StartTransitionTo(Colors.Instance.Neutral);
@@ -38,10 +38,10 @@ public class DeltaMeter : MonoBehaviour, IDriverSubscriber
 
     void Update ()
     {
-        VisibleDelta.StartTransitionToIfNotAlreadyStarted(Driver.State.Track.CardDelta);
+        VisibleDelta.StartTransitionToIfNotAlreadyStarted(Driver.Player.Track.CardDelta);
         updateDeltaVisual();
 
-        VisibleSpawnRate.StartTransitionToIfNotAlreadyStarted(Driver.State.Track.CardSpawnRate);
+        VisibleSpawnRate.StartTransitionToIfNotAlreadyStarted(Driver.Player.Track.CardSpawnRate);
         SpawnRateDisplay.text = VisibleSpawnRate.Value.ToString("+0.##;-0.##");
 
         SpawnRateDisplay.color = SpawnRateFlasher.Value;

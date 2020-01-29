@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState
+public class Player
 {
     public event Action<HitData> Hit;
 
@@ -16,7 +16,7 @@ public class PlayerState
     Spell innerSpell;
     bool justCast;
 
-    public PlayerState (NoteDiamond noteDiamond)
+    public Player (NoteDiamond noteDiamond)
     {
         NoteDiamond = noteDiamond;
 

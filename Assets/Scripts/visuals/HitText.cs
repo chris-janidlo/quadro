@@ -14,7 +14,7 @@ public class HitText : MonoBehaviour, IDriverSubscriber
     void Start ()
     {
         Text.text = "";
-        Driver.State.Hit += hit => { StopAllCoroutines(); StartCoroutine(messageRoutine(hit)); };
+        Driver.Player.Hit += hit => { StopAllCoroutines(); StartCoroutine(messageRoutine(hit)); };
     }
 
     IEnumerator messageRoutine (HitData hit)

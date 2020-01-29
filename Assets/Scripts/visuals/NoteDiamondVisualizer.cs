@@ -19,8 +19,8 @@ public class NoteDiamondVisualizer : MonoBehaviour, IDriverSubscriber
 
     string diamondDir (InputDirection dir)
     {
-        string rgb = ColorUtility.ToHtmlStringRGB(Driver.State.NoteDiamond[dir].Color);
-        string a = (Driver.State.CanComboInto(dir) ? "FF" : "66");
+        string rgb = ColorUtility.ToHtmlStringRGB(Driver.Player.NoteDiamond[dir].Color);
+        string a = (Driver.Player.CanComboInto(dir) ? "FF" : "66");
 
         return $"<#{rgb}{a}>{dir.ToArrow()}</color>";
     }

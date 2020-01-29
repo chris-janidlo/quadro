@@ -37,14 +37,14 @@ public class TrackCapacityMeter : MonoBehaviour, IDriverSubscriber
             }
         }
 
-        Driver.State.Track.CardsBatchUpdated += cardUpdate;
+        Driver.Player.Track.CardsBatchUpdated += cardUpdate;
     }
 
     void cardUpdate ()
     {
         for (int i = 0; i < meterParent.childCount; i++)
         {
-            meterParent.GetChild(i).GetComponent<TrackCapacitySegment>().SetActive(Track.CARDS_UNTIL_DEAD - i > Driver.State.Track.Cards.Count);
+            meterParent.GetChild(i).GetComponent<TrackCapacitySegment>().SetActive(Track.CARDS_UNTIL_DEAD - i > Driver.Player.Track.Cards.Count);
         }
     }
 }

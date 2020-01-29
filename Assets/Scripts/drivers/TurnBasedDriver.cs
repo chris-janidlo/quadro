@@ -14,9 +14,9 @@ public class TurnBasedDriver : ADriver
 
     IEnumerator Start ()
     {
-        while (!State.Track.Dead)
+        while (!Player.Track.Dead)
         {
-            while (State.Rhythm.TruncatedPositionInMeasure == lastPositionInMeasure || State.Track.CurrentCardAtBeat(State.Rhythm.TruncatedPositionInMeasure) == null)
+            while (Player.Rhythm.TruncatedPositionInMeasure == lastPositionInMeasure || Player.Track.CurrentCardAtBeat(Player.Rhythm.TruncatedPositionInMeasure) == null)
             {
                 addToMeasurePosition(Time.deltaTime);
                 yield return null;
@@ -31,14 +31,14 @@ public class TurnBasedDriver : ADriver
             }
             while (input == null);
 
-            State.DoNoteInput(input.Value);
+            Player.DoNoteInput(input.Value);
 
-            lastPositionInMeasure = State.Rhythm.TruncatedPositionInMeasure;
+            lastPositionInMeasure = Player.Rhythm.TruncatedPositionInMeasure;
         }
     }
 
     void addToMeasurePosition (double amount)
     {
-        State.Rhythm.CurrentPositionInMeasure = (State.Rhythm.CurrentPositionInMeasure + amount) % Track.BEATS_PER_MEASURE;
+        Player.Rhythm.CurrentPositionInMeasure = (Player.Rhythm.CurrentPositionInMeasure + amount) % Track.BEATS_PER_MEASURE;
     }
 }
