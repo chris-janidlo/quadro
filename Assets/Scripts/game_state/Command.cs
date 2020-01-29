@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-public abstract class Note
+public abstract class Command
     {
         public struct EffectVector
         {
@@ -37,14 +37,14 @@ public abstract class Note
             }
         }
 
-        protected struct NoteData
+        protected struct CommandData
         {
             public InputDirection Direction;
 
-            // the initial state of the value that meta notes manipulate
+            // the initial state of the value that meta commands manipulate
             public EffectVector InitialVector;
 
-            // the symbols that this note can clear
+            // the symbols that this command can clear
             public List<BeatSymbol> Symbols;
 
             // helps to have a color for consistent visual language
@@ -53,17 +53,17 @@ public abstract class Note
             // for stuff like weapon select screens or combo list screens
             public string MetaEffectDescription;
 
-            // the notes that can follow this if this is the first note of the spell
+            // the commands that can follow this if this is the first command of the spell
             public ComboData MainCombos;
 
-            // combo data for any meta notes following this as the main note
+            // combo data for any meta commands following this as the main command
             public MetaComboData MetaCombos;
         }
 
         protected class ComboData : InputDirectionBox<bool> {}
         protected class MetaComboData : InputDirectionBox<ComboData> {}
 
-        protected abstract NoteData data { get; }
+        protected abstract CommandData data { get; }
 
         public InputDirection Direction => data.Direction;
         public EffectVector InitialVector => data.InitialVector;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-public enum NoteInput
+public enum CommandInput
 {
     Up = InputDirection.Up,
     Left = InputDirection.Left,

@@ -18,9 +18,9 @@ public class RealtimeDriver : ADriver
         Initialize(new BaseSingleplayerDiamond());
     }
 
-    public override void Initialize (NoteDiamond noteDiamond)
+    public override void Initialize (CommandDiamond commandDiamond)
     {
-        base.Initialize(noteDiamond);
+        base.Initialize(commandDiamond);
 
         Player.Rhythm.Beat += () =>
         {
@@ -34,6 +34,6 @@ public class RealtimeDriver : ADriver
 
         var input = getInput();
 
-        if (input != null) Player.DoNoteInput(input.Value);
+        if (input != null) Player.DoCommandInput(input.Value);
     }
 }

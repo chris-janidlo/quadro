@@ -48,10 +48,10 @@ public class HitData
     {
         if (MissReason != null)
         {
-            if (MissReason.Value == MissReasonEnum.NoteCantCombo || MissReason.Value == MissReasonEnum.InvalidCastInput)
+            if (MissReason.Value == MissReasonEnum.CommandCantCombo || MissReason.Value == MissReasonEnum.InvalidCastInput)
                 return "Invalid";
 
-            if (MissReason.Value == MissReasonEnum.NoteCantClearAttemptedBeat)
+            if (MissReason.Value == MissReasonEnum.CommandCantClearAttemptedBeat)
                 return "Flub";
         }
 
@@ -68,7 +68,7 @@ public class HitData
         switch (Quality)
         {
             case HitQuality.Miss:
-                return MissReason.Value == MissReasonEnum.NoteCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
+                return MissReason.Value == MissReasonEnum.CommandCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
 
             case HitQuality.Ok:
                 return Colors.Instance.Ok;
@@ -96,8 +96,8 @@ public enum MissReasonEnum
     NeverAttemptedBeat,
     ClosestBeatIsOff,
     ClosestBeatOutOfRange,
-    NoteCantCombo,
-    NoteCantClearAttemptedBeat,
+    CommandCantCombo,
+    CommandCantClearAttemptedBeat,
     InvalidCastInput
 }
 

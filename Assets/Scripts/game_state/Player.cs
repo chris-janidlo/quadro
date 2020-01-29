@@ -8,7 +8,7 @@ public class Player
     public event Action<HitData> Hit;
 
     public readonly Rhythm Rhythm = new Rhythm();
-    public readonly NoteDiamond NoteDiamond;
+    public readonly CommandDiamond CommandDiamond;
 
     public Spell Spell => Rhythm.ComboCounter == 0 || justCast ? null : innerSpell;
     public Track Track => Rhythm.Track;
@@ -16,9 +16,9 @@ public class Player
     Spell innerSpell;
     bool justCast;
 
-    public Player (NoteDiamond noteDiamond)
+    public Player (CommandDiamond commandDiamond)
     {
-        NoteDiamond = noteDiamond;
+        CommandDiamond = commandDiamond;
 
         Rhythm.Hit += hit => {
             if (hit.MissReason != null && hit.MissReason.Value == MissReasonEnum.NeverAttemptedBeat)
@@ -28,7 +28,7 @@ public class Player
         };
     }
 
-    public void DoNoteInput (NoteInput input)
+    public void DoCommandInput (CommandInput input)
     {
         HitData hit = Rhythm.TryHitNow();
 
@@ -36,7 +36,7 @@ public class Player
         {
             Hit?.Invoke(hit);
         }
-        else if (input == NoteInput.Cast)
+        else if (input == CommandInput.Cast)
         {
             tryCastSpell(hit);
         }
@@ -55,26 +55,26 @@ public class Player
     {
         if (CanComboInto(direction))
         {
-            Note next = NoteDiamond[direction];
-            bool thisIsMainNote = innerSpell == null || Rhythm.ComboCounter == 1 || justCast;
+            Command next = CommandDiamond[direction];
+            bool thisIsMainCommand = innerSpell == null || Rhythm.ComboCounter == 1 || justCast;
 
-            innerSpell = thisIsMainNote ? new Spell(next) : innerSpell.PlusMetaNote(next);
+            innerSpell = thisIsMainCommand ? new Spell(next) : innerSpell.PlusMetaCommand(next);
             justCast = false;
 
-            if (innerSpell.LastNote.CanClear(Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure).Value))
+            if (innerSpell.LastCommand.CanClear(Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure).Value))
             {
                 Hit?.Invoke(originalHit);
             }
             else
             {
                 Track.FailCurrentCard();
-                Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.NoteCantClearAttemptedBeat));
+                Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.CommandCantClearAttemptedBeat));
             }
         }
         else
         {
             Rhythm.FailComboAndCard();
-            Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.NoteCantCombo));
+            Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.CommandCantCombo));
         }
     }
 

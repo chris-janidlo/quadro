@@ -7,52 +7,52 @@ using crass;
 
 public class Spell
 {
-    public readonly Note MainNote;
-    public readonly ReadOnlyCollection<Note> MetaNotes;
+    public readonly Command MainCommand;
+    public readonly ReadOnlyCollection<Command> MetaCommands;
 
-    public Note.EffectVector EffectVector =>
-        MetaNotes.Aggregate(MainNote.InitialVector, (vector, metaNote) => metaNote.MetaEffect(vector));
+    public Command.EffectVector EffectVector =>
+        MetaCommands.Aggregate(MainCommand.InitialVector, (vector, metaCommand) => metaCommand.MetaEffect(vector));
 
     public string Description =>
-        MainNote.DescribeMainEffect(EffectVector);
+        MainCommand.DescribeMainEffect(EffectVector);
 
-    public ReadOnlyCollection<Note> AllNotes => 
-        new List<Note> { MainNote }.Concat(MetaNotes).ToList().AsReadOnly();
+    public ReadOnlyCollection<Command> AllCommands => 
+        new List<Command> { MainCommand }.Concat(MetaCommands).ToList().AsReadOnly();
     
-    public Note LastNote =>
-        MetaNotes.Count == 0 ? MainNote : MetaNotes.Last();
+    public Command LastCommand =>
+        MetaCommands.Count == 0 ? MainCommand : MetaCommands.Last();
 
-    public Spell (Note mainNote)
+    public Spell (Command mainCommand)
     {
-        MainNote = mainNote;
-        MetaNotes = new List<Note>().AsReadOnly();
+        MainCommand = mainCommand;
+        MetaCommands = new List<Command>().AsReadOnly();
     }
 
-    private Spell (Note mainNote, IList<Note> metaNotes)
+    private Spell (Command mainCommand, IList<Command> metaCommands)
     {
-        MainNote = mainNote;
-        MetaNotes = new ReadOnlyCollection<Note>(metaNotes);
+        MainCommand = mainCommand;
+        MetaCommands = new ReadOnlyCollection<Command>(metaCommands);
     }
 
-    public Spell PlusMetaNote (Note note)
+    public Spell PlusMetaCommand (Command command)
     {
-        return new Spell(MainNote, MetaNotes.ConcatItems(note));
+        return new Spell(MainCommand, MetaCommands.ConcatItems(command));
     }
 
     public void CastOn (Track input)
     {
-        MainNote.MainEffect(input, EffectVector);
+        MainCommand.MainEffect(input, EffectVector);
     }
 
     public bool CanComboInto (InputDirection direction)
     {
-        if (MetaNotes.Count == 0)
+        if (MetaCommands.Count == 0)
         {
-            return MainNote.GetMainComboData(direction);
+            return MainCommand.GetMainComboData(direction);
         }
         else
         {
-            return MainNote.GetMetaComboData(MetaNotes.Last().Direction, direction);
+            return MainCommand.GetMetaComboData(MetaCommands.Last().Direction, direction);
         }
     }
 }

@@ -33,6 +33,6 @@ TODO:
 
 	reorder UI weight/centering
 
-	rework colors and language to not chide the player for playing a non-beat-clearing note
+	rework colors and language to not chide the player for playing a non-beat-clearing command
 		call it something other than "flub"
 		mark non-cleared cards symbolically instead of with colors?

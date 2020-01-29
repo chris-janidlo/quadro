@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExampleNoteDiamond : NoteDiamond
+public class ExampleCommandDiamond : CommandDiamond
 {
-	protected override InputDirectionBox<Note> initializeNotes()
+	protected override InputDirectionBox<Command> initializeCommands()
 	{
-        return new InputDirectionBox<Note>
+        return new InputDirectionBox<Command>
         {
-            // all 4 notes are functionally the same, just have different internal direction values (which is necessary for things like spells to work)
+            // all 4 commands are functionally the same, just have different internal direction values (which is necessary for things like spells to work)
             Up = new Up(),
             Left = new Left(),
             Down = new Down(),
@@ -17,9 +17,9 @@ public class ExampleNoteDiamond : NoteDiamond
         };
 	}
 
-	class Up : Note
+	class Up : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(1, false),
@@ -82,9 +82,9 @@ public class ExampleNoteDiamond : NoteDiamond
 		}
 	}
 
-	class Left : Note
+	class Left : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(1, false),
@@ -147,9 +147,9 @@ public class ExampleNoteDiamond : NoteDiamond
 		}
 	}
 
-	class Down : Note
+	class Down : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(1, false),
@@ -212,9 +212,9 @@ public class ExampleNoteDiamond : NoteDiamond
 		}
 	}
 
-	class Right : Note
+	class Right : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(1, false),

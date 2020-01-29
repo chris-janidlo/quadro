@@ -17,12 +17,12 @@ public class SpellVisualizer : MonoBehaviour, IDriverSubscriber
     {
         DescriptionText.text = $"Command: {(spell != null ? spell.Description : "<null>")}";
         ChipText.text = spell != null
-            ? String.Join("", spell.AllNotes.Select(n => fancyChip(n)))
+            ? String.Join("", spell.AllCommands.Select(n => fancyChip(n)))
             : "";
     }
 
-    string fancyChip (Note note)
+    string fancyChip (Command command)
     {
-        return $"<#{ColorUtility.ToHtmlStringRGB(note.Color)}>{note.Direction.ToArrow()}</color>";
+        return $"<#{ColorUtility.ToHtmlStringRGB(command.Color)}>{command.Direction.ToArrow()}</color>";
     }
 }

@@ -22,7 +22,7 @@ public class TurnBasedDriver : ADriver
                 yield return null;
             }
 
-            NoteInput? input;
+            CommandInput? input;
 
             do
             {
@@ -31,7 +31,7 @@ public class TurnBasedDriver : ADriver
             }
             while (input == null);
 
-            Player.DoNoteInput(input.Value);
+            Player.DoCommandInput(input.Value);
 
             lastPositionInMeasure = Player.Rhythm.TruncatedPositionInMeasure;
         }

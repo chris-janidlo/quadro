@@ -2,18 +2,18 @@ signal jammers
 	high combo
 		spells all do very little at first, but very slowly build up to eventually huge payoffs
 			spells are based off the combo counter
-			meta notes flip things around? like a jester assassin kinda feel?
-		highly likely to have 8 notes at their disposal
+			meta commands flip things around? like a jester assassin kinda feel?
+		highly likely to have 8 commands at their disposal
 
 	low combo
 		spells on their own hit fairly hard, but the combos are very short
-			maybe like meta notes immediately cancel out spell effects
-		there are like 1 or 2 combos that have 2 notes but all the rest are just single note
-		in order to balance out the requirement to hit cast at every other beat, make it hard to clear notes in general
-			like you should have to look a couple notes ahead to plan
+			maybe like meta commands immediately cancel out spell effects
+		there are like 1 or 2 combos that have 2 commands but all the rest are just single command
+		in order to balance out the requirement to hit cast at every other beat, make it hard to clear commands in general
+			like you should have to look a couple commands ahead to plan
 
 	chaotic/complex
-		the options available to you every note are based on rng and have complex interactions with one another
+		the options available to you every command are based on rng and have complex interactions with one another
 		likes playing at low BPMs
 
 	debuffer

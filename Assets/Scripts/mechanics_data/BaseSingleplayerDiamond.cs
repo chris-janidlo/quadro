@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseSingleplayerDiamond : NoteDiamond
+public class BaseSingleplayerDiamond : CommandDiamond
 {
     const float MULT = 2f;
     const int ADD = 1;
 
-	protected override InputDirectionBox<Note> initializeNotes()
+	protected override InputDirectionBox<Command> initializeCommands()
 	{
-        return new InputDirectionBox<Note>
+        return new InputDirectionBox<Command>
         {
-            // all 4 notes are functionally the same, just have different internal direction values (which is necessary for things like spells to work)
+            // all 4 commands are functionally the same, just have different internal direction values (which is necessary for things like spells to work)
             Up = new Up(),
             Left = new Left(),
             Down = new Down(),
@@ -24,9 +24,9 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
     // main: bpm up
     // meta: multiply
-	class Up : Note
+	class Up : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(3, false),
@@ -82,9 +82,9 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
     // main: cards down
     // meta: subtract
-	class Left : Note
+	class Left : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(-1, false),
@@ -96,7 +96,7 @@ public class BaseSingleplayerDiamond : NoteDiamond
                 Left = true,
                 Down = true
             },
-            // max clear is 3 cards at a 7 note combo (LLDURDU). after that notes can only decrease clear amount. also a couple stalls (LR, DU)
+            // max clear is 3 cards at a 7 command combo (LLDURDU). after that commands can only decrease clear amount. also a couple stalls (LR, DU)
             MetaCombos = new MetaComboData
             {
                 Up = new ComboData
@@ -140,9 +140,9 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
     // main: card spawn rate down
     // meta: negadivide
-	class Down : Note
+	class Down : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(-1, false),
@@ -198,9 +198,9 @@ public class BaseSingleplayerDiamond : NoteDiamond
 
     // main: cards up
     // meta: add
-	class Right : Note
+	class Right : Command
 	{
-		protected override NoteData data => new NoteData
+		protected override CommandData data => new CommandData
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(2, false),
