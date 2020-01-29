@@ -23,7 +23,7 @@ public class ExampleCommandDiamond : CommandDiamond
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(1, false),
-			Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One, BeatSymbol.Two, BeatSymbol.Three },
+			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData
@@ -88,7 +88,7 @@ public class ExampleCommandDiamond : CommandDiamond
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(1, false),
-			Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One, BeatSymbol.Two, BeatSymbol.Three },
+			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData
@@ -153,7 +153,7 @@ public class ExampleCommandDiamond : CommandDiamond
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(1, false),
-			Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One, BeatSymbol.Two, BeatSymbol.Three },
+			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData
@@ -218,7 +218,7 @@ public class ExampleCommandDiamond : CommandDiamond
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(1, false),
-			Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One, BeatSymbol.Two, BeatSymbol.Three },
+			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
             MetaEffectDescription = "increases the effect of the spell by 1",
             MainCombos = new ComboData

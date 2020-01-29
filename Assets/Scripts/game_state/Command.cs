@@ -45,7 +45,7 @@ public abstract class Command
             public EffectVector InitialVector;
 
             // the symbols that this command can clear
-            public List<BeatSymbol> Symbols;
+            public List<NoteSymbol> Symbols;
 
             // helps to have a color for consistent visual language
             public Color Color;
@@ -67,7 +67,7 @@ public abstract class Command
 
         public InputDirection Direction => data.Direction;
         public EffectVector InitialVector => data.InitialVector;
-        public ReadOnlyCollection<BeatSymbol> Symbols => data.Symbols.AsReadOnly();
+        public ReadOnlyCollection<NoteSymbol> Symbols => data.Symbols.AsReadOnly();
         public Color Color => data.Color;
         public string MetaEffectDescription => data.MetaEffectDescription;
 
@@ -81,7 +81,7 @@ public abstract class Command
             return data.MetaCombos?[mainDirection]?[nextDirection] ?? false;
         }
 
-        public bool CanClear (BeatSymbol symbol)
+        public bool CanClear (NoteSymbol symbol)
         {
             return Symbols.Contains(symbol);
         }

@@ -143,7 +143,7 @@ public class Track
         FailedCurrentCard = true;
     }
 
-    public BeatSymbol? CurrentCardAtBeat (int positionWithinMeasure)
+    public NoteSymbol? CurrentCardAtBeat (int positionWithinMeasure)
     {
         if (positionWithinMeasure < 0 || positionWithinMeasure >= BEATS_PER_MEASURE)
         {

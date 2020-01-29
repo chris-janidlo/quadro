@@ -30,7 +30,7 @@ public class BaseSingleplayerDiamond : CommandDiamond
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(3, false),
-            Symbols = new List<BeatSymbol> { BeatSymbol.Two, BeatSymbol.Three },
+            Symbols = new List<NoteSymbol> { NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.red,
             MetaEffectDescription = $"Power * {MULT}",
             MainCombos = new ComboData
@@ -88,7 +88,7 @@ public class BaseSingleplayerDiamond : CommandDiamond
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(-1, false),
-            Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.Two },
+            Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.Two },
             Color = new Color(0.87f, 1, 0.99f),
             MetaEffectDescription = $"Power - {ADD}",
             MainCombos = new ComboData
@@ -146,7 +146,7 @@ public class BaseSingleplayerDiamond : CommandDiamond
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(-1, false),
-            Symbols = new List<BeatSymbol> { BeatSymbol.Zero, BeatSymbol.One },
+            Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One },
             Color = new Color(0.25f, 0.52f, 0.96f),
             MetaEffectDescription = $"Power * -{1/MULT}",
             MainCombos = new ComboData
@@ -204,7 +204,7 @@ public class BaseSingleplayerDiamond : CommandDiamond
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(2, false),
-            Symbols = new List<BeatSymbol> { BeatSymbol.One, BeatSymbol.Three },
+            Symbols = new List<NoteSymbol> { NoteSymbol.One, NoteSymbol.Three },
             Color = new Color(0.98f, 0.58f, 0.01f),
             MetaEffectDescription = $"Power + {ADD}",
             MainCombos = new ComboData

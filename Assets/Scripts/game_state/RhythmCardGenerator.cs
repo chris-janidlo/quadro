@@ -6,38 +6,38 @@ using System.Collections.ObjectModel;
 
 public class RhythmCardGenerator
 {
-	public enum BeatSymbolTransition
+	public enum NoteSymbolTransition
 	{
 		Stay, GoToNext, GoToPrevious, JumpNextTwice, JumpPreviousTwice
 	}
 
 	// don't use the bag generator in crass for this class, since it doesn't let you seed its rng
-	public static readonly IReadOnlyList<BeatSymbolTransition> TransitionBag = new List<BeatSymbolTransition>
+	public static readonly IReadOnlyList<NoteSymbolTransition> TransitionBag = new List<NoteSymbolTransition>
 	{
-		BeatSymbolTransition.Stay,
-		BeatSymbolTransition.Stay,
-		BeatSymbolTransition.Stay,
-		BeatSymbolTransition.Stay,
-		BeatSymbolTransition.GoToNext,
-		BeatSymbolTransition.GoToNext,
-		BeatSymbolTransition.GoToNext,
-		BeatSymbolTransition.GoToNext,
-		BeatSymbolTransition.GoToPrevious,
-		BeatSymbolTransition.GoToPrevious,
-		BeatSymbolTransition.GoToPrevious,
-		BeatSymbolTransition.GoToPrevious,
-		BeatSymbolTransition.JumpNextTwice,
-		BeatSymbolTransition.JumpNextTwice,
-		BeatSymbolTransition.JumpPreviousTwice,
-		BeatSymbolTransition.JumpPreviousTwice
+		NoteSymbolTransition.Stay,
+		NoteSymbolTransition.Stay,
+		NoteSymbolTransition.Stay,
+		NoteSymbolTransition.Stay,
+		NoteSymbolTransition.GoToNext,
+		NoteSymbolTransition.GoToNext,
+		NoteSymbolTransition.GoToNext,
+		NoteSymbolTransition.GoToNext,
+		NoteSymbolTransition.GoToPrevious,
+		NoteSymbolTransition.GoToPrevious,
+		NoteSymbolTransition.GoToPrevious,
+		NoteSymbolTransition.GoToPrevious,
+		NoteSymbolTransition.JumpNextTwice,
+		NoteSymbolTransition.JumpNextTwice,
+		NoteSymbolTransition.JumpPreviousTwice,
+		NoteSymbolTransition.JumpPreviousTwice
 	}.AsReadOnly();
 
 	public RhythmCard Peek { get; private set; }
 
 	private Random random; // each card generator gets its own rng for better fine-grained control
-	private BeatSymbol currentSymbol;
+	private NoteSymbol currentSymbol;
 	private int beatsPerMeasure;
-	private List<BeatSymbolTransition> currentTransitionBag = new List<BeatSymbolTransition>(TransitionBag);
+	private List<NoteSymbolTransition> currentTransitionBag = new List<NoteSymbolTransition>(TransitionBag);
 
 	public RhythmCardGenerator (int beatsPerMeasure) : this(beatsPerMeasure, Environment.TickCount) {}
 
@@ -46,8 +46,8 @@ public class RhythmCardGenerator
 		this.beatsPerMeasure = beatsPerMeasure;
 		random = new Random(randomSeed);
 
-		var allBeatSymbols = Enum.GetValues(typeof(BeatSymbol));
-		currentSymbol = (BeatSymbol) allBeatSymbols.GetValue(random.Next(allBeatSymbols.Length));
+		var allNoteSymbols = Enum.GetValues(typeof(NoteSymbol));
+		currentSymbol = (NoteSymbol) allNoteSymbols.GetValue(random.Next(allNoteSymbols.Length));
 
 		Peek = generateNextCard();
 	}
@@ -63,7 +63,7 @@ public class RhythmCardGenerator
 	{
 		bool[] beatPattern = randomBeatPattern();
 
-		BeatSymbol?[] symbols = new BeatSymbol?[beatPattern.Length];
+		NoteSymbol?[] symbols = new NoteSymbol?[beatPattern.Length];
 
 		for (int i = 0; i < beatPattern.Length; i++)
 		{
@@ -90,42 +90,42 @@ public class RhythmCardGenerator
         return paddedBinary.Select(c => c == '1').ToArray();
     }
 
-	void applySymbolTransition (BeatSymbolTransition transition)
+	void applySymbolTransition (NoteSymbolTransition transition)
 	{
 		switch (transition)
 		{
-			case BeatSymbolTransition.Stay:
+			case NoteSymbolTransition.Stay:
 				// do nothing
 				break;
 
-			case BeatSymbolTransition.GoToNext:
+			case NoteSymbolTransition.GoToNext:
 				currentSymbol = currentSymbol.Next();
 				break;
 
-			case BeatSymbolTransition.GoToPrevious:
+			case NoteSymbolTransition.GoToPrevious:
 				currentSymbol = currentSymbol.Previous();
 				break;
 
-			case BeatSymbolTransition.JumpNextTwice:
+			case NoteSymbolTransition.JumpNextTwice:
 				currentSymbol = currentSymbol.Next().Next();
 				break;
 
-			case BeatSymbolTransition.JumpPreviousTwice:
+			case NoteSymbolTransition.JumpPreviousTwice:
 				currentSymbol = currentSymbol.Previous().Previous();
 				break;
 
 			default:
-				throw new InvalidEnumArgumentException("unexpected BeatSymbolTransition " + transition.ToString());
+				throw new InvalidEnumArgumentException("unexpected NoteSymbolTransition " + transition.ToString());
 		}
 	}
 
-	BeatSymbolTransition getNextSymbolTransition ()
+	NoteSymbolTransition getNextSymbolTransition ()
 	{
 		int index = random.Next(currentTransitionBag.Count);
 		var transition = currentTransitionBag[index];
 		currentTransitionBag.RemoveAt(index);
 
-		if (currentTransitionBag.Count == 0) currentTransitionBag = new List<BeatSymbolTransition>(TransitionBag);
+		if (currentTransitionBag.Count == 0) currentTransitionBag = new List<NoteSymbolTransition>(TransitionBag);
 
 		return transition;
 	}

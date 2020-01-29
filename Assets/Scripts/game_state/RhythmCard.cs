@@ -7,22 +7,22 @@ using UnityEngine;
 
 public class RhythmCard
 {
-    public readonly ReadOnlyCollection<BeatSymbol?> BeatValues;
+    public readonly ReadOnlyCollection<NoteSymbol?> BeatValues;
 
-    public BeatSymbol? this[int i] => BeatValues[i];
+    public NoteSymbol? this[int i] => BeatValues[i];
 
     static Dictionary<int, RhythmCard> emptyCardCache = new Dictionary<int, RhythmCard>();
 
     public static RhythmCard EmptyCard (int length)
     {
-        if (!emptyCardCache.ContainsKey(length)) emptyCardCache[length] = new RhythmCard(new BeatSymbol?[length]);
+        if (!emptyCardCache.ContainsKey(length)) emptyCardCache[length] = new RhythmCard(new NoteSymbol?[length]);
 
         return emptyCardCache[length];
     }
 
-    public RhythmCard (IList<BeatSymbol?> beatValues)
+    public RhythmCard (IList<NoteSymbol?> beatValues)
     {
-        BeatValues = new ReadOnlyCollection<BeatSymbol?>(beatValues);
+        BeatValues = new ReadOnlyCollection<NoteSymbol?>(beatValues);
     }
 
     public override string ToString ()

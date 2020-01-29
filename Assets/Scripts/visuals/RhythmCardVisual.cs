@@ -39,7 +39,7 @@ public class RhythmCardVisual : MonoBehaviour
         return output;
     }
 
-    string makeBeatLineText (BeatSymbol? symbol, int positionInMeasure, int measureLength, char spacer)
+    string makeBeatLineText (NoteSymbol? symbol, int positionInMeasure, int measureLength, char spacer)
     {
         char[] chars = new char[(measureLength + 1) * horSpace + 1];
 
