@@ -6,8 +6,8 @@ public enum MissedHitReason
     NeverAttemptedBeat,
     ClosestBeatIsOff,
     ClosestBeatOutOfRange,
-    CommandCantCombo,
-    CommandCantClearAttemptedBeat,
+    ComCantCombo,
+    ComCantClearAttemptedBeat,
     InvalidCastInput
 }
 
@@ -23,10 +23,10 @@ public static class MissedHitReasonExtensions
 			case MissedHitReason.AlreadyAttemptedBeat:
 			case MissedHitReason.ClosestBeatIsOff:
 			case MissedHitReason.ClosestBeatOutOfRange:
-			case MissedHitReason.CommandCantClearAttemptedBeat:
+			case MissedHitReason.ComCantClearAttemptedBeat:
 				return 1;
 
-			case MissedHitReason.CommandCantCombo:
+			case MissedHitReason.ComCantCombo:
 			case MissedHitReason.InvalidCastInput:
 				return 2;
 			

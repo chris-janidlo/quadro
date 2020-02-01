@@ -18,9 +18,9 @@ public class RealtimeDriver : ADriver
         Initialize(new BaseSingleplayerDiamond());
     }
 
-    public override void Initialize (CommandDiamond commandDiamond)
+    public override void Initialize (ComDiamond comDiamond)
     {
-        base.Initialize(commandDiamond);
+        base.Initialize(comDiamond);
 
         Player.Track.Beat += () =>
         {
@@ -34,6 +34,6 @@ public class RealtimeDriver : ADriver
 
         var input = getInput();
 
-        if (input != null) Player.DoCommandInput(input.Value);
+        if (input != null) Player.DoComInput(input.Value);
     }
 }

@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseSingleplayerDiamond : CommandDiamond
+public class BaseSingleplayerDiamond : ComDiamond
 {
     const float MULT = 2f;
     const int ADD = 1;
 
-	protected override InputDirectionBox<Command> initializeCommands()
+	protected override InputDirectionBox<Com> initializeComs()
 	{
-        return new InputDirectionBox<Command>
+        return new InputDirectionBox<Com>
         {
-            // all 4 commands are functionally the same, just have different internal direction values (which is necessary for things like spells to work)
+            // all 4 coms are functionally the same, just have different internal direction values (which is necessary for things like commands to work)
             Up = new Up(),
             Left = new Left(),
             Down = new Down(),
@@ -24,9 +24,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
 
     // main: bpm up
     // meta: multiply
-	class Up : Command
+	class Up : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(3, false),
@@ -82,9 +82,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
 
     // main: cards down
     // meta: subtract
-	class Left : Command
+	class Left : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(-1, false),
@@ -96,7 +96,7 @@ public class BaseSingleplayerDiamond : CommandDiamond
                 Left = true,
                 Down = true
             },
-            // max clear is 3 cards at a 7 command combo (LLDURDU). after that commands can only decrease clear amount. also a couple stalls (LR, DU)
+            // max clear is 3 cards at a 7 com combo (LLDURDU). after that coms can only decrease clear amount. also a couple stalls (LR, DU)
             MetaCombos = new MetaComboData
             {
                 Up = new ComboData
@@ -140,9 +140,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
 
     // main: card spawn rate down
     // meta: negadivide
-	class Down : Command
+	class Down : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(-1, false),
@@ -198,9 +198,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
 
     // main: cards up
     // meta: add
-	class Right : Command
+	class Right : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(2, false),

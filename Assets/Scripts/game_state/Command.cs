@@ -1,94 +1,58 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using UnityEngine;
+using crass;
 
-public abstract class Command
+public class Command
+{
+    public readonly Com MainCom;
+    public readonly ReadOnlyCollection<Com> MetaComs;
+
+    public Com.EffectVector EffectVector =>
+        MetaComs.Aggregate(MainCom.InitialVector, (vector, metaCom) => metaCom.MetaEffect(vector));
+
+    public string Description =>
+        MainCom.DescribeMainEffect(EffectVector);
+
+    public ReadOnlyCollection<Com> AllComs => 
+        new List<Com> { MainCom }.Concat(MetaComs).ToList().AsReadOnly();
+    
+    public Com LastCom =>
+        MetaComs.Count == 0 ? MainCom : MetaComs.Last();
+
+    public Command (Com mainCom)
     {
-        public struct EffectVector
-        {
-            public readonly float Power; // generic numeric scalar
-            public readonly bool TargetsEnemy; // TODO: do something with this
-
-            public int IntPower => (int) Power;
-
-            public EffectVector (float power, bool targetsEnemy)
-            {
-                Power = power;
-                TargetsEnemy = targetsEnemy;
-            }
-
-            public static EffectVector operator + (EffectVector v) => v;
-            public static EffectVector operator - (EffectVector v) => new EffectVector(-v.Power, v.TargetsEnemy);
-
-            public static EffectVector operator + (EffectVector v, float f) => new EffectVector(v.Power + f, v.TargetsEnemy);
-            public static EffectVector operator - (EffectVector v, float f) => v + (-f);
-
-            public static EffectVector operator * (EffectVector v, float f) => new EffectVector(v.Power * f, v.TargetsEnemy);
-            public static EffectVector operator / (EffectVector v, float f)
-            {
-                if (f == 0)
-                {
-                    throw new DivideByZeroException();
-                }
-
-                return new EffectVector(v.Power / f, v.TargetsEnemy);
-            }
-        }
-
-        protected struct CommandData
-        {
-            public InputDirection Direction;
-
-            // the initial state of the value that meta commands manipulate
-            public EffectVector InitialVector;
-
-            // the symbols that this command can clear
-            public List<NoteSymbol> Symbols;
-
-            // helps to have a color for consistent visual language
-            public Color Color;
-
-            // for stuff like weapon select screens or combo list screens
-            public string MetaEffectDescription;
-
-            // the commands that can follow this if this is the first command of the spell
-            public ComboData MainCombos;
-
-            // combo data for any meta commands following this as the main command
-            public MetaComboData MetaCombos;
-        }
-
-        protected class ComboData : InputDirectionBox<bool> {}
-        protected class MetaComboData : InputDirectionBox<ComboData> {}
-
-        protected abstract CommandData data { get; }
-
-        public InputDirection Direction => data.Direction;
-        public EffectVector InitialVector => data.InitialVector;
-        public ReadOnlyCollection<NoteSymbol> Symbols => data.Symbols.AsReadOnly();
-        public Color Color => data.Color;
-        public string MetaEffectDescription => data.MetaEffectDescription;
-
-        public bool GetMainComboData (InputDirection nextDirection)
-        {
-            return data.MainCombos?[nextDirection] ?? false;
-        }
-
-        public bool GetMetaComboData (InputDirection mainDirection, InputDirection nextDirection)
-        {
-            return data.MetaCombos?[mainDirection]?[nextDirection] ?? false;
-        }
-
-        public bool CanClear (NoteSymbol symbol)
-        {
-            return Symbols.Contains(symbol);
-        }
-
-        public abstract void MainEffect (Player input, EffectVector vector);
-        public abstract EffectVector MetaEffect (EffectVector vector);
-
-        // for use in the UI to describe what the spell currently is:
-        public abstract string DescribeMainEffect (EffectVector vector);
+        MainCom = mainCom;
+        MetaComs = new List<Com>().AsReadOnly();
     }
+
+    private Command (Com mainCom, IList<Com> metaComs)
+    {
+        MainCom = mainCom;
+        MetaComs = new ReadOnlyCollection<Com>(metaComs);
+    }
+
+    public Command PlusMetaCom (Com com)
+    {
+        return new Command(MainCom, MetaComs.ConcatItems(com));
+    }
+
+    public void CastOn (Player input)
+    {
+        MainCom.MainEffect(input, EffectVector);
+    }
+
+    public bool CanComboInto (InputDirection direction)
+    {
+        if (MetaComs.Count == 0)
+        {
+            return MainCom.GetMainComboData(direction);
+        }
+        else
+        {
+            return MainCom.GetMetaComboData(MetaComs.Last().Direction, direction);
+        }
+    }
+}

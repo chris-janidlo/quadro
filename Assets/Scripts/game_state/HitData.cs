@@ -12,7 +12,7 @@ public class HitData
 
     public bool ClearedBeat => MissReason == null;
 
-    public bool KillsSpell => !ClearedBeat && MissReason != MissedHitReason.CommandCantClearAttemptedBeat;
+    public bool KillsCommand => !ClearedBeat && MissReason != MissedHitReason.ComCantClearAttemptedBeat;
 
     public HitData (double distanceFromBeat, MissedHitReason? missReason = null)
     {
@@ -50,10 +50,10 @@ public class HitData
     {
         if (MissReason != null)
         {
-            if (MissReason.Value == MissedHitReason.CommandCantCombo || MissReason.Value == MissedHitReason.InvalidCastInput)
+            if (MissReason.Value == MissedHitReason.ComCantCombo || MissReason.Value == MissedHitReason.InvalidCastInput)
                 return "Invalid";
 
-            if (MissReason.Value == MissedHitReason.CommandCantClearAttemptedBeat)
+            if (MissReason.Value == MissedHitReason.ComCantClearAttemptedBeat)
                 return "Flub";
         }
 
@@ -70,7 +70,7 @@ public class HitData
         switch (Quality)
         {
             case HitQuality.Miss:
-                return MissReason.Value == MissedHitReason.CommandCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
+                return MissReason.Value == MissedHitReason.ComCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
 
             case HitQuality.Ok:
                 return Colors.Instance.Ok;

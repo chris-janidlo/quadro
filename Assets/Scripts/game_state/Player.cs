@@ -11,7 +11,7 @@ public class Player
 
     public readonly Track Track = new Track();
 
-    public readonly CommandDiamond CommandDiamond;
+    public readonly ComDiamond ComDiamond;
 
     public readonly BoxedInt Health = new BoxedInt(16, 0, 16);
     public readonly BoxedInt Armor = new BoxedInt(0, 0, int.MaxValue);
@@ -19,30 +19,30 @@ public class Player
     public int ComboCounter { get; private set; }
 
     public bool Dead => Health.Value == 0;
-    public Spell Spell => ComboCounter == 0 || justCast ? null : innerSpell;
+    public Command Command => ComboCounter == 0 || justCast ? null : innerCommand;
 
-    Spell innerSpell;
+    Command innerCommand;
     bool justCast;
 
-    public Player (CommandDiamond commandDiamond)
+    public Player (ComDiamond comDiamond)
     {
-        CommandDiamond = commandDiamond;
+        ComDiamond = comDiamond;
 
         Track.DidntAttemptBeat += processHit;
         Track.Beat += decayArmor;
     }
 
-    public void DoCommandInput (CommandInput input)
+    public void DoComInput (ComInput input)
     {
         HitData hit = Track.GetHitByAccuracy();
 
-        if (hit.KillsSpell)
+        if (hit.KillsCommand)
         {
             processHit(hit);
         }
-        else if (input == CommandInput.Cast)
+        else if (input == ComInput.Cast)
         {
-            tryCastSpell(hit);
+            tryCastCommand(hit);
         }
         else
         {
@@ -52,7 +52,7 @@ public class Player
 
     public bool CanComboInto (InputDirection direction)
     {
-        return innerSpell == null || innerSpell.CanComboInto(direction);
+        return innerCommand == null || innerCommand.CanComboInto(direction);
     }
 
     // damage must be a non-negative value
@@ -86,33 +86,33 @@ public class Player
     {
         if (CanComboInto(direction))
         {
-            Command next = CommandDiamond[direction];
-            bool thisIsMainCommand = innerSpell == null || ComboCounter == 0 || justCast;
+            Com next = ComDiamond[direction];
+            bool thisIsMainCom = innerCommand == null || ComboCounter == 0 || justCast;
 
-            innerSpell = thisIsMainCommand ? new Spell(next) : innerSpell.PlusMetaCommand(next);
+            innerCommand = thisIsMainCom ? new Command(next) : innerCommand.PlusMetaCom(next);
             justCast = false;
 
-            if (innerSpell.LastCommand.CanClear(Track.ClosestHittableNote().Symbol))
+            if (innerCommand.LastCom.CanClear(Track.ClosestHittableNote().Symbol))
             {
                 processHit(originalHit);
             }
             else
             {
-                processHit(originalHit.WithMissReason(MissedHitReason.CommandCantClearAttemptedBeat));
+                processHit(originalHit.WithMissReason(MissedHitReason.ComCantClearAttemptedBeat));
             }
         }
         else
         {
-            processHit(originalHit.WithMissReason(MissedHitReason.CommandCantCombo));
+            processHit(originalHit.WithMissReason(MissedHitReason.ComCantCombo));
         }
     }
 
-    void tryCastSpell (HitData originalHit)
+    void tryCastCommand (HitData originalHit)
     {
-        if (Spell != null)
+        if (Command != null)
         {
             processHit(originalHit);
-            Spell.CastOn(this);
+            Command.CastOn(this);
         }
         else
         {
@@ -129,7 +129,7 @@ public class Player
 
     void processHit (HitData hit)
     {
-        if (hit.KillsSpell)
+        if (hit.KillsCommand)
         {
             ComboCounter = 0;
         }

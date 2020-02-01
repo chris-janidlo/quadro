@@ -10,34 +10,34 @@ public abstract class ADriver : MonoBehaviour
 
     public Player Player { get; private set; }
 
-    public virtual void Initialize (CommandDiamond commandDiamond)
+    public virtual void Initialize (ComDiamond comDiamond)
     {
-        Player = new Player(commandDiamond);
+        Player = new Player(comDiamond);
 
         Player.Hit += hit => Debug.Log(hit.ToString());
     }
 
-    protected CommandInput? getInput ()
+    protected ComInput? getInput ()
     {
         if (Input.GetKeyDown(CastKey))
         {
-            return CommandInput.Cast;
+            return ComInput.Cast;
         }
         else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Up]))
         {
-            return CommandInput.Up;
+            return ComInput.Up;
         }
         else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Left]))
         {
-            return CommandInput.Left;
+            return ComInput.Left;
         }
         else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Down]))
         {
-            return CommandInput.Down;
+            return ComInput.Down;
         }
         else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Right]))
         {
-            return CommandInput.Right;
+            return ComInput.Right;
         }
         else
         {

@@ -5,15 +5,13 @@ TODO:
 ===== GAMEPLAY =====
 
 ===== CODE =====
-	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
+	for future non-track command targets: make ICommandTarget (or something similar) to mark classes that can be targeted
 
 	make driver dependency injection generic enough to work with any number of players
 
 	sync up music sources with timing source
 
 	make BPM change gradually
-
-	add game startup delay
 
 ===== MUSIC =====
 	create basic beat
@@ -24,3 +22,10 @@ TODO:
 	armor meter
 
 	reorder UI weight/centering
+
+	new com diamond
+		each com gets a card that displays following information:
+			main effect (when command is null)
+			meta effect (when command isn't null)
+			indicator that says main/meta
+			the symbols that this com can clear

@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExampleCommandDiamond : CommandDiamond
+public class ExampleComDiamond : ComDiamond
 {
-	protected override InputDirectionBox<Command> initializeCommands()
+	protected override InputDirectionBox<Com> initializeComs()
 	{
-        return new InputDirectionBox<Command>
+        return new InputDirectionBox<Com>
         {
-            // all 4 commands are functionally the same, just have different internal direction values (which is necessary for things like spells to work)
+            // all 4 coms are functionally the same, just have different internal direction values (which is necessary for things like commands to work)
             Up = new Up(),
             Left = new Left(),
             Down = new Down(),
@@ -17,15 +17,15 @@ public class ExampleCommandDiamond : CommandDiamond
         };
 	}
 
-	class Up : Command
+	class Up : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Up,
             InitialVector = new EffectVector(1, false),
 			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
-            MetaEffectDescription = "increases the effect of the spell by 1",
+            MetaEffectDescription = "increases the effect of the command by 1",
             MainCombos = new ComboData
             {
                 Up = true,
@@ -82,15 +82,15 @@ public class ExampleCommandDiamond : CommandDiamond
 		}
 	}
 
-	class Left : Command
+	class Left : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(1, false),
 			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
-            MetaEffectDescription = "increases the effect of the spell by 1",
+            MetaEffectDescription = "increases the effect of the command by 1",
             MainCombos = new ComboData
             {
                 Up = true,
@@ -147,15 +147,15 @@ public class ExampleCommandDiamond : CommandDiamond
 		}
 	}
 
-	class Down : Command
+	class Down : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Down,
             InitialVector = new EffectVector(1, false),
 			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
-            MetaEffectDescription = "increases the effect of the spell by 1",
+            MetaEffectDescription = "increases the effect of the command by 1",
             MainCombos = new ComboData
             {
                 Up = true,
@@ -212,15 +212,15 @@ public class ExampleCommandDiamond : CommandDiamond
 		}
 	}
 
-	class Right : Command
+	class Right : Com
 	{
-		protected override CommandData data => new CommandData
+		protected override ComData data => new ComData
         {
             Direction = InputDirection.Right,
             InitialVector = new EffectVector(1, false),
 			Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.One, NoteSymbol.Two, NoteSymbol.Three },
             Color = Color.white,
-            MetaEffectDescription = "increases the effect of the spell by 1",
+            MetaEffectDescription = "increases the effect of the command by 1",
             MainCombos = new ComboData
             {
                 Up = true,

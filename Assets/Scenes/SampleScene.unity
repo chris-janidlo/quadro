@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 60431059}
   - component: {fileID: 60431060}
   m_Layer: 5
-  m_Name: Spell Details
+  m_Name: Command Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,7 +241,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 60431058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51e7278871fc14a3182a211cc24d6ea0, type: 3}
+  m_Script: {fileID: 11500000, guid: cc8880870d1c5457290104e3223efe13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DescriptionText: {fileID: 2085311370}
@@ -654,7 +654,7 @@ GameObject:
   - component: {fileID: 857901611}
   - component: {fileID: 857901609}
   m_Layer: 5
-  m_Name: Command Diamond
+  m_Name: Com Diamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -697,7 +697,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 857901607}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 650dc4c23ab874f378dffd61c17aa83f, type: 3}
+  m_Script: {fileID: 11500000, guid: 427ccb38b0b0d47b08c40707be35ba08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 857901611}

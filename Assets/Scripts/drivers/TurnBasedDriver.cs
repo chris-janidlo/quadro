@@ -22,7 +22,7 @@ public class TurnBasedDriver : ADriver
                 yield return null;
             }
 
-            CommandInput? input;
+            ComInput? input;
 
             do
             {
@@ -31,7 +31,7 @@ public class TurnBasedDriver : ADriver
             }
             while (input == null);
 
-            Player.DoCommandInput(input.Value);
+            Player.DoComInput(input.Value);
 
             lastPositionInMeasure = Player.Track.TruncatedPositionInMeasure;
         }
