@@ -3,20 +3,21 @@ using System;
 public class Note
 {
 	public readonly NoteSymbol Symbol;
-	public readonly double PositionInBeat;
+	public readonly double PositionInMeasure;
 
 	public int BeatTicker;
 
 	public double BeatsUntilThisNote => BeatTicker + PositionInBeat;
+	public double PositionInBeat => PositionInMeasure - (int) PositionInMeasure;
 
-	public Note (double positionInBeat, NoteSymbol symbol)
+	public Note (double positionInMeasure, NoteSymbol symbol)
 	{
-		if (positionInBeat < 0 || positionInBeat >= 1)
+		if (positionInMeasure < 0 || positionInMeasure >= Track.BEATS_PER_MEASURE)
 		{
-			throw new ArgumentException($"note position must be in range [0, 1) (was given {positionInBeat})");
+			throw new ArgumentException($"note position must be in range [0, {Track.BEATS_PER_MEASURE}) (was given {positionInMeasure})");
 		}
 
-		PositionInBeat = positionInBeat;
+		PositionInMeasure = positionInMeasure;
 		Symbol = symbol;
 	}
 }

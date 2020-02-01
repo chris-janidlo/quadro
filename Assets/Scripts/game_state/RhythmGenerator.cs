@@ -69,12 +69,11 @@ public class RhythmGenerator
 
 		if (currentMeasurePattern[positionInMeasurePattern])
 		{
-			notes.Add(new Note(0, currentSymbol));
+			notes.Add(new Note(positionInMeasurePattern, currentSymbol));
 			applySymbolTransition(getNextSymbolTransition());
 		}
 
 		positionInMeasurePattern++;
-
 
 		if (positionInMeasurePattern >= currentMeasurePattern.Length)
 		{
