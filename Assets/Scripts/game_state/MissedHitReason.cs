@@ -18,17 +18,15 @@ public static class MissedHitReasonExtensions
 		switch (reason)
 		{
 			case MissedHitReason.NeverAttemptedBeat:
-				return 4;
-			
-			case MissedHitReason.AlreadyAttemptedBeat:
 			case MissedHitReason.ClosestBeatIsOff:
 			case MissedHitReason.ClosestBeatOutOfRange:
-			case MissedHitReason.ComCantClearAttemptedBeat:
-				return 1;
+				return 6;
 
+			case MissedHitReason.AlreadyAttemptedBeat:
+			case MissedHitReason.ComCantClearAttemptedBeat:
 			case MissedHitReason.ComCantCombo:
 			case MissedHitReason.InvalidCastInput:
-				return 2;
+				return 3;
 			
 			default:
 				throw new ArgumentException($"unexpected MissedHitReason {reason}");

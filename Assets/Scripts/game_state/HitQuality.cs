@@ -43,7 +43,7 @@ public static class HitQualityExtensions
                 return 1;
             
             case HitQuality.Excellent:
-                return 3;
+                return 2;
 
             default:
                 throw new ArgumentException("unexpected HitQuality value " + quality);
