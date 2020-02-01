@@ -20,7 +20,7 @@ public class BeatFlasher : MonoBehaviour, IDriverSubscriber
 
 	void Update ()
     {
-        float fractionalPart = (float) Driver.Player.Rhythm.FractionalPartOfPosition;
+        float fractionalPart = (float) Driver.Player.Track.FractionalPartOfPosition;
 
         if (fractionalPart <= FlashTimeBeats)
         {

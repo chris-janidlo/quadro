@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8559422145747761098}
   - component: {fileID: 6909467873390306928}
   m_Layer: 5
-  m_Name: Delta Meter Segment
+  m_Name: Meter Segment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4627451, g: 0.5019608, b: 0.49411765, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

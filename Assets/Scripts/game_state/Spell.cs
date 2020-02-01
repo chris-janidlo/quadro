@@ -39,7 +39,7 @@ public class Spell
         return new Spell(MainCommand, MetaCommands.ConcatItems(command));
     }
 
-    public void CastOn (Track input)
+    public void CastOn (Player input)
     {
         MainCommand.MainEffect(input, EffectVector);
     }

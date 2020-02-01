@@ -1,184 +1,156 @@
-﻿using System;
+using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
-using crass;
 
+// TODO: if the closest note is attempted but there's another note within hit range, and the player attempts a hit, do we count the second hit?
+// TODO: say there are two notes a and b. b is closer to the current position in measure, and neither have ever been attempted, but a is still in hit range. if the player attempts a hit, should that count for a or b?
 public class Track
 {
-    public event Action HandledEndOfMeasure, HandledMiddleOfMeasure;
-    public event Action CardsBatchUpdated, CardAdded, CardRemoved;
+	public event Action Beat;
+    public event Action<HitData> DidntAttemptBeat;
+    public event Action<Note> NoteSpawned, NoteDespawned;
 
-    public const int CARDS_UNTIL_DEAD = 16;
-    public const int BEATS_PER_MEASURE = 4; // also the subdivisions in every card
-
-    public const int CARDS_PER_DIFFICULTY_INCREASE = 8; // every time we clear this many cards, increase the BPM and the card spawn rate
-
-    // a bstep is a made up metrical unit for scaling purposes (since a change of a single BPM is too subtle to be noticed)
+    public const int BEATS_PER_MEASURE = 4;
+    public const int NOTES_PER_DIFFICULTY_INCREASE = 24;
+    public const int BEATS_SHOWN_IN_ADVANCE = 8;
     public const int BPM_PER_BSTEP = 10;
-    public const int MIN_BSTEPS = 4;
-    public const int MAX_BSTEPS = 20;
-    public const int STARTING_BSTEPS = 8;
 
-    public const float CARD_SPAWN_INCREASE_PER_DIFFICULTY_UP = 0.5f;
-    public const float MAX_CARD_SPAWN_RATE = 8;
-    public const float MIN_CARD_SPAWN_RATE = 0.5f;
-    public const float STARTING_CARD_SPAWN_RATE = 0.5f;
+    public readonly BoxedInt BSteps = new BoxedInt(8, 4, 20);
+    public readonly BoxedInt RhythmDifficulty = new BoxedInt(4, 1, 16);
 
-    List<RhythmCard> cards = new List<RhythmCard>();
-    RhythmCardGenerator generator;
+    public double Latency; // TODO: use this
 
-    float _cardDelta = STARTING_CARD_SPAWN_RATE;
-    public float CardDelta
+    // needs to be updated by external driver
+    double _beatPos;
+    public double CurrentPositionInMeasure
     {
-        get => _cardDelta;
-        set => _cardDelta = Mathf.Clamp(value, -CARDS_UNTIL_DEAD, CARDS_UNTIL_DEAD);
-    }
-
-    int _bSteps = STARTING_BSTEPS;
-    public int BSteps
-    {
-        get => _bSteps;
-        set => _bSteps = Mathf.Clamp(value, MIN_BSTEPS, MAX_BSTEPS);
-    }
-
-    float _cardSpawnRate = STARTING_CARD_SPAWN_RATE;
-    public float CardSpawnRate
-    {
-        get => _cardSpawnRate;
-        set => _cardSpawnRate = Mathf.Clamp(value, MIN_CARD_SPAWN_RATE, MAX_CARD_SPAWN_RATE);
-    }
-
-    public bool FailedCurrentCard { get; private set; }
-
-    bool _failedLastCard;
-    public bool FailedLastCard
-    {
-        get => _failedLastCard;
-        private set
+        get => _beatPos;
+        set
         {
-            if (value && InDanger)
+            if (value < 0 || value >= Track.BEATS_PER_MEASURE)
             {
-                Dead = true;
+                throw new ArgumentException("value must be between 0 and " + Track.BEATS_PER_MEASURE);
             }
 
-            _failedLastCard = value;
+            _beatPos = value;
+            audioTimeDidUpdate();
         }
     }
 
-    public RhythmCard NextToSpawn => generator.Peek;
+    public int BPM => BSteps.Value * BPM_PER_BSTEP;
 
-    public int CardsCleared { get; private set; }
-    public bool Dead { get; private set; }
+    public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
+    public double FractionalPartOfPosition => CurrentPositionInMeasure - TruncatedPositionInMeasure;
 
-    public int BPM => BSteps * BPM_PER_BSTEP;
-    public ReadOnlyCollection<RhythmCard> Cards => cards.AsReadOnly();
+    int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
 
-    public bool InDanger => cards.Count > CARDS_UNTIL_DEAD;
+    List<Note> notes = new List<Note>();
+    RhythmGenerator generator = new RhythmGenerator(BEATS_PER_MEASURE);
 
-    public Track ()
+    int beatTicker, emptyBeatSpawnTicker;
+    Note previousHittableNote;
+    bool closestHittableNoteAttempted;
+
+    public HitData GetHitByAccuracy ()
     {
-        generator = new RhythmCardGenerator(BEATS_PER_MEASURE);
+        HitData hit = null;
+        double hitDistance = Math.Abs(CurrentPositionInMeasure - closestBeatPosition);
+
+        if (closestHittableNoteAttempted)
+            hit = new HitData(hitDistance, MissedHitReason.AlreadyAttemptedBeat);
+
+        closestHittableNoteAttempted = true;
+
+        if (hit == null && ClosestHittableNote() == null)
+            hit = new HitData(hitDistance, MissedHitReason.ClosestBeatIsOff);
+
+        if (hit == null)
+            hit = new HitData(hitDistance);
+
+        return hit;
     }
 
-    public Track (int randomSeed)
+    // closest note that is not a miss
+    public Note ClosestHittableNote ()
     {
-        generator = new RhythmCardGenerator(BEATS_PER_MEASURE, randomSeed);
-    }
+        Note closest = null;
+        double currentDistance = double.MaxValue;
 
-    public void HandleEndOfMeasure ()
-    {
-        int changeCounter = (int) Mathf.Abs(CardDelta);
-        RhythmCard failedCard = null;
-
-        if (Cards.Count != 0)
+        foreach (Note note in notes)
         {
-            if (FailedCurrentCard)
+            if (note.BeatTicker > 1) continue;
+
+            double distance = Math.Abs(FractionalPartOfPosition - note.BeatsUntilThisNote);
+
+            if (distance <= HitQuality.Miss.BeatDistanceRange().x && distance < currentDistance)
             {
-                failedCard = removeCard(false);
-            }
-            else
-            {
-                removeCard();
+                closest = note;
+                currentDistance = distance;
             }
         }
 
-        while (changeCounter > 0)
-        {
-            if (CardDelta > 0)
-            {
-                addCard(generator.GetNext());
-            }
-            else
-            {
-                if (cards.Count == 0) break;
-                removeCard();
-            }
+        return closest;
+    }
 
-            changeCounter--;
+    void audioTimeDidUpdate ()
+    {
+        if (TruncatedPositionInMeasure != beatTicker)
+        {
+            if (CurrentPositionInMeasure >= beatTicker + 1) beatTicker++; // tick
+            else if (TruncatedPositionInMeasure == 0) beatTicker = 0; // loop
+            else throw new InvalidOperationException("something fucky with beats");
+
+            Beat?.Invoke();
+
+            tickNotes();
+            spawnNotesForNextBeat();
         }
 
-        if (failedCard != null) addCard(failedCard);
-
-        CardDelta -= (int) CardDelta;
-
-        CardsBatchUpdated?.Invoke();
-
-        FailedLastCard = FailedCurrentCard;
-        FailedCurrentCard = false;
-
-        HandledEndOfMeasure?.Invoke();
-    }
-
-	public void HandleMiddleOfMeasure ()
-	{
-		CardDelta += CardSpawnRate;
-        HandledMiddleOfMeasure?.Invoke();
-	}
-
-	public void FailCurrentCard ()
-    {
-        FailedCurrentCard = true;
-    }
-
-    public NoteSymbol? CurrentCardAtBeat (int positionWithinMeasure)
-    {
-        if (positionWithinMeasure < 0 || positionWithinMeasure >= BEATS_PER_MEASURE)
+        if (previousHittableNote != null && previousHittableNote != ClosestHittableNote())
         {
-            throw new ArgumentException("beat position must be within 0 and " + BEATS_PER_MEASURE);
+            // we have entered this if because one of the following is true:
+                // the previous note is out of hittable range
+                // a new note is closer than the previous note, even though they're closer to each other than 2*hittable range
+            // in either case, in the current naive implementation, we now know whether or not the player ever attempted the previous note.
+        
+            // if the player completely skipped this beat when they shouldn't have, fail
+            if (!closestHittableNoteAttempted)
+            {
+                DidntAttemptBeat?.Invoke(new HitData(FractionalPartOfPosition, MissedHitReason.NeverAttemptedBeat));
+            }
+
+            closestHittableNoteAttempted = false;
         }
 
-        if (Cards.Count == 0) return null;
-
-        return Cards[0][positionWithinMeasure];
+        previousHittableNote = ClosestHittableNote();
     }
 
-    void addCard (RhythmCard card)
+    void spawnNotesForNextBeat ()
     {
-        cards.Add(card);
-        CardAdded?.Invoke();
-    }
+        List<Note> newNotes = generator.GetNotesForNextBeat();
 
-    RhythmCard removeCard (bool countsTowardsClear = true)
-    {
-        var card = cards[0];
-
-        cards.RemoveAt(0);
-
-        if (countsTowardsClear)
+        foreach (Note note in newNotes)
         {
-            CardsCleared++;
-            if (CardsCleared % CARDS_PER_DIFFICULTY_INCREASE == 0)
+            note.BeatTicker = BEATS_SHOWN_IN_ADVANCE;
+            notes.Add(note);
+            NoteSpawned?.Invoke(note);
+        }
+    }
+
+    void tickNotes ()
+    {
+		for (int i = notes.Count - 1; i >= 0; i--)
+        {
+			Note note = notes[i];
+
+            note.BeatTicker--;
+
+            if (note.BeatTicker <= -2)
             {
-                BSteps++;
-                CardSpawnRate += CARD_SPAWN_INCREASE_PER_DIFFICULTY_UP;
+                notes.RemoveAt(i);
+                NoteDespawned?.Invoke(note);
             }
         }
-
-        CardRemoved?.Invoke();
-
-        return card;
     }
 }

@@ -3,18 +3,6 @@ turn based driver skips sometimes
 
 TODO:
 ===== GAMEPLAY =====
-	completely get rid of cards. move to health instead
-		make damage measure-based still?
-		make rhythm not locked to the beat
-		add block system a la StS
-			decays over time
-
-	charge system
-		add a meter called the "charge" meter or something similar
-			TODO: figure out lore (stores excess electricity?)
-		every time you hit a beat successfully, the charge increases. the more accurate you are, the better the increase (might even make the least accurate hit-tier not add anything)
-		every time you miss a beat or hit when you shouldn't, the charge decreases
-		when the charge meter fills up, a character-dependent finisher happens, and the meter resets back to zero
 
 ===== CODE =====
 	for future non-track spell targets: make ISpellTarget (or something similar) to mark classes that can be targeted
@@ -23,16 +11,16 @@ TODO:
 
 	sync up music sources with timing source
 
+	make BPM change gradually
+
+	add game startup delay
+
 ===== MUSIC =====
 	create basic beat
 		dial-up inspired chords
 		chilled out nostalgic chords seem to work well
 
 ===== UI =====
-	health bar
+	armor meter
 
 	reorder UI weight/centering
-
-	rework colors and language to not chide the player for playing a non-beat-clearing command
-		call it something other than "flub"
-		mark non-cleared cards symbolically instead of with colors?

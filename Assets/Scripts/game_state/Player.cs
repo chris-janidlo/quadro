@@ -5,13 +5,21 @@ using UnityEngine;
 
 public class Player
 {
+    public const int ARMOR_DECAY_RATE = 1;
+
     public event Action<HitData> Hit;
 
-    public readonly Rhythm Rhythm = new Rhythm();
+    public readonly Track Track = new Track();
+
     public readonly CommandDiamond CommandDiamond;
 
-    public Spell Spell => Rhythm.ComboCounter == 0 || justCast ? null : innerSpell;
-    public Track Track => Rhythm.Track;
+    public readonly BoxedInt Health = new BoxedInt(16, 0, 16);
+    public readonly BoxedInt Armor = new BoxedInt(0, 0, int.MaxValue);
+
+    public int ComboCounter { get; private set; }
+
+    public bool Dead => Health.Value == 0;
+    public Spell Spell => ComboCounter == 0 || justCast ? null : innerSpell;
 
     Spell innerSpell;
     bool justCast;
@@ -20,21 +28,17 @@ public class Player
     {
         CommandDiamond = commandDiamond;
 
-        Rhythm.Hit += hit => {
-            if (hit.MissReason != null && hit.MissReason.Value == MissReasonEnum.NeverAttemptedBeat)
-            {
-                Hit?.Invoke(hit);
-            }
-        };
+        Track.DidntAttemptBeat += processHit;
+        Track.Beat += decayArmor;
     }
 
     public void DoCommandInput (CommandInput input)
     {
-        HitData hit = Rhythm.TryHitNow();
+        HitData hit = Track.GetHitByAccuracy();
 
-        if (!hit.IsSuccessful)
+        if (hit.KillsSpell)
         {
-            Hit?.Invoke(hit);
+            processHit(hit);
         }
         else if (input == CommandInput.Cast)
         {
@@ -51,30 +55,55 @@ public class Player
         return innerSpell == null || innerSpell.CanComboInto(direction);
     }
 
+    // damage must be a non-negative value
+    public void TakeShieldedDamage (int damage)
+    {
+        if (damage == 0) return;
+
+        if (damage < 0)
+        {
+            throw new ArgumentException($"damage cannot be less than 0 (was given {damage})");
+        }
+
+        int damageToBeDone = damage;
+
+        while (damageToBeDone > 0)
+        {
+            if (Armor.Value > 0)
+            {
+                Armor.Value--;
+            }
+            else
+            {
+                Health.Value--;
+            }
+
+            damageToBeDone--;
+        }
+    }
+
     void tryPlayDirection (InputDirection direction, HitData originalHit)
     {
         if (CanComboInto(direction))
         {
             Command next = CommandDiamond[direction];
-            bool thisIsMainCommand = innerSpell == null || Rhythm.ComboCounter == 1 || justCast;
+            bool thisIsMainCommand = innerSpell == null || ComboCounter == 0 || justCast;
 
             innerSpell = thisIsMainCommand ? new Spell(next) : innerSpell.PlusMetaCommand(next);
             justCast = false;
 
-            if (innerSpell.LastCommand.CanClear(Track.CurrentCardAtBeat(Rhythm.ClosestPositionInMeasure).Value))
+            if (innerSpell.LastCommand.CanClear(Track.ClosestHittableNote().Symbol))
             {
-                Hit?.Invoke(originalHit);
+                processHit(originalHit);
             }
             else
             {
-                Track.FailCurrentCard();
-                Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.CommandCantClearAttemptedBeat));
+                processHit(originalHit.WithMissReason(MissedHitReason.CommandCantClearAttemptedBeat));
             }
         }
         else
         {
-            Rhythm.FailComboAndCard();
-            Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.CommandCantCombo));
+            processHit(originalHit.WithMissReason(MissedHitReason.CommandCantCombo));
         }
     }
 
@@ -82,15 +111,36 @@ public class Player
     {
         if (Spell != null)
         {
-            Spell.CastOn(Track);
-            Hit?.Invoke(originalHit);
+            processHit(originalHit);
+            Spell.CastOn(this);
         }
         else
         {
-            Rhythm.FailComboAndCard();
-            Hit?.Invoke(originalHit.WithMissReason(MissReasonEnum.InvalidCastInput));
+            processHit(originalHit.WithMissReason(MissedHitReason.InvalidCastInput));
         }
 
         justCast = true;
+    }
+
+    void decayArmor ()
+    {
+        Armor.Value -= ARMOR_DECAY_RATE;
+    }
+
+    void processHit (HitData hit)
+    {
+        if (hit.KillsSpell)
+        {
+            ComboCounter = 0;
+        }
+        else
+        {
+            ComboCounter++;
+        }
+
+        Health.Value += hit.Quality.Healing();
+        TakeShieldedDamage(hit.MissReason?.Damage() ?? 0);
+
+        Hit?.Invoke(hit);
     }
 }

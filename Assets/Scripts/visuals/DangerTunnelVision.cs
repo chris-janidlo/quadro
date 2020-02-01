@@ -11,7 +11,7 @@ public class DangerTunnelVision : MonoBehaviour, IDriverSubscriber
     public Image LeftVisual, RightVisual;
     public SpriteBag Frames;
 
-    public AnimationCurve CardsToVisualAlpha;
+    public AnimationCurve HealthToVisualAlpha;
     public int FramesPerSecond;
 
     float secondsPerFrame => 1.0f / FramesPerSecond;
@@ -20,7 +20,7 @@ public class DangerTunnelVision : MonoBehaviour, IDriverSubscriber
 
     void Update ()
     {
-        float alpha = CardsToVisualAlpha.Evaluate(Driver.Player.Track.Cards.Count);
+        float alpha = HealthToVisualAlpha.Evaluate(Driver.Player.Health.Value);
 
         LeftVisual.SetA(alpha);
         RightVisual.SetA(alpha);

@@ -69,9 +69,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
             return "Scan rate " + polarityEffect(vector.IntPower);
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.BSteps += vector.IntPower;
+            input.Track.BSteps.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -127,9 +127,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
             return "Packets " + polarityEffect(vector.Power);
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.CardDelta += vector.Power;
+            input.Armor.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -185,9 +185,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
             return "Bandwidth " + polarityEffect(vector.Power);;
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.CardSpawnRate += vector.Power;
+            input.Track.RhythmDifficulty.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -242,9 +242,9 @@ public class BaseSingleplayerDiamond : CommandDiamond
             return "Packets " + polarityEffect(vector.Power);
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.CardDelta += vector.Power;
+            input.Armor.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)

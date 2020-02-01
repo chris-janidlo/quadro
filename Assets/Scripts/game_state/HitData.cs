@@ -8,11 +8,13 @@ public class HitData
 {
     public readonly double DistanceFromBeat;
     public readonly HitQuality Quality;
-    public readonly MissReasonEnum? MissReason;
+    public readonly MissedHitReason? MissReason;
 
-    public bool IsSuccessful => MissReason == null;
+    public bool ClearedBeat => MissReason == null;
 
-    public HitData (double distanceFromBeat, MissReasonEnum? missReason = null)
+    public bool KillsSpell => !ClearedBeat && MissReason != MissedHitReason.CommandCantClearAttemptedBeat;
+
+    public HitData (double distanceFromBeat, MissedHitReason? missReason = null)
     {
         if (distanceFromBeat < 0)
             throw new ArgumentException("hit cannot be closer than 0");
@@ -33,7 +35,7 @@ public class HitData
 
         if (Quality == HitQuality.Miss)
         {
-            MissReason = MissReasonEnum.ClosestBeatOutOfRange;
+            MissReason = MissedHitReason.ClosestBeatOutOfRange;
         }
     }
 
@@ -48,17 +50,17 @@ public class HitData
     {
         if (MissReason != null)
         {
-            if (MissReason.Value == MissReasonEnum.CommandCantCombo || MissReason.Value == MissReasonEnum.InvalidCastInput)
+            if (MissReason.Value == MissedHitReason.CommandCantCombo || MissReason.Value == MissedHitReason.InvalidCastInput)
                 return "Invalid";
 
-            if (MissReason.Value == MissReasonEnum.CommandCantClearAttemptedBeat)
+            if (MissReason.Value == MissedHitReason.CommandCantClearAttemptedBeat)
                 return "Flub";
         }
 
         return Quality.ToString();
     }
 
-    public HitData WithMissReason (MissReasonEnum missReason)
+    public HitData WithMissReason (MissedHitReason missReason)
     {
         return new HitData(DistanceFromBeat, missReason);
     }
@@ -68,7 +70,7 @@ public class HitData
         switch (Quality)
         {
             case HitQuality.Miss:
-                return MissReason.Value == MissReasonEnum.CommandCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
+                return MissReason.Value == MissedHitReason.CommandCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
 
             case HitQuality.Ok:
                 return Colors.Instance.Ok;
@@ -81,46 +83,6 @@ public class HitData
 
             default:
                 throw new InvalidOperationException("unexpected HitQuality value " + Quality);
-        }
-    }
-}
-
-public enum HitQuality
-{
-    Miss, Ok, Good, Excellent
-}
-
-public enum MissReasonEnum
-{
-    AlreadyAttemptedBeat,
-    NeverAttemptedBeat,
-    ClosestBeatIsOff,
-    ClosestBeatOutOfRange,
-    CommandCantCombo,
-    CommandCantClearAttemptedBeat,
-    InvalidCastInput
-}
-
-public static class HitQualityExtensions
-{
-    public static Vector2 BeatDistanceRange (this HitQuality quality)
-    {
-        switch (quality)
-        {
-            case HitQuality.Miss:
-                return new Vector2(0.4f, Mathf.Infinity);
-
-            case HitQuality.Ok:
-                return new Vector2(0.25f, 0.4f);
-
-            case HitQuality.Good:
-                return new Vector2(0.1f, 0.25f);
-
-            case HitQuality.Excellent:
-                return new Vector2(0, 0.1f);
-
-            default:
-                throw new ArgumentException("unexpected HitQuality value " + quality);
         }
     }
 }

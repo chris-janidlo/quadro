@@ -9,7 +9,7 @@ public class SimpleGameOver : MonoBehaviour, IDriverSubscriber
 
     void Update ()
     {
-        if (Driver.Player.Track.Dead)
+        if (Driver.Player.Dead)
         {
             SceneManager.LoadScene("Game Over");
         }

@@ -22,7 +22,7 @@ public class RealtimeDriver : ADriver
     {
         base.Initialize(commandDiamond);
 
-        Player.Rhythm.Beat += () =>
+        Player.Track.Beat += () =>
         {
             TimingSource.pitch = (float) Player.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
         };
@@ -30,7 +30,7 @@ public class RealtimeDriver : ADriver
 
     void Update ()
     {
-        Player.Rhythm.CurrentPositionInMeasure = (float) TimingSource.timeSamples * TimingClipBPM / 60 / TimingSource.clip.frequency;
+        Player.Track.CurrentPositionInMeasure = (float) TimingSource.timeSamples * TimingClipBPM / 60 / TimingSource.clip.frequency;
 
         var input = getInput();
 

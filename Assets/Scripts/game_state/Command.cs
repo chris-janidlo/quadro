@@ -86,7 +86,7 @@ public abstract class Command
             return Symbols.Contains(symbol);
         }
 
-        public abstract void MainEffect (Track input, EffectVector vector);
+        public abstract void MainEffect (Player input, EffectVector vector);
         public abstract EffectVector MetaEffect (EffectVector vector);
 
         // for use in the UI to describe what the spell currently is:

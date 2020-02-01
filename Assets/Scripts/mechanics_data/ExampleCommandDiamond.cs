@@ -71,9 +71,9 @@ public class ExampleCommandDiamond : CommandDiamond
             return $"Adds {vector.IntPower} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.CardDelta += vector.IntPower;
+            input.Health.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -136,9 +136,9 @@ public class ExampleCommandDiamond : CommandDiamond
             return $"Adds {vector.IntPower} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.CardDelta += vector.IntPower;
+            input.Health.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -201,9 +201,9 @@ public class ExampleCommandDiamond : CommandDiamond
             return $"Adds {vector.IntPower} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.CardDelta += vector.IntPower;
+            input.Health.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
@@ -266,9 +266,9 @@ public class ExampleCommandDiamond : CommandDiamond
             return $"Adds {vector.IntPower} cards to your track.";
 		}
 
-		public override void MainEffect (Track input, EffectVector vector)
+		public override void MainEffect (Player input, EffectVector vector)
 		{
-            input.CardDelta += vector.IntPower;
+            input.Health.Value += vector.IntPower;
 		}
 
 		public override EffectVector MetaEffect (EffectVector vector)
