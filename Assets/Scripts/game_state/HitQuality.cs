@@ -13,16 +13,16 @@ public static class HitQualityExtensions
         switch (quality)
         {
             case HitQuality.Miss:
-                return new Vector2(0.4f, Mathf.Infinity);
+                return new Vector2(0.3f, Mathf.Infinity);
 
             case HitQuality.Ok:
-                return new Vector2(0.25f, 0.4f);
+                return new Vector2(0.15f, 0.3f);
 
             case HitQuality.Good:
-                return new Vector2(0.1f, 0.25f);
+                return new Vector2(0.05f, 0.15f);
 
             case HitQuality.Excellent:
-                return new Vector2(0, 0.1f);
+                return new Vector2(0, 0.05f);
 
             default:
                 throw new ArgumentException("unexpected HitQuality value " + quality);
