@@ -3,7 +3,7 @@ using crass;
 
 public class Colors : Singleton<Colors>
 {
-    public Color Neutral, Excellent, Good, Ok, Ambiguous, Bad;
+    public Color Neutral, Excellent, Good, Ok, Bad;
 
     void Awake ()
     {

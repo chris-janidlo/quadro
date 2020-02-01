@@ -48,13 +48,12 @@ public class HitData
 
     public string ShortDescription ()
     {
-        if (MissReason != null)
+        if (MissReason != null &&
+            (MissReason.Value == MissedHitReason.ComCantCombo ||
+             MissReason.Value == MissedHitReason.InvalidCastInput ||
+             MissReason.Value == MissedHitReason.ComCantClearAttemptedBeat))
         {
-            if (MissReason.Value == MissedHitReason.ComCantCombo || MissReason.Value == MissedHitReason.InvalidCastInput)
-                return "Invalid";
-
-            if (MissReason.Value == MissedHitReason.ComCantClearAttemptedBeat)
-                return "Flub";
+            return "Invalid";
         }
 
         return Quality.ToString();
@@ -70,7 +69,7 @@ public class HitData
         switch (Quality)
         {
             case HitQuality.Miss:
-                return MissReason.Value == MissedHitReason.ComCantClearAttemptedBeat ? Colors.Instance.Ambiguous : Colors.Instance.Bad;
+                return Colors.Instance.Bad;
 
             case HitQuality.Ok:
                 return Colors.Instance.Ok;
