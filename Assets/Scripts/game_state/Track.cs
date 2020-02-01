@@ -48,7 +48,7 @@ public class Track
     List<Note> notes = new List<Note>();
     RhythmGenerator generator = new RhythmGenerator(BEATS_PER_MEASURE);
 
-    int beatTicker, emptyBeatSpawnTicker;
+    int beatTicker = -1, emptyBeatSpawnTicker;
     Note previousHittableNote;
     bool closestHittableNoteAttempted;
 
