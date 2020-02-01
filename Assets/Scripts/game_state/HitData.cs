@@ -63,25 +63,4 @@ public class HitData
     {
         return new HitData(DistanceFromBeat, missReason);
     }
-
-    public Color Color ()
-    {
-        switch (Quality)
-        {
-            case HitQuality.Miss:
-                return Colors.Instance.Bad;
-
-            case HitQuality.Ok:
-                return Colors.Instance.Ok;
-
-            case HitQuality.Good:
-                return Colors.Instance.Good;
-
-            case HitQuality.Excellent:
-                return Colors.Instance.Excellent;
-
-            default:
-                throw new InvalidOperationException("unexpected HitQuality value " + Quality);
-        }
-    }
 }

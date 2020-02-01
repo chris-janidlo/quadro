@@ -49,5 +49,26 @@ public static class HitQualityExtensions
                 throw new ArgumentException("unexpected HitQuality value " + quality);
         }
     }
+
+    public static Color Color (this HitQuality quality)
+    {
+        switch (quality)
+        {
+            case HitQuality.Miss:
+                return Colors.Instance.Bad;
+
+            case HitQuality.Ok:
+                return Colors.Instance.Ok;
+
+            case HitQuality.Good:
+                return Colors.Instance.Good;
+
+            case HitQuality.Excellent:
+                return Colors.Instance.Excellent;
+
+            default:
+                throw new ArgumentException("unexpected HitQuality value " + quality);
+        }
+    }
 }
 

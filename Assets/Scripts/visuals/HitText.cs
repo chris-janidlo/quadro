@@ -19,7 +19,7 @@ public class HitText : MonoBehaviour, IDriverSubscriber
 
     IEnumerator messageRoutine (HitData hit)
     {
-        Text.text = $"<#{ColorUtility.ToHtmlStringRGB(hit.Color())}>{hit.ShortDescription()}</color>";
+        Text.text = $"<#{ColorUtility.ToHtmlStringRGB(hit.Quality.Color())}>{hit.ShortDescription()}</color>";
         Text.alpha = 1;
 
         yield return new WaitForSeconds(InitialTime);
