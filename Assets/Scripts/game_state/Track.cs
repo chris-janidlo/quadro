@@ -107,7 +107,7 @@ public class Track
             spawnNotesForNextBeat();
         }
 
-        if (previousHittableNote != null && previousHittableNote != ClosestHittableNote())
+        if (previousHittableNote != ClosestHittableNote())
         {
             // we have entered this if because one of the following is true:
                 // the previous note is out of hittable range
@@ -115,7 +115,7 @@ public class Track
             // in either case, in the current naive implementation, we now know whether or not the player ever attempted the previous note.
         
             // if the player completely skipped this beat when they shouldn't have, fail
-            if (!closestHittableNoteAttempted)
+            if (previousHittableNote != null && !closestHittableNoteAttempted)
             {
                 DidntAttemptBeat?.Invoke(new HitData(FractionalPartOfPosition, MissedHitReason.NeverAttemptedBeat));
             }
