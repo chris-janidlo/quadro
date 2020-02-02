@@ -69,6 +69,7 @@ public abstract class Com
         public EffectVector InitialVector => data.InitialVector;
         public ReadOnlyCollection<NoteSymbol> Symbols => data.Symbols.AsReadOnly();
         public Color Color => data.Color;
+        public string BaseMainEffectDescription => DescribeMainEffect(data.InitialVector);
         public string MetaEffectDescription => data.MetaEffectDescription;
 
         public bool GetMainComboData (InputDirection nextDirection)
