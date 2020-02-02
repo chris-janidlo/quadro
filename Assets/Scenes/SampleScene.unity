@@ -342,7 +342,7 @@ MonoBehaviour:
   VisibleHealth:
     value: 0
     Time: 0.5
-    Ease: 24
+    Ease: 10
   SegmentGroup: {fileID: 773904580}
   Bar: {fileID: 1523890317}
   HiderSegmentPrefab: {fileID: 6909467873390306928, guid: 840374127dd664919ae6d0ac65db202e,
