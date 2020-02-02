@@ -24,6 +24,13 @@ TODO:
 		chilled out nostalgic chords seem to work well
 
 ===== UI =====
+	reusable hacker typing animation component
+		probably using Transitionable
+		transition from anything to empty string: delete characters
+		transition from empty string to anything: type characters
+		transition from one non-empty to another: delete then type
+		probably include some dope ass fading as well
+
 	reorder UI weight/centering
 		design for multiple resolutions
 
