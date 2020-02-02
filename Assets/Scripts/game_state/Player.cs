@@ -14,7 +14,7 @@ public class Player
     public readonly SignalJammer SignalJammer;
 
     public readonly BoxedInt Health = new BoxedInt(16, 0, 16);
-    public readonly BoxedInt Armor = new BoxedInt(0, 0, int.MaxValue);
+    public readonly BoxedInt Armor = new BoxedInt(0, 0, 16);
 
     public int ComboCounter { get; private set; }
 

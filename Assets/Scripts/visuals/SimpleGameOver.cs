@@ -9,7 +9,7 @@ public class SimpleGameOver : MonoBehaviour
 
     void Update ()
     {
-        if (HealthBar.VisibleHealth.Value == 0)
+        if (HealthBar.VisibleValue.Value == 0)
         {
             SceneManager.LoadScene("Game Over");
         }
