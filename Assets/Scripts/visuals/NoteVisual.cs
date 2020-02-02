@@ -33,12 +33,6 @@ public class NoteVisual : MonoBehaviour
 
 	void Update ()
 	{
-		if (note.BeatTicker <= -2)
-		{
-			Destroy(gameObject);
-			return;
-		}
-
 		if (note.BeatTicker > 0)
 		{
 			float lerpAmount = (float) (note.BeatsUntilThisNote - track.FractionalPartOfPosition) / Track.BEATS_SHOWN_IN_ADVANCE;
