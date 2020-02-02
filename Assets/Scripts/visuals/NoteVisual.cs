@@ -9,11 +9,11 @@ public class NoteVisual : MonoBehaviour
 
 	Note note;
 	Track track;
-	Vector2 start, target;
+	Vector3 start, target;
 
 	Color noAlpha;
 
-	public void Initialize (Note note, Track track, Vector2 start, Vector2 target)
+	public void Initialize (Note note, Track track, Vector3 start, Vector3 target)
 	{
 		this.note = note;
 		this.track = track;
@@ -41,8 +41,8 @@ public class NoteVisual : MonoBehaviour
 
 		if (note.BeatTicker > 0)
 		{
-			float x = (float) (note.BeatsUntilThisNote - track.FractionalPartOfPosition) / Track.BEATS_SHOWN_IN_ADVANCE;
-			transform.position = Vector3.Lerp(target, start, x);
+			float lerpAmount = (float) (note.BeatsUntilThisNote - track.FractionalPartOfPosition) / Track.BEATS_SHOWN_IN_ADVANCE;
+			transform.position = Vector3.Lerp(target, start, lerpAmount);
 		}
 		else
 		{
