@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SimpleGameOver : MonoBehaviour, IDriverSubscriber
+public class SimpleGameOver : MonoBehaviour
 {
-	public ADriver Driver { get; set; }
+    public HealthBar HealthBar;
 
     void Update ()
     {
-        if (Driver.Player.Dead)
+        if (HealthBar.VisibleHealth.Value == 0)
         {
             SceneManager.LoadScene("Game Over");
         }

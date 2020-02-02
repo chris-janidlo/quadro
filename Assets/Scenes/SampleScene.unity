@@ -275,6 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e222ea6bcae8647aea00e1a646a556aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HealthBar: {fileID: 202547744}
 --- !u!4 &112289848
 Transform:
   m_ObjectHideFlags: 0
@@ -340,7 +341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VisibleHealth:
-    value: 0
+    value: 16
     Time: 0.5
     Ease: 10
   SegmentGroup: {fileID: 773904580}
@@ -862,6 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 427ccb38b0b0d47b08c40707be35ba08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Driver>k__BackingField: {fileID: 0}
   Text: {fileID: 857901611}
 --- !u!114 &857901611
 MonoBehaviour:
