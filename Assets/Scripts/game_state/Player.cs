@@ -124,7 +124,10 @@ public class Player
 
     void decayArmor ()
     {
-        Armor.Value -= ARMOR_DECAY_RATE;
+        if (Track.TruncatedPositionInMeasure == 0)
+        {
+            Armor.Value -= ARMOR_DECAY_RATE;
+        }
     }
 
     void processHit (HitData hit)
