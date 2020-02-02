@@ -124,7 +124,7 @@ public class BaseSingleplayerJammer : SignalJammer
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "Packets " + polarityEffect(vector.Power);
+            return "Armor " + polarityEffect(vector.Power);
 		}
 
 		public override void MainEffect (Player input, EffectVector vector)
@@ -239,7 +239,7 @@ public class BaseSingleplayerJammer : SignalJammer
 
 		public override string DescribeMainEffect (EffectVector vector)
 		{
-            return "Packets " + polarityEffect(vector.Power);
+            return "Armor " + polarityEffect(vector.Power);
 		}
 
 		public override void MainEffect (Player input, EffectVector vector)
