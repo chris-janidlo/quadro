@@ -51,6 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 4858847558562298736}
+  ColorFader:
+    value: {r: 0, g: 0, b: 0, a: 0}
+    Time: 0
+    Ease: 20
 --- !u!222 &1447888043845427921
 CanvasRenderer:
   m_ObjectHideFlags: 0
