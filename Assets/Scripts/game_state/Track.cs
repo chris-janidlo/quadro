@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using crass;
 
 // TODO: if the closest note is attempted but there's another note within hit range, and the player attempts a hit, do we count the second hit?
 // TODO: say there are two notes a and b. b is closer to the current position in measure, and neither have ever been attempted, but a is still in hit range. if the player attempts a hit, should that count for a or b?
@@ -38,7 +39,7 @@ public class Track
         }
     }
 
-    public int BPM => BSteps.Value * BPM_PER_BSTEP;
+    public int BPM => (int) (actualBSteps * BPM_PER_BSTEP);
 
     public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
     public double FractionalPartOfPosition => CurrentPositionInMeasure - TruncatedPositionInMeasure;
@@ -51,6 +52,7 @@ public class Track
     int beatTicker = -1, emptyBeatSpawnTicker;
     Note previousHittableNote;
     bool closestHittableNoteAttempted;
+    double actualBSteps = 8;
 
     public HitData GetHitByAccuracy ()
     {
@@ -106,6 +108,8 @@ public class Track
             tickNotes();
             spawnNotesForNextBeat();
         }
+
+        actualBSteps = Mathf.Lerp((float) actualBSteps, BSteps.Value, EasingFunction.EaseInQuint(0, 1, (float) FractionalPartOfPosition));
 
         if (previousHittableNote != ClosestHittableNote())
         {

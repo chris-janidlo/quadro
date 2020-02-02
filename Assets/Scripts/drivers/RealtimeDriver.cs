@@ -21,16 +21,12 @@ public class RealtimeDriver : ADriver
     public override void Initialize (ComDiamond comDiamond)
     {
         base.Initialize(comDiamond);
-
-        Player.Track.Beat += () =>
-        {
-            TimingSource.pitch = (float) Player.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
-        };
     }
 
     void Update ()
     {
         Player.Track.CurrentPositionInMeasure = (float) TimingSource.timeSamples * TimingClipBPM / 60 / TimingSource.clip.frequency;
+        TimingSource.pitch = (float) Player.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
 
         var input = getInput();
 
