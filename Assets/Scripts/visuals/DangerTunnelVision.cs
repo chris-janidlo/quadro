@@ -8,6 +8,7 @@ public class DangerTunnelVision : MonoBehaviour, IDriverSubscriber
 {
 	public ADriver Driver { get; set; }
 
+    public TransitionableFloat VisibleAlpha;
     public Image LeftVisual, RightVisual;
     public SpriteBag Frames;
 
@@ -18,14 +19,19 @@ public class DangerTunnelVision : MonoBehaviour, IDriverSubscriber
 
     float frameTimer;
 
+    void Start ()
+    {
+        VisibleAlpha.AttachMonoBehaviour(this);
+    }
+
     void Update ()
     {
-        float alpha = HealthToVisualAlpha.Evaluate(Driver.Player.Health.Value);
+        VisibleAlpha.StartTransitionToIfNotAlreadyStarted(HealthToVisualAlpha.Evaluate(Driver.Player.Health.Value));
 
-        LeftVisual.SetA(alpha);
-        RightVisual.SetA(alpha);
+        LeftVisual.SetA(VisibleAlpha.Value);
+        RightVisual.SetA(VisibleAlpha.Value);
 
-        if (alpha == 0) return;
+        if (VisibleAlpha.Value == 0) return;
 
         frameTimer += Time.deltaTime;
 
