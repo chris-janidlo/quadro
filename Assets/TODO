@@ -6,7 +6,7 @@ TODO:
 
 ===== CODE =====
 	make 3D aspect of track less janky
-		move it out of the canvas and into just regular 2D space?
+		move it out of the canvas and into just regular 3D space?
 
 	add additional jammers
 
@@ -29,7 +29,7 @@ TODO:
 	reorder UI weight/centering
 		design for multiple resolutions
 
-	new com diamond
+	new signal jammer diamond
 		each com gets a card that displays following information:
 			main effect (when command is null)
 			meta effect (when command isn't null)
