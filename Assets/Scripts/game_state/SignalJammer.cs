@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
-public abstract class ComDiamond
+public abstract class SignalJammer
 {
     public Com this[InputDirection direction] => coms[direction];
 

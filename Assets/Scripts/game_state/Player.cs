@@ -11,7 +11,7 @@ public class Player
 
     public readonly Track Track = new Track();
 
-    public readonly ComDiamond ComDiamond;
+    public readonly SignalJammer SignalJammer;
 
     public readonly BoxedInt Health = new BoxedInt(16, 0, 16);
     public readonly BoxedInt Armor = new BoxedInt(0, 0, int.MaxValue);
@@ -24,9 +24,9 @@ public class Player
     Command innerCommand;
     bool justCast;
 
-    public Player (ComDiamond comDiamond)
+    public Player (SignalJammer signalJammer)
     {
-        ComDiamond = comDiamond;
+        SignalJammer = signalJammer;
 
         Track.DidntAttemptBeat += processHit;
         Track.Beat += decayArmor;
@@ -86,7 +86,7 @@ public class Player
     {
         if (CanComboInto(direction))
         {
-            Com next = ComDiamond[direction];
+            Com next = SignalJammer[direction];
             bool thisIsMainCom = innerCommand == null || ComboCounter == 0 || justCast;
 
             innerCommand = thisIsMainCom ? new Command(next) : innerCommand.PlusMetaCom(next);

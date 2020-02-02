@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using crass;
 using TMPro;
 
-public class ComDiamondVisualizer : MonoBehaviour, IDriverSubscriber
+public class SignalJammerVisualizer : MonoBehaviour, IDriverSubscriber
 {
 	public ADriver Driver { get; set; }
 
@@ -19,7 +19,7 @@ public class ComDiamondVisualizer : MonoBehaviour, IDriverSubscriber
 
     string diamondDir (InputDirection dir)
     {
-        string rgb = ColorUtility.ToHtmlStringRGB(Driver.Player.ComDiamond[dir].Color);
+        string rgb = ColorUtility.ToHtmlStringRGB(Driver.Player.SignalJammer[dir].Color);
         string a = (Driver.Player.CanComboInto(dir) ? "FF" : "66");
 
         return $"<#{rgb}{a}>{dir.ToArrow()}</color>";

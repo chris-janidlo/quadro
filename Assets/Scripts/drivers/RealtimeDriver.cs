@@ -15,12 +15,12 @@ public class RealtimeDriver : ADriver
 
     void Awake ()
     {
-        Initialize(new BaseSingleplayerDiamond());
+        Initialize(new BaseSingleplayerJammer());
     }
 
-    public override void Initialize (ComDiamond comDiamond)
+    public override void Initialize (SignalJammer signalJammer)
     {
-        base.Initialize(comDiamond);
+        base.Initialize(signalJammer);
     }
 
     void Update ()

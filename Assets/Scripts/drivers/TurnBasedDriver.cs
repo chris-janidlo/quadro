@@ -9,7 +9,7 @@ public class TurnBasedDriver : ADriver
 
     void Awake ()
     {
-        Initialize(new BaseSingleplayerDiamond());
+        Initialize(new BaseSingleplayerJammer());
     }
 
     IEnumerator Start ()

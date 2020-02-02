@@ -10,9 +10,9 @@ public abstract class ADriver : MonoBehaviour
 
     public Player Player { get; private set; }
 
-    public virtual void Initialize (ComDiamond comDiamond)
+    public virtual void Initialize (SignalJammer signalJammer)
     {
-        Player = new Player(comDiamond);
+        Player = new Player(signalJammer);
 
         Player.Hit += hit => Debug.Log(hit.ToString());
     }

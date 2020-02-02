@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseSingleplayerDiamond : ComDiamond
+public class BaseSingleplayerJammer : SignalJammer
 {
     const float MULT = 2f;
     const int ADD = 1;

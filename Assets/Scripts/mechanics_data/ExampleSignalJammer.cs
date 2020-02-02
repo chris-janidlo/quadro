@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExampleComDiamond : ComDiamond
+public class ExampleSignalJammer : SignalJammer
 {
 	protected override InputDirectionBox<Com> initializeComs()
 	{
