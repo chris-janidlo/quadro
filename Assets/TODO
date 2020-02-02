@@ -5,7 +5,11 @@ TODO:
 ===== GAMEPLAY =====
 
 ===== CODE =====
+	add additional jammers
+
 	for future non-track command targets: make ICommandTarget (or something similar) to mark classes that can be targeted
+
+	add some kind of match info object containing the friendly player and the opposing player, and pass that to commands
 
 	make driver dependency injection generic enough to work with any number of players
 
@@ -29,3 +33,5 @@ TODO:
 			meta effect (when command isn't null)
 			indicator that says main/meta
 			the symbols that this com can clear
+
+	new font
