@@ -5,6 +5,9 @@ TODO:
 ===== GAMEPLAY =====
 
 ===== CODE =====
+	make 3D aspect of track less janky
+		move it out of the canvas and into just regular 2D space?
+
 	add additional jammers
 
 	for future non-track command targets: make ICommandTarget (or something similar) to mark classes that can be targeted
@@ -26,6 +29,7 @@ TODO:
 	armor meter
 
 	reorder UI weight/centering
+		design for multiple resolutions
 
 	new com diamond
 		each com gets a card that displays following information:
