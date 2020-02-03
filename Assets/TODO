@@ -3,6 +3,10 @@ turn based driver skips sometimes
 
 TODO:
 ===== GAMEPLAY =====
+	major beat difficulty tuning
+		current difficulty should be somewhere in 50%-75% range
+		starting difficulty as easy as every 2 beats or every 4 beats
+		ending difficulty incorporating broken triplets and sixteenth note patterns
 
 ===== CODE =====
 	make 3D aspect of track less janky
