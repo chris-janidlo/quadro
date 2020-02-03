@@ -7,6 +7,7 @@ using crass;
 public class Player
 {
     public const int ARMOR_DECAY_RATE = 1;
+    public const int NOTE_CLEARS_PER_DIFFICULTY_INCREASE = 24;
 
     public const float SCREEN_SHAKE_TIME = 0.3f;
     public const float SCREEN_SHAKE_AMOUNT = 2;
@@ -21,6 +22,7 @@ public class Player
     public readonly BoxedInt Armor = new BoxedInt(0, 0, 16);
 
     public int ComboCounter { get; private set; }
+    public int DifficultyIncreaseTicker { get; private set; } = NOTE_CLEARS_PER_DIFFICULTY_INCREASE;
 
     public bool Dead => Health.Value == 0;
     public Command Command => ComboCounter == 0 || justCast ? null : innerCommand;
@@ -147,6 +149,15 @@ public class Player
         else
         {
             ComboCounter++;
+
+            DifficultyIncreaseTicker--;
+
+            if (DifficultyIncreaseTicker <= 0)
+            {
+                DifficultyIncreaseTicker = NOTE_CLEARS_PER_DIFFICULTY_INCREASE;
+                Track.BSteps.Value++;
+                Track.RhythmDifficulty.Value++;
+            }
         }
 
         Health.Value += hit.Quality.Healing();

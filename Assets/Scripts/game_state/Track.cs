@@ -13,7 +13,6 @@ public class Track
     public event Action<Note> NoteSpawned, NoteDespawned;
 
     public const int BEATS_PER_MEASURE = 4;
-    public const int NOTES_PER_DIFFICULTY_INCREASE = 24;
     public const int BEATS_SHOWN_IN_ADVANCE = 8;
     public const int BPM_PER_BSTEP = 10;
 
