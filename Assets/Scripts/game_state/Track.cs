@@ -110,7 +110,9 @@ public class Track
 
         actualBSteps = Mathf.Lerp((float) actualBSteps, BSteps.Value, EasingFunction.EaseInQuint(0, 1, (float) FractionalPartOfPosition));
 
-        if (previousHittableNote != ClosestHittableNote())
+        var closestHittableNote = ClosestHittableNote();
+
+        if (previousHittableNote != closestHittableNote)
         {
             // we have entered this if because one of the following is true:
                 // the previous note is out of hittable range
@@ -124,9 +126,9 @@ public class Track
             }
 
             closestHittableNoteAttempted = false;
-        }
 
-        previousHittableNote = ClosestHittableNote();
+            previousHittableNote = closestHittableNote;
+        }
     }
 
     void spawnNotesForNextBeat ()
