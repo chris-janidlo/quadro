@@ -1,5 +1,4 @@
 FIXME:
-turn based driver skips sometimes
 
 TODO:
 ===== GAMEPLAY =====
@@ -9,6 +8,12 @@ TODO:
 		ending difficulty incorporating broken triplets and sixteenth note patterns
 
 ===== CODE =====
+	make full com diamond visual clickable (including command)
+
+	move com (in)active colors to Colors.cs
+
+	group command visual in with com diamond on the code side?
+
 	make 3D aspect of track less janky
 		move it out of the canvas and into just regular 3D space?
 
@@ -28,6 +33,13 @@ TODO:
 		chilled out nostalgic chords seem to work well
 
 ===== UI =====
+	new font
+
+	group UI for diamond + resource bars + misc UI section and put it all on an in-game terminal monitor
+		80x60 character terminal? *pure text UI????*
+		give it some curve and make the characters bleed a little light
+		also make the track something fun and pseudo-skeuomorphic to fit the metaphor. maybe an arcade cabinet?
+
 	reusable hacker typing animation component
 		probably using Transitionable
 		transition from anything to empty string: delete characters
@@ -37,18 +49,11 @@ TODO:
 
 	make hit quality feedback emanate from the beat line
 
-	combo counter
+	misc UI section, for things that the player doesn't need to worry about but likes to know
+		combo
+		difficulty level
+		bsteps
+	
+	make com diamond cards flash on input
 
-	difficulty display
-
-	reorder UI weight/centering
-		design for multiple resolutions
-
-	new signal jammer diamond
-		each com gets a card that displays following information:
-			main effect (when command is null)
-			meta effect (when command isn't null)
-			indicator that says main/meta
-			the symbols that this com can clear
-
-	new font
+	make command in center of diamond match outer d-pad active/inactive indication

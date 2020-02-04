@@ -10,18 +10,16 @@ public class SignalJammerVisualizer : MonoBehaviour, IDriverSubscriber
 {
 	public ADriver Driver { get; set; }
 
-    public TextMeshProUGUI Text;
+    public ComVisualBox ComVisuals;
 
-    void Update ()
+    void Start ()
     {
-        Text.text = "  " + diamondDir(InputDirection.Up) + "\n" + diamondDir(InputDirection.Left) + "  " + diamondDir(InputDirection.Right) + "\n  " + diamondDir(InputDirection.Down);
-    }
-
-    string diamondDir (InputDirection dir)
-    {
-        string rgb = ColorUtility.ToHtmlStringRGB(Driver.Player.SignalJammer[dir].Color);
-        string a = (Driver.Player.CanComboInto(dir) ? "FF" : "66");
-
-        return $"<#{rgb}{a}>{dir.ToArrow()}</color>";
+        foreach (InputDirection dir in EnumUtil.AllValues<InputDirection>())
+        {
+            ComVisuals[dir].Initialize(dir);
+        }
     }
 }
+
+[Serializable]
+public class ComVisualBox : InputDirectionBox<ComVisual> {}

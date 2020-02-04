@@ -15,6 +15,7 @@ public static class MissedHitReasonExtensions
 {
 	public static int Damage (this MissedHitReason reason)
 	{
+		return 0;
 		switch (reason)
 		{
 			case MissedHitReason.NeverAttemptedBeat:

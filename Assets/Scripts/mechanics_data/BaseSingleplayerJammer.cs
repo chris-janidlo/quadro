@@ -89,7 +89,7 @@ public class BaseSingleplayerJammer : SignalJammer
             Direction = InputDirection.Left,
             InitialVector = new EffectVector(-1, false),
             Symbols = new List<NoteSymbol> { NoteSymbol.Zero, NoteSymbol.Two },
-            Color = new Color(0.87f, 1, 0.99f),
+            Color = new Color(0.5f, 0.8f, 1),
             MetaEffectDescription = $"Power - {ADD}",
             MainCombos = new ComboData
             {
