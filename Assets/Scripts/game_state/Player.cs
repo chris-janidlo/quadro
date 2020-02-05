@@ -9,9 +9,6 @@ public class Player
     public const int ARMOR_DECAY_RATE = 1;
     public const int NOTE_CLEARS_PER_DIFFICULTY_INCREASE = 24;
 
-    public const float SCREEN_SHAKE_TIME = 0.3f;
-    public const float SCREEN_SHAKE_AMOUNT = 2;
-
     public event Action<HitData> Hit;
 
     public readonly Track Track = new Track();
@@ -72,7 +69,6 @@ public class Player
         }
 
         int damageToBeDone = damage;
-        int healthDamage = 0;
 
         while (damageToBeDone > 0)
         {
@@ -83,13 +79,10 @@ public class Player
             else
             {
                 Health.Value--;
-                healthDamage++;
             }
 
             damageToBeDone--;
         }
-
-        CameraCache.Main.ShakeScreen2D(SCREEN_SHAKE_TIME, SCREEN_SHAKE_AMOUNT);
     }
 
     void tryPlayDirection (InputDirection direction, HitData originalHit)
