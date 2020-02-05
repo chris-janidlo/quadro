@@ -1,135 +1,120 @@
 using System;
-using System.Linq;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 public class RhythmGenerator
 {
-	public enum NoteSymbolTransition
-	{
-		Stay, GoToNext, GoToPrevious, JumpNextTwice, JumpPreviousTwice
-	}
+	public const int MIN_DIFFICULTY = 1, MAX_DIFFICULTY = 16;
 
-	// don't use the bag generator in crass for this class, since it doesn't let you seed its rng
-	public static readonly IReadOnlyList<NoteSymbolTransition> TransitionBag = new List<NoteSymbolTransition>
-	{
-		NoteSymbolTransition.Stay,
-		NoteSymbolTransition.Stay,
-		NoteSymbolTransition.Stay,
-		NoteSymbolTransition.Stay,
-		NoteSymbolTransition.GoToNext,
-		NoteSymbolTransition.GoToNext,
-		NoteSymbolTransition.GoToNext,
-		NoteSymbolTransition.GoToNext,
-		NoteSymbolTransition.GoToPrevious,
-		NoteSymbolTransition.GoToPrevious,
-		NoteSymbolTransition.GoToPrevious,
-		NoteSymbolTransition.GoToPrevious,
-		NoteSymbolTransition.JumpNextTwice,
-		NoteSymbolTransition.JumpNextTwice,
-		NoteSymbolTransition.JumpPreviousTwice,
-		NoteSymbolTransition.JumpPreviousTwice
-	}.AsReadOnly();
+	readonly IReadOnlyDictionary<int, IRhythmGeneratorStrategy> strategies;
 
-	Random random; // each card generator gets its own rng for better fine-grained control
-	List<NoteSymbolTransition> currentTransitionBag = new List<NoteSymbolTransition>(TransitionBag);
-
-	int beatsPerMeasure;
-
-	NoteSymbol currentSymbol;
-	bool[] currentMeasurePattern;
-	int positionInMeasurePattern;
+	int previousDifficulty = MIN_DIFFICULTY - 1;
 
 	public RhythmGenerator (int beatsPerMeasure, int randomSeed)
 	{
-		this.beatsPerMeasure = beatsPerMeasure;
-		random = new Random(randomSeed);
-
-		var allNoteSymbols = Enum.GetValues(typeof(NoteSymbol));
-		currentSymbol = (NoteSymbol) allNoteSymbols.GetValue(random.Next(allNoteSymbols.Length));
+		Random random = new Random(randomSeed);
+		strategies = initializeStrategies(beatsPerMeasure, random);
 	}
 
 	public RhythmGenerator (int beatsPerMeasure) : this(beatsPerMeasure, Environment.TickCount) {}
 
-	// Returns note data for the range [b, b+1) where b is the next un-generated note. Updates internal state as it goes
-	// TODO: take difficulty input
-	public List<Note> GetNotesForNextBeat ()
+	// TODO: inner-beat patterns: eighth notes, sixteenth notes, triplets
+	// TODO: multi-beat patterns: broken triplets, 4 against 3, any other arbitrary pattern
+	public Beat GetNextBeat (int positionInMeasure, int difficulty)
 	{
-		List<Note> notes = new List<Note>();
+		if (previousDifficulty == MIN_DIFFICULTY - 1) previousDifficulty = difficulty;
 
-		// TODO: inner-beat patterns: eighth notes, sixteenth notes, triplets
-		// TODO: multi-beat patterns: broken triplets, 4 against 3, any other arbitrary pattern
+		int prev = previousDifficulty;
+		previousDifficulty = difficulty;
 
-		if (currentMeasurePattern == null)
+		if (difficulty != prev)
 		{
-			currentMeasurePattern = randomBeatPattern();
-			positionInMeasurePattern = 0;
+			strategies[prev].ClearPositionState();
+			return new Beat(positionInMeasure);
 		}
-
-		if (currentMeasurePattern[positionInMeasurePattern])
+		else
 		{
-			notes.Add(new Note(positionInMeasurePattern, currentSymbol));
-			applySymbolTransition(getNextSymbolTransition());
-		}
-
-		positionInMeasurePattern++;
-
-		if (positionInMeasurePattern >= currentMeasurePattern.Length)
-		{
-			currentMeasurePattern = null;
-			positionInMeasurePattern = 0;
-		}
-
-		return notes;
-	}
-
-	bool[] randomBeatPattern ()
-	{
-        int uniqueCardPermutations = (1 << beatsPerMeasure) - 1;
-		int index = random.Next(1, uniqueCardPermutations);
-
-        string paddedBinary = Convert.ToString(index, 2).PadLeft(beatsPerMeasure, '0');
-        return paddedBinary.Select(c => c == '1').ToArray();
-    }
-
-	void applySymbolTransition (NoteSymbolTransition transition)
-	{
-		switch (transition)
-		{
-			case NoteSymbolTransition.Stay:
-				// do nothing
-				break;
-
-			case NoteSymbolTransition.GoToNext:
-				currentSymbol = currentSymbol.Next();
-				break;
-
-			case NoteSymbolTransition.GoToPrevious:
-				currentSymbol = currentSymbol.Previous();
-				break;
-
-			case NoteSymbolTransition.JumpNextTwice:
-				currentSymbol = currentSymbol.Next().Next();
-				break;
-
-			case NoteSymbolTransition.JumpPreviousTwice:
-				currentSymbol = currentSymbol.Previous().Previous();
-				break;
-
-			default:
-				throw new InvalidEnumArgumentException("unexpected NoteSymbolTransition " + transition.ToString());
+			return strategies[difficulty].GetNextBeat(positionInMeasure);
 		}
 	}
 
-	NoteSymbolTransition getNextSymbolTransition ()
+	Dictionary<int, IRhythmGeneratorStrategy> initializeStrategies (int beatsPerMeasure, Random random)
 	{
-		int index = random.Next(currentTransitionBag.Count);
-		var transition = currentTransitionBag[index];
-		currentTransitionBag.RemoveAt(index);
+		NoteSymbolBag symbolBag = new NoteSymbolBag(random);
 
-		if (currentTransitionBag.Count == 0) currentTransitionBag = new List<NoteSymbolTransition>(TransitionBag);
+		// really spacious for easy editing!
+		var strats = new Dictionary<int, IRhythmGeneratorStrategy>
+		{
+			{
+				1,
+				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+			},
+			{
+				2,
+				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+			},
+			{
+				3,
+				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+			},
+			{
+				4,
+				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+			},
+			{
+				5,
+				new EveryBeatStrategy()
+			},
+			{
+				6,
+				new EveryBeatStrategy()
+			},
+			{
+				7,
+				new EveryBeatStrategy()
+			},
+			{
+				8,
+				new EveryBeatStrategy()
+			},
+			{
+				9,
+				new EveryBeatStrategy()
+			},
+			{
+				10,
+				new EveryBeatStrategy()
+			},
+			{
+				11,
+				new EveryBeatStrategy()
+			},
+			{
+				12,
+				new EveryBeatStrategy()
+			},
+			{
+				13,
+				new EveryBeatStrategy()
+			},
+			{
+				14,
+				new EveryBeatStrategy()
+			},
+			{
+				15,
+				new EveryBeatStrategy()
+			},
+			{
+				16,
+				new EveryBeatStrategy()
+			}
+		};
 
-		return transition;
+		foreach (KeyValuePair<int, IRhythmGeneratorStrategy> strat in strats)
+		{
+			strat.Value.SymbolBag = symbolBag;
+		}
+
+		return strats;
 	}
 }

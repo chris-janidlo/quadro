@@ -17,7 +17,7 @@ public class Track
     public const int BPM_PER_BSTEP = 10;
 
     public readonly BoxedInt BSteps = new BoxedInt(8, 4, 20);
-    public readonly BoxedInt RhythmDifficulty = new BoxedInt(4, 1, 16);
+    public readonly BoxedInt RhythmDifficulty = new BoxedInt(4, RhythmGenerator.MIN_DIFFICULTY, RhythmGenerator.MAX_DIFFICULTY);
 
     public double Latency; // TODO: use this
 
@@ -133,9 +133,9 @@ public class Track
 
     void spawnNotesForNextBeat ()
     {
-        List<Note> newNotes = generator.GetNotesForNextBeat();
+        Beat nextBeat = generator.GetNextBeat(TruncatedPositionInMeasure, RhythmDifficulty.Value);
 
-        foreach (Note note in newNotes)
+        foreach (Note note in nextBeat.Notes)
         {
             note.BeatTicker = BEATS_SHOWN_IN_ADVANCE;
             notes.Add(note);
