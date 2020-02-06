@@ -33,7 +33,7 @@ public class NoteVisual : MonoBehaviour
 
 	void Update ()
 	{
-		if (note.BeatTicker > 0)
+		if (note.BeatsUntilThisNote > 0)
 		{
 			float lerpAmount = (float) (note.BeatsUntilThisNote - track.FractionalPartOfPosition) / Track.BEATS_SHOWN_IN_ADVANCE;
 			transform.position = Vector3.Lerp(target, start, lerpAmount);
