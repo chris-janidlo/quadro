@@ -46,73 +46,75 @@ public class RhythmGenerator
 		{
 			{
 				1,
-				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Breve, 0f)
 			},
 			{
 				2,
-				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Breve, 0.5f)
 			},
 			{
 				3,
-				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Whole, 0.5f)
 			},
 			{
 				4,
-				new RandomOnTheBeatStrategy(beatsPerMeasure, random)
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Half, 0f)
 			},
 			{
 				5,
-				new EveryBeatStrategy()
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Half, 0.1f)
 			},
 			{
 				6,
-				new EveryBeatStrategy()
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Half, 0.25f)
 			},
 			{
 				7,
-				new EveryBeatStrategy()
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Half, 0.5f)
 			},
 			{
 				8,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				9,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				10,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				11,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				12,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				13,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				14,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				15,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			},
 			{
 				16,
-				new EveryBeatStrategy()
+				new RandomOnTheBeatStrategy(beatsPerMeasure)
 			}
 		};
 
+		// dependency injection
 		foreach (KeyValuePair<int, IRhythmGeneratorStrategy> strat in strats)
 		{
 			strat.Value.SymbolBag = symbolBag;
+			strat.Value.Random = random;
 		}
 
 		return strats;

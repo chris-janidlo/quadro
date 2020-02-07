@@ -32,6 +32,8 @@ public class Beat
 
 	public void AddNote (Note note)
 	{
+		if (note == null) throw new ArgumentException("can't add null Note");
+
 		if (BasePosition == null)
 		{
 			BasePosition = (int) note.PositionInMeasure;
