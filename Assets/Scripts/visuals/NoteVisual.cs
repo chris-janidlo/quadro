@@ -21,6 +21,11 @@ public class NoteVisual : MonoBehaviour
 		this.target = target;
 
 		Text.text = note.Symbol.ToRadixRepresentation().ToString();
+
+		track.NoteDespawned += n =>
+		{
+			if (n == note) Destroy(gameObject);
+		};
 	}
 
 	void Start ()
@@ -33,14 +38,13 @@ public class NoteVisual : MonoBehaviour
 
 	void Update ()
 	{
-		float lerpAmount = (float) (note.BeatsUntilThisNote - track.FractionalPartOfPosition) / Track.BEATS_SHOWN_IN_ADVANCE;
+		float lerpAmount = (float) note.BeatsUntilThisNote / Track.BEATS_SHOWN_IN_ADVANCE;
 		transform.localPosition = Vector3.Lerp(target, start, lerpAmount);
 
-		if (note.BeatTicker <= 0 && track.FractionalPartOfPosition >= note.PositionInBeat)
+		if (note.BeatsUntilThisNote <= 0)
 		{
 			ColorFader.StartTransitionToIfNotAlreadyStarted(noAlpha, 60f / track.BPM);
+			Text.color = ColorFader.Value;
 		}
-
-		Text.color = ColorFader.Value;
 	}
 }

@@ -3,7 +3,6 @@ using System.Linq;
 
 public class RandomOnTheBeatStrategy : IRhythmGeneratorStrategy
 {
-	public NoteSymbolBag SymbolBag { get; set; }
 	public Random Random { get; set; }
 
 	int beatsPerMeasure;
@@ -15,9 +14,9 @@ public class RandomOnTheBeatStrategy : IRhythmGeneratorStrategy
 		this.beatsPerMeasure = beatsPerMeasure;
 	}
 
-	public Beat GetNextBeat (int positionInMeasure)
+	public PositionChunk GetPositionsForNextBeat (int positionInMeasure)
 	{
-		Beat beat = new Beat(positionInMeasure);
+		PositionChunk beat = new PositionChunk(positionInMeasure);
 
 		if (currentMeasurePattern == null)
 		{
@@ -26,7 +25,7 @@ public class RandomOnTheBeatStrategy : IRhythmGeneratorStrategy
 
 		if (currentMeasurePattern[positionInMeasure])
 		{
-			beat.AddNote(new Note(positionInMeasure, SymbolBag.GetNext()));
+			beat.AddValue(positionInMeasure);
 		}
 
 		if (positionInMeasure >= currentMeasurePattern.Length - 1)

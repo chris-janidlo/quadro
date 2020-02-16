@@ -46,12 +46,17 @@ public class Track
     int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
 
     List<Note> notes = new List<Note>();
-    RhythmGenerator generator = new RhythmGenerator(BEATS_PER_MEASURE);
+    RhythmGenerator generator;
 
     int beatTicker = -1, emptyBeatSpawnTicker;
     Note previousHittableNote;
     bool closestHittableNoteAttempted;
     double actualBSteps = 8;
+
+    public Track ()
+    {
+        generator = new RhythmGenerator(this, BEATS_PER_MEASURE);
+    }
 
     public HitData GetHitByAccuracy ()
     {
@@ -80,9 +85,9 @@ public class Track
 
         foreach (Note note in notes)
         {
-            if (note.BeatTicker > 1) continue;
+            if (note.BeatsUntilThisNote > 1) continue;
 
-            double distance = Math.Abs(FractionalPartOfPosition - note.BeatsUntilThisNote);
+            double distance = Math.Abs(note.BeatsUntilThisNote);
 
             if (distance <= HitQuality.Miss.BeatDistanceRange().x && distance < currentDistance)
             {
@@ -104,7 +109,7 @@ public class Track
 
             Beat?.Invoke();
 
-            tickNotes();
+            clearStaleNotes();
             spawnNotesForNextBeat();
         }
 
@@ -133,25 +138,22 @@ public class Track
 
     void spawnNotesForNextBeat ()
     {
-        Beat nextBeat = generator.GetNextBeat(TruncatedPositionInMeasure, RhythmDifficulty.Value);
+        NoteChunk nextBeat = generator.GetNextBeat(TruncatedPositionInMeasure, RhythmDifficulty.Value);
 
-        foreach (Note note in nextBeat.Notes)
+        foreach (Note note in nextBeat.Values)
         {
-            note.BeatTicker = BEATS_SHOWN_IN_ADVANCE;
             notes.Add(note);
             NoteSpawned?.Invoke(note);
         }
     }
 
-    void tickNotes ()
+    void clearStaleNotes ()
     {
 		for (int i = notes.Count - 1; i >= 0; i--)
         {
 			Note note = notes[i];
 
-            note.BeatTicker--;
-
-            if (note.BeatTicker <= -2)
+            if (note.BeatsUntilThisNote <= -1)
             {
                 notes.RemoveAt(i);
                 NoteDespawned?.Invoke(note);

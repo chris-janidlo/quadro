@@ -5,20 +5,24 @@ public class Note
 	public readonly NoteSymbol Symbol;
 	public readonly double PositionInMeasure;
 
-	public int BeatTicker;
-
-	public double BeatsUntilThisNote => BeatTicker + PositionInBeat;
+	public double BeatsUntilThisNote => beatTicker + PositionInBeat - track.FractionalPartOfPosition;
 	public double PositionInBeat => PositionInMeasure - (int) PositionInMeasure;
 
-	public Note (double positionInMeasure, NoteSymbol symbol)
+	Track track;
+	int beatTicker = Track.BEATS_SHOWN_IN_ADVANCE;
+
+	public Note (Track track, double positionInMeasure, NoteSymbol symbol)
 	{
 		if (positionInMeasure < 0 || positionInMeasure >= Track.BEATS_PER_MEASURE)
 		{
 			throw new ArgumentException($"note position must be in range [0, {Track.BEATS_PER_MEASURE}) (was given {positionInMeasure})");
 		}
 
+		this.track = track;
 		PositionInMeasure = positionInMeasure;
 		Symbol = symbol;
+
+		track.Beat += () => beatTicker--;
 	}
 }
 

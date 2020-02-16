@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 public class RhythmGenerator
@@ -6,41 +7,60 @@ public class RhythmGenerator
 	public const int MIN_DIFFICULTY = 1, MAX_DIFFICULTY = 16;
 
 	readonly IReadOnlyDictionary<int, IRhythmGeneratorStrategy> strategies;
+	int previousDifficulty;
+	bool difficultyNotInitialized = true;
+	
+	int beatsPerMeasure;
+	Track track;
+	Random random;
+	NoteSymbolBag symbolBag;
 
-	int previousDifficulty = MIN_DIFFICULTY - 1;
-
-	public RhythmGenerator (int beatsPerMeasure, int randomSeed)
+	public RhythmGenerator (Track track, int beatsPerMeasure, int randomSeed)
 	{
-		Random random = new Random(randomSeed);
-		strategies = initializeStrategies(beatsPerMeasure, random);
+		this.track = track;
+		this.beatsPerMeasure = beatsPerMeasure;
+
+		random = new Random(randomSeed);
+		symbolBag = new NoteSymbolBag(random);
+
+		strategies = initializeStrategies();
 	}
 
-	public RhythmGenerator (int beatsPerMeasure) : this(beatsPerMeasure, Environment.TickCount) {}
+	public RhythmGenerator (Track track, int beatsPerMeasure) : this(track, beatsPerMeasure, Environment.TickCount) {}
 
 	// TODO: inner-beat patterns: eighth notes, sixteenth notes, triplets
 	// TODO: multi-beat patterns: broken triplets, 4 against 3, any other arbitrary pattern
-	public Beat GetNextBeat (int positionInMeasure, int difficulty)
+	public NoteChunk GetNextBeat (int positionInMeasure, int difficulty)
 	{
-		if (previousDifficulty == MIN_DIFFICULTY - 1) previousDifficulty = difficulty;
+		if (difficultyNotInitialized)
+		{
+			previousDifficulty = difficulty;
+			difficultyNotInitialized = false;
+		}
+
+		if (difficulty < MIN_DIFFICULTY || difficulty > MAX_DIFFICULTY)
+			throw new ArgumentException($"difficulty must be in range ({MIN_DIFFICULTY}, {MAX_DIFFICULTY}); was given {difficulty}");
 
 		int prev = previousDifficulty;
 		previousDifficulty = difficulty;
 
+		NoteChunk beat = new NoteChunk(positionInMeasure);
+
 		if (difficulty != prev)
 		{
 			strategies[prev].ClearPositionState();
-			return new Beat(positionInMeasure);
 		}
 		else
 		{
-			return strategies[difficulty].GetNextBeat(positionInMeasure);
+			PositionChunk next = strategies[difficulty].GetPositionsForNextBeat(positionInMeasure);
+			beat.AddValues(next.Values.Select(p => new Note(track, p, symbolBag.GetNext())));
 		}
+
+		return beat;
 	}
 
-	Dictionary<int, IRhythmGeneratorStrategy> initializeStrategies (int beatsPerMeasure, Random random)
+	Dictionary<int, IRhythmGeneratorStrategy> initializeStrategies ()
 	{
-		NoteSymbolBag symbolBag = new NoteSymbolBag(random);
-
 		// really spacious for easy editing!
 		var strats = new Dictionary<int, IRhythmGeneratorStrategy>
 		{
@@ -112,10 +132,7 @@ public class RhythmGenerator
 
 		// dependency injection
 		foreach (KeyValuePair<int, IRhythmGeneratorStrategy> strat in strats)
-		{
-			strat.Value.SymbolBag = symbolBag;
 			strat.Value.Random = random;
-		}
 
 		return strats;
 	}

@@ -3,7 +3,6 @@ using System;
 // only works for 4/4 time
 public class CutTimeStrategy : IRhythmGeneratorStrategy
 {
-	public NoteSymbolBag SymbolBag { get; set; }
 	public Random Random { get; set; }
 
 	public enum NoteLength
@@ -32,7 +31,7 @@ public class CutTimeStrategy : IRhythmGeneratorStrategy
 		noteFrequency = (float) Math.Pow(2f, (int) guaranteedNotesBetweenSpawn);
 	}
 
-	public Beat GetNextBeat (int positionInMeasure)
+	public PositionChunk GetPositionsForNextBeat (int positionInMeasure)
 	{
 		if (noteFrequency >= 8)
 		{
@@ -57,9 +56,9 @@ public class CutTimeStrategy : IRhythmGeneratorStrategy
 		measureTicker = 0;
 	}
 
-	Beat getWholeMeasureNotes (int positionInMeasure)
+	PositionChunk getWholeMeasureNotes (int positionInMeasure)
 	{
-		Beat beat = new Beat(positionInMeasure);
+		PositionChunk beat = new PositionChunk(positionInMeasure);
 
 		if (positionInMeasure != 0) return beat;
 
@@ -67,7 +66,7 @@ public class CutTimeStrategy : IRhythmGeneratorStrategy
 
 		if (measureTicker == 0 || (shouldSpawnOffbeat() && measureTicker == measureFrequency / 2))
 		{
-			beat.AddNote(new Note(positionInMeasure, SymbolBag.GetNext()));
+			beat.AddValue(positionInMeasure);
 		}
 
 		measureTicker = (measureTicker + 1) % measureFrequency;
@@ -75,33 +74,33 @@ public class CutTimeStrategy : IRhythmGeneratorStrategy
 		return beat;
 	}
 
-	Beat getOnceAMeasure (int positionInMeasure)
+	PositionChunk getOnceAMeasure (int positionInMeasure)
 	{
-		Beat beat = new Beat(positionInMeasure);
+		PositionChunk beat = new PositionChunk(positionInMeasure);
 
 		if (positionInMeasure == 0 || (shouldSpawnOffbeat() && positionInMeasure == 2))
 		{
-			beat.AddNote(new Note(positionInMeasure, SymbolBag.GetNext()));
+			beat.AddValue(positionInMeasure);
 		}
 
 		return beat;
 	}
 
-	Beat getEveryTwoNotes (int positionInMeasure)
+	PositionChunk getEveryTwoNotes (int positionInMeasure)
 	{
-		Beat beat = new Beat(positionInMeasure);
+		PositionChunk beat = new PositionChunk(positionInMeasure);
 
 		if (positionInMeasure == 0 || positionInMeasure == 2 || shouldSpawnOffbeat())
 		{
-			beat.AddNote(new Note(positionInMeasure, SymbolBag.GetNext()));
+			beat.AddValue(positionInMeasure);
 		}
 
 		return beat;
 	}
 
-	Beat getSubBeatNotes (int positionInMeasure)
+	PositionChunk getSubBeatNotes (int positionInMeasure)
 	{
-		Beat beat = new Beat(positionInMeasure);
+		PositionChunk beat = new PositionChunk(positionInMeasure);
 
 		float ticker = 0;
 
@@ -109,7 +108,7 @@ public class CutTimeStrategy : IRhythmGeneratorStrategy
 		{
 			if (ticker % noteFrequency == 0 || shouldSpawnOffbeat())
 			{
-				beat.AddNote(new Note(positionInMeasure + ticker, SymbolBag.GetNext()));
+				beat.AddValue(positionInMeasure + ticker);
 			}
 
 			ticker += noteFrequency / 2;
