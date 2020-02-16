@@ -19,10 +19,10 @@ public class BeatFlasher : MonoBehaviour, IDriverSubscriber
 
 	void Update ()
     {
-        float fractionalPart = (float) Driver.Player.Track.FractionalPartOfPosition;
+        float positionInBeat = (float) Driver.Player.Track.CurrentPositionInBeat;
 
-        Color color = (fractionalPart <= FlashTimeBeats)
-            ? Color.Lerp(flashColor, baseColor, LerpSmoother.Evaluate(fractionalPart / FlashTimeBeats))
+        Color color = (positionInBeat <= FlashTimeBeats)
+            ? Color.Lerp(flashColor, baseColor, LerpSmoother.Evaluate(positionInBeat / FlashTimeBeats))
             : baseColor;
         
         foreach (LineRenderer line in Lines)

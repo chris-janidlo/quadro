@@ -16,6 +16,7 @@ public class Track
     public const int BEATS_SHOWN_IN_ADVANCE = 8;
     public const int BPM_PER_BSTEP = 10;
 
+    // never get the current BPM from this value; always get it from BPM property below
     public readonly BoxedInt BSteps = new BoxedInt(8, 4, 20);
     public readonly BoxedInt RhythmDifficulty = new BoxedInt(7, RhythmGenerator.MIN_DIFFICULTY, RhythmGenerator.MAX_DIFFICULTY);
 
@@ -30,7 +31,7 @@ public class Track
         {
             if (value < 0 || value >= Track.BEATS_PER_MEASURE)
             {
-                throw new ArgumentException("value must be between 0 and " + Track.BEATS_PER_MEASURE);
+                throw new ArgumentException($"value must be in range [0, {Track.BEATS_PER_MEASURE}); was given ${value}");
             }
 
             _beatPos = value;
@@ -38,10 +39,10 @@ public class Track
         }
     }
 
-    public int BPM => (int) (actualBSteps * BPM_PER_BSTEP);
+    public int BPM => (int) (apparentBSteps * BPM_PER_BSTEP);
 
-    public int TruncatedPositionInMeasure => (int) CurrentPositionInMeasure;
-    public double FractionalPartOfPosition => CurrentPositionInMeasure - TruncatedPositionInMeasure;
+    public int CurrentBeatPosition => (int) CurrentPositionInMeasure;
+    public double CurrentPositionInBeat => CurrentPositionInMeasure - CurrentBeatPosition;
 
     int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
 
@@ -51,11 +52,14 @@ public class Track
     int beatTicker = -1, emptyBeatSpawnTicker;
     Note previousHittableNote;
     bool closestHittableNoteAttempted;
-    double actualBSteps = 8;
+
+    // the actual value that is currently in play, which lags behind BSteps a bit (based on an easing function) in order to make the BPM change not so sudden
+    double apparentBSteps;
 
     public Track ()
     {
         generator = new RhythmGenerator(this, BEATS_PER_MEASURE);
+        apparentBSteps = BSteps.Value;
     }
 
     public HitData GetHitByAccuracy ()
@@ -101,10 +105,10 @@ public class Track
 
     void audioTimeDidUpdate ()
     {
-        if (TruncatedPositionInMeasure != beatTicker)
+        if (CurrentBeatPosition != beatTicker)
         {
             if (CurrentPositionInMeasure >= beatTicker + 1) beatTicker++; // tick
-            else if (TruncatedPositionInMeasure == 0) beatTicker = 0; // loop
+            else if (CurrentBeatPosition == 0) beatTicker = 0; // loop
             else throw new InvalidOperationException("something fucky with beats");
 
             Beat?.Invoke();
@@ -113,7 +117,10 @@ public class Track
             spawnNotesForNextBeat();
         }
 
-        actualBSteps = Mathf.Lerp((float) actualBSteps, BSteps.Value, EasingFunction.EaseInQuint(0, 1, (float) FractionalPartOfPosition));
+        if (apparentBSteps != BSteps.Value)
+        {
+            apparentBSteps = Mathf.Lerp((float) apparentBSteps, BSteps.Value, EasingFunction.EaseInQuint(0, 1, (float) CurrentPositionInBeat));
+        }
 
         var closestHittableNote = ClosestHittableNote();
 
@@ -127,7 +134,7 @@ public class Track
             // if the player completely skipped this beat when they shouldn't have, fail
             if (previousHittableNote != null && !closestHittableNoteAttempted)
             {
-                DidntAttemptBeat?.Invoke(new HitData(FractionalPartOfPosition, MissedHitReason.NeverAttemptedBeat));
+                DidntAttemptBeat?.Invoke(new HitData(CurrentPositionInBeat, MissedHitReason.NeverAttemptedBeat));
             }
 
             closestHittableNoteAttempted = false;
@@ -138,7 +145,7 @@ public class Track
 
     void spawnNotesForNextBeat ()
     {
-        NoteChunk nextBeat = generator.GetNextBeat(TruncatedPositionInMeasure, RhythmDifficulty.Value);
+        NoteChunk nextBeat = generator.GetNextBeat(CurrentBeatPosition, RhythmDifficulty.Value);
 
         foreach (Note note in nextBeat.Values)
         {

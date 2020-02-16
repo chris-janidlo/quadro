@@ -5,7 +5,7 @@ public class Note
 	public readonly NoteSymbol Symbol;
 	public readonly double PositionInMeasure;
 
-	public double BeatsUntilThisNote => beatTicker + PositionInBeat - track.FractionalPartOfPosition;
+	public double BeatsUntilThisNote => beatTicker + PositionInBeat - track.CurrentPositionInBeat;
 	public double PositionInBeat => PositionInMeasure - (int) PositionInMeasure;
 
 	Track track;

@@ -127,7 +127,7 @@ public class Player
 
     void decayArmor ()
     {
-        if (Track.TruncatedPositionInMeasure == 0)
+        if (Track.CurrentBeatPosition == 0)
         {
             Armor.Value -= ARMOR_DECAY_RATE;
         }
