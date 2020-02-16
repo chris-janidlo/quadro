@@ -13,6 +13,7 @@ public class NoteSpawner : MonoBehaviour, IDriverSubscriber
 		Driver.Player.Track.NoteSpawned += note =>
 		{
 			var visual = Instantiate(NoteVisualPrefab, transform);
+			visual.transform.rotation = Quaternion.identity;
 
 			float x = Mathf.Lerp(-TrackWidth / 2, TrackWidth / 2, (float) note.PositionInMeasure / Track.BEATS_PER_MEASURE);
 
