@@ -4,7 +4,7 @@ using crass;
 
 public class NoteVisual : MonoBehaviour
 {
-	public TextMeshProUGUI Text;
+	public TextMeshPro Text;
 	public TransitionableColor ColorFader;
 
 	Note note;
@@ -36,11 +36,11 @@ public class NoteVisual : MonoBehaviour
 		if (note.BeatsUntilThisNote > 0)
 		{
 			float lerpAmount = (float) (note.BeatsUntilThisNote - track.FractionalPartOfPosition) / Track.BEATS_SHOWN_IN_ADVANCE;
-			transform.position = Vector3.Lerp(target, start, lerpAmount);
+			transform.localPosition = Vector3.Lerp(target, start, lerpAmount);
 		}
 		else
 		{
-			transform.position = target;
+			transform.localPosition = target;
 
 			ColorFader.StartTransitionToIfNotAlreadyStarted(noAlpha, 60f / track.BPM);
 			Text.color = ColorFader.Value;

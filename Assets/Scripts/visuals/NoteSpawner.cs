@@ -5,7 +5,7 @@ public class NoteSpawner : MonoBehaviour, IDriverSubscriber
 {
 	public ADriver Driver { get; set; }
 
-	public Transform NoteStartLeft, NoteStartRight, NoteEnd;
+	public float TrackZDepth, TrackWidth;
 	public NoteVisual NoteVisualPrefab;
 
 	void Start ()
@@ -14,10 +14,12 @@ public class NoteSpawner : MonoBehaviour, IDriverSubscriber
 		{
 			var visual = Instantiate(NoteVisualPrefab, transform);
 
-			Vector3 startPos = Vector3.Lerp(NoteStartLeft.position, NoteStartRight.position, (float) note.PositionInMeasure / Track.BEATS_PER_MEASURE);
-			Vector3 endPos = new Vector3(startPos.x, NoteEnd.transform.position.y, NoteEnd.transform.position.z);
+			float x = Mathf.Lerp(-TrackWidth / 2, TrackWidth / 2, (float) note.PositionInMeasure / Track.BEATS_PER_MEASURE);
 
-			visual.transform.position = startPos;
+			Vector3 startPos = new Vector3(x, 0, TrackZDepth);
+			Vector3 endPos = new Vector3(x, 0, 0);
+
+			visual.transform.localPosition = startPos;
 			visual.Initialize(note, Driver.Player.Track, startPos, endPos);
 		};
 	}

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BeatFlasher : MonoBehaviour, IDriverSubscriber
 {
@@ -13,22 +12,23 @@ public class BeatFlasher : MonoBehaviour, IDriverSubscriber
 
     public AnimationCurve LerpSmoother;
 
-    public Graphic Graphic;
+    public List<LineRenderer> Lines;
 
-    Color flashColor => Colors.Instance.Excellent;
-    Color baseColor => Colors.Instance.Neutral;
+    Color flashColor => Colors.Instance.Good;
+    Color baseColor => Color.clear;
 
 	void Update ()
     {
         float fractionalPart = (float) Driver.Player.Track.FractionalPartOfPosition;
 
-        if (fractionalPart <= FlashTimeBeats)
+        Color color = (fractionalPart <= FlashTimeBeats)
+            ? Color.Lerp(flashColor, baseColor, LerpSmoother.Evaluate(fractionalPart / FlashTimeBeats))
+            : baseColor;
+        
+        foreach (LineRenderer line in Lines)
         {
-            Graphic.color = Color.Lerp(flashColor, baseColor, LerpSmoother.Evaluate(fractionalPart / FlashTimeBeats));
-        }
-        else
-        {
-            Graphic.color = baseColor;
+            line.startColor = color;
+            line.endColor = color;
         }
     }
 }

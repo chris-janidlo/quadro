@@ -17,7 +17,7 @@ public class Track
     public const int BPM_PER_BSTEP = 10;
 
     public readonly BoxedInt BSteps = new BoxedInt(8, 4, 20);
-    public readonly BoxedInt RhythmDifficulty = new BoxedInt(4, RhythmGenerator.MIN_DIFFICULTY, RhythmGenerator.MAX_DIFFICULTY);
+    public readonly BoxedInt RhythmDifficulty = new BoxedInt(7, RhythmGenerator.MIN_DIFFICULTY, RhythmGenerator.MAX_DIFFICULTY);
 
     public double Latency; // TODO: use this
 
