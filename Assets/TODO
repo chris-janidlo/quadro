@@ -14,9 +14,6 @@ TODO:
 
 	group command visual in with com diamond on the code side?
 
-	make 3D aspect of track less janky
-		move it out of the canvas and into just regular 3D space?
-
 	add additional jammers
 
 	for future non-track command targets: make ICommandTarget (or something similar) to mark classes that can be targeted
