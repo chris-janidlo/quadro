@@ -35,3 +35,11 @@ signal jammers
 what coms are shared between jammers?
 
 charge meter as special finisher
+
+expressiveness ideas
+	only "required" notes hurt you when you miss them
+		can be paired with note colors idea
+	? change the concept of coms "clearing" notes to notes "empowering" coms. now coms only add to the command if the current note empowers the com (otherwise do chip damage to opponent or something)
+	some mechanism whereby you can bail out of a com? or where you can store coms for later?
+		maybe something like you have multiple cpus, each with various register states and statements in their memories. you can press the associated number button while on a beat to switch to that cpu. coms overwrite register/instruction state
+	different note colors, which do different kinds of damage if you fail to properly clear them
