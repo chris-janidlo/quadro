@@ -32,12 +32,30 @@ signal jammers
 
 what coms are shared between jammers?
 
-charge meter as special finisher
+charge system, but where the charge only goes to your active cpu, and makes the effect much stronger
 
-expressiveness ideas
+expressive buttons ideas
 	only "required" notes hurt you when you miss them
 		can be paired with note colors idea
 	? change the concept of coms "clearing" notes to notes "empowering" coms. now coms only add to the command if the current note empowers the com (otherwise do chip damage to opponent or something)
 	some mechanism whereby you can bail out of a com? or where you can store coms for later?
 		maybe something like you have multiple cpus, each with various register states and statements in their memories. you can press the associated number button while on a beat to switch to that cpu. coms overwrite register/instruction state
 	different note colors, which do different kinds of damage if you fail to properly clear them
+
+expressive rhythm system ideas
+	except for evil notes, completely get rid of notes. instead, do a timing system
+		every note has a set of timings. that set changes depending on what part of the measure and what part of the beat the note was played on
+		after playing a note, the next note must be played during one of the timing windows
+		for example, a note might have timings equivalent to an eighth note and a triplet. say the player plays the note at measure position 1. the next note must be played close to either 1.333333 or 1.5. if the note is played on 1.33333, future note timings will likely be restricted to multiples/factors of triplets to not sound weird
+
+com idea dump
+	register damage lower all registers of cpu by 1 to 0 at lowest
+	lock off a cpu from any changes for x beats
+	bpm damage
+	hurt opponent x pts over y beats
+	hurt opponent with large x, then x-1, x-2, so on until 0
+	steal opponent's registers - for your current cpu and their current cpu, set your registers equal to theirs, and set theirs to zero
+	scramble registers
+	lifesteal damage
+	for any kind of "damaging" effect, there can be an equivalent "evil note"
+		evil notes cause a single unit of the effect if the player fails to totally clear them (including symbol values etc)
