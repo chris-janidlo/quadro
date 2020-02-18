@@ -24,13 +24,11 @@ signal jammers
 		token basic jammer that is bad at nothing but also good at nothing
 		beginner jammer/model for the rest of the game
 
-	state machine
-		jammer with unique and finicky resource pool in the form of a super basic cpu-like system
-		has N registers that it can manipulate with instructions, and commands that depend on the states of those N registers
+	jammer with unique and finicky resource pool in the form of a super basic cpu-like system
 	
 	at least one jammer with a non-4/4 measure length
 
-	jammer that swings harder the more cards they have
+	jammer with a fluctuating number of cpus, where instead of jumping between cpus, they go one up or down
 
 what coms are shared between jammers?
 
