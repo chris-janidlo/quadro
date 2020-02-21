@@ -46,6 +46,7 @@ TODO:
 	physical com input button interface
 		heavily inspired by 80s computer keyboards like commodore vic-20 and zx spectrum
 		each com is a radio-ish button with an led indicator. the button top has the com's name. depending on the com, there's some indication about stuff like what it can clear and what it can combo to (grease pencil, tape with pen on it, fancy embossed stuff). if the led is lit, you can play the com. the button's visible "pushable" state (ie, in or out) corresponds with the led. when you play a valid com input, it depresses, any non-comboable coms depress as well, and any comboable coms pop out
+		also have a radio button section for cpu switching
 
 	make hit quality feedback emanate from the beat line
 
