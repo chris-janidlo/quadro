@@ -32,10 +32,9 @@ TODO:
 		chilled out nostalgic chords seem to work well
 
 ===== UI =====
-	group UI for diamond + resource bars + misc UI section and put it all on an in-game terminal monitor
+	group UI for CPUs + resource bars + misc UI section and put it all on an in-game terminal monitor
 		80x60 character terminal? *pure text UI????*
 		give it some curve and make the characters bleed a little light
-		also make the track something fun and pseudo-skeuomorphic to fit the metaphor. maybe an arcade cabinet?
 
 	reusable hacker typing animation component
 		probably using Transitionable
@@ -43,6 +42,10 @@ TODO:
 		transition from empty string to anything: type characters
 		transition from one non-empty to another: delete then type
 		probably include some dope ass fading as well
+
+	physical com input button interface
+		heavily inspired by 80s computer keyboards like commodore vic-20 and zx spectrum
+		each com is a radio-ish button with an led indicator. the button top has the com's name. depending on the com, there's some indication about stuff like what it can clear and what it can combo to (grease pencil, tape with pen on it, fancy embossed stuff). if the led is lit, you can play the com. the button's visible "pushable" state (ie, in or out) corresponds with the led. when you play a valid com input, it depresses, any non-comboable coms depress as well, and any comboable coms pop out
 
 	make hit quality feedback emanate from the beat line
 
