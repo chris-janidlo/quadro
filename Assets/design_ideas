@@ -59,3 +59,11 @@ com idea dump
 	lifesteal damage
 	for any kind of "damaging" effect, there can be an equivalent "evil note"
 		evil notes cause a single unit of the effect if the player fails to totally clear them (including symbol values etc)
+	boomerang (hits once, waits a while, hits again. if opponent "dodges" it hurts the player)
+	cpu measures the average accuracy of [the last n hits on it / every hit on it since last cast] and that accuracy determines chance to hit on certain instrs
+	explosion that hits you as much or more as it hits the opponent
+	booby trapping cpus/registers/coms/measure positions/note symbols
+		for whatever gameplay object is booby trapped, interacting with it (ie hitting a com, switching or adding to a cpu, clearing a certain note symbol, etc) deals damage to you
+		various ways it could work
+			you and opponent are both booby trapped, whoever hits it first takes damage and clears it for both
+			only your opponent is trapped, and only for a certain number of turns
