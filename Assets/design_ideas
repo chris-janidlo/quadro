@@ -12,8 +12,8 @@ signal jammers
 		in order to balance out the requirement to hit cast at every other beat, make it hard to clear commands in general
 			like you should have to look a couple commands ahead to plan
 
-	chaotic/commandplex
-		the options available to you every command are based on rng and have commandplex interactions with one another
+	chaotic/complex
+		the options available to you every command are based on rng and have complex interactions with one another
 		likes playing at low BPMs
 
 	debuffer
@@ -24,26 +24,14 @@ signal jammers
 		token basic jammer that is bad at nothing but also good at nothing
 		beginner jammer/model for the rest of the game
 
-	jammer with unique and finicky resource pool in the form of a super basic cpu-like system
-	
-	at least one jammer with a non-4/4 measure length
-
 	jammer with a fluctuating number of cpus, where instead of jumping between cpus, they go one up or down
 
 what commands are shared between jammers?
 
 charge system, but where the charge only goes to your active cpu, and makes the effect much stronger
 
-expressive buttons ideas
-	only "required" notes hurt you when you miss them
-		can be paired with note colors idea
-	? change the concept of commands "clearing" notes to notes "empowering" commands. now commands only add to the command if the current note empowers the command (otherwise do chip damage to opponent or something)
-	some mechanism whereby you can bail out of a command? or where you can store commands for later?
-		maybe something like you have multiple cpus, each with various register states and statements in their memories. you can press the associated number button while on a beat to switch to that cpu. commands overwrite register/instruction state
-	different note colors, which do different kinds of damage if you fail to properly clear them
-
 expressive rhythm system ideas
-	except for evil notes, commandpletely get rid of notes. instead, do a timing system
+	except for evil notes, completely get rid of notes. instead, do a timing system
 		every note has a set of timings. that set changes depending on what part of the measure and what part of the beat the note was played on
 		after playing a note, the next note must be played during one of the timing windows
 		for example, a note might have timings equivalent to an eighth note and a triplet. say the player plays the note at measure position 1. the next note must be played close to either 1.333333 or 1.5. if the note is played on 1.33333, future note timings will likely be restricted to multiples/factors of triplets to not sound weird

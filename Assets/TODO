@@ -8,15 +8,9 @@ TODO:
 		ending difficulty incorporating broken triplets and sixteenth note patterns
 
 ===== CODE =====
-	make full command diamond visual clickable (including command)
-
 	move command (in)active colors to Colors.cs
 
-	group command visual in with command diamond on the code side?
-
 	add additional jammers
-
-	for future non-track command targets: make ICommandTarget (or something similar) to mark classes that can be targeted
 
 	add some kind of match info object containing the friendly player and the opposing player, and pass that to commands
 
@@ -54,7 +48,3 @@ TODO:
 		combo
 		difficulty level
 		bsteps
-	
-	make command diamond cards flash on input
-
-	make command in center of diamond match outer d-pad active/inactive indication
