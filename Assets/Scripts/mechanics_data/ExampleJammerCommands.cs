@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExampleJammerCommandA : Command
 {
-	protected override CommandData data => new CommandData
+	protected override CommandData _data => new CommandData
     {
         Name = "A",
         Description = "",
@@ -29,7 +29,7 @@ public class ExampleJammerCommandA : Command
 
 public class ExampleJammerCommandB : Command
 {
-	protected override CommandData data => new CommandData
+	protected override CommandData _data => new CommandData
     {
         Name = "B",
         Description = "",
@@ -54,7 +54,7 @@ public class ExampleJammerCommandB : Command
 
 public class ExampleJammerCommandC : Command
 {
-	protected override CommandData data => new CommandData
+	protected override CommandData _data => new CommandData
     {
         Name = "C",
         Description = "",
@@ -79,7 +79,7 @@ public class ExampleJammerCommandC : Command
 
 public class ExampleJammerCommandD : Command
 {
-	protected override CommandData data => new CommandData
+	protected override CommandData _data => new CommandData
     {
         Name = "D",
         Description = "",
@@ -104,7 +104,7 @@ public class ExampleJammerCommandD : Command
 
 public class ExampleJammerCommandE : Command
 {
-	protected override CommandData data => new CommandData
+	protected override CommandData _data => new CommandData
     {
         Name = "E",
         Description = "",
@@ -129,7 +129,7 @@ public class ExampleJammerCommandE : Command
 
 public class ExampleJammerCommandF : Command
 {
-	protected override CommandData data => new CommandData
+	protected override CommandData _data => new CommandData
     {
         Name = "F",
         Description = "",
@@ -154,7 +154,7 @@ public class ExampleJammerCommandF : Command
 
 public class ExampleJammerCommandG : Command
 {
-	protected override CommandData data => new CommandData
+	protected override CommandData _data => new CommandData
     {
         Name = "G",
         Description = "",

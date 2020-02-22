@@ -24,12 +24,15 @@ public abstract class Command
         public CommandInputBools ComboData;
     }
 
-    protected abstract CommandData data { get; }
+    protected abstract CommandData _data { get; }
 
-    public string Name => data.Name;
-    public string Description => data.Description;
-    public Color Color => data.Color;
-    public CommandInputBools ComboData => data.ComboData;
+    private CommandData? _cachedData;
+    protected CommandData cachedData => (_cachedData ?? (_cachedData = _data)).Value;
+
+    public string Name => cachedData.Name;
+    public string Description => cachedData.Description;
+    public Color Color => cachedData.Color;
+    public CommandInputBools ComboData => cachedData.ComboData;
 
     public abstract void DoEffect (CPU currentCPU);
 }
