@@ -20,8 +20,6 @@ public abstract class ADriver : MonoBehaviour
     public virtual void Initialize ()
     {
         Player = new Player(SignalJammer);
-        Player.Hit += hit => Debug.Log(hit.ToString());
-
         initialized = true;
     }
 
