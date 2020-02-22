@@ -34,5 +34,5 @@ public abstract class Command
     public Color Color => cachedData.Color;
     public CommandInputBools ComboData => cachedData.ComboData;
 
-    public abstract void DoEffect (CPU currentCPU);
+    public abstract void DoEffect (CPU cpu);
 }
