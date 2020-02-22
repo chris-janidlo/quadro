@@ -1,50 +1,43 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using crass;
 
 public abstract class ADriver : MonoBehaviour
 {
-    public ButtonBox DirectionalKeys;
-    public string CastKey;
+    public SignalJammer SignalJammer;
+
+    public ComInputStrings ComKeys;
+    public CPUSwitchInputStrings CPUSwitchKeys;
+    public string CPUExecuteKey;
 
     public Player Player { get; private set; }
 
-    public virtual void Initialize (SignalJammer signalJammer)
-    {
-        Player = new Player(signalJammer);
+    protected bool initialized;
 
+    public virtual void Initialize ()
+    {
+        Player = new Player(SignalJammer);
         Player.Hit += hit => Debug.Log(hit.ToString());
+
+        initialized = true;
     }
 
-    protected ComInput? getInput ()
+    protected InputFrame getInput ()
     {
-        if (Input.GetKeyDown(CastKey))
-        {
-            return ComInput.Cast;
-        }
-        else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Up]))
-        {
-            return ComInput.Up;
-        }
-        else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Left]))
-        {
-            return ComInput.Left;
-        }
-        else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Down]))
-        {
-            return ComInput.Down;
-        }
-        else if (Input.GetKeyDown(DirectionalKeys[InputDirection.Right]))
-        {
-            return ComInput.Right;
-        }
-        else
-        {
-            return null;
-        }
+        return new InputFrame
+        (
+            EnumUtil.AllValues<ComInput>()
+                .Select(ci => (ComInput?) ci)
+                .FirstOrDefault(cin => Input.GetKeyDown(ComKeys[cin.Value])),
+
+            EnumUtil.AllValues<CPUSwitchInput>()
+                .Select(csi => (CPUSwitchInput?) csi)
+                .FirstOrDefault(csin => Input.GetKeyDown(CPUSwitchKeys[csin.Value])),
+
+            Input.GetKeyDown(CPUExecuteKey)
+        );
     }
 }
-
-[Serializable]
-public class ButtonBox : InputDirectionBox<string> {}

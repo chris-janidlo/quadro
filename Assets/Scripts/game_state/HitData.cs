@@ -12,8 +12,6 @@ public class HitData
 
     public bool ClearedBeat => MissReason == null;
 
-    public bool KillsCommand => !ClearedBeat && MissReason != MissedHitReason.ComCantClearAttemptedBeat;
-
     public HitData (double distanceFromBeat, MissedHitReason? missReason = null)
     {
         if (distanceFromBeat < 0)
@@ -50,8 +48,8 @@ public class HitData
     {
         if (MissReason != null &&
             (MissReason.Value == MissedHitReason.ComCantCombo ||
-             MissReason.Value == MissedHitReason.InvalidCastInput ||
-             MissReason.Value == MissedHitReason.ComCantClearAttemptedBeat))
+             MissReason.Value == MissedHitReason.CPUHasNoInstr ||
+             MissReason.Value == MissedHitReason.AlreadyOnCPU))
         {
             return "Invalid";
         }

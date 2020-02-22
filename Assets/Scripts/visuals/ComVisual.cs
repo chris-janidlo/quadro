@@ -9,42 +9,30 @@ public class ComVisual : MonoBehaviour, IDriverSubscriber
 {
     public ADriver Driver { get; set; }
 
-    public Color NormalColor, InactiveColor;
-    public TransitionableFloat VisibleColorLerp;
+    public Color ActiveColor, InactiveColor;
+    public TransitionableColor VisibleColorLerp;
 
     public Image Border;
-    public TextMeshProUGUI TitleTextMain, TitleTextMeta, EffectText, ClearsText;
+    public TextMeshProUGUI NameText;
 
-    Com com => Driver.Player.SignalJammer[dir];
+    Com com => Driver.Player.Coms[dir];
 
-    InputDirection dir;
+    ComInput dir;
 
-    public void Initialize (InputDirection dir)
+    public void Initialize (ComInput dir)
     {
         this.dir = dir;
 
-        ClearsText.text = String.Join(" ", com.Symbols.Select(s => s.ToRadixRepresentation()));
+        NameText.text = com.Name;
 
         VisibleColorLerp.AttachMonoBehaviour(this);
     }
 
     void Update ()
     {
-        bool showMain = Driver.Player.Command == null;
-        bool showAtAll = Driver.Player.CanComboInto(dir);
+        VisibleColorLerp.StartTransitionToIfNotAlreadyStarted(Driver.Player.CanComboInto(dir) ? ActiveColor : InactiveColor);
 
-        EffectText.text = showMain ? com.BaseMainEffectDescription : com.MetaEffectDescription;
-
-        VisibleColorLerp.StartTransitionToIfNotAlreadyStarted(showAtAll ? 1 : 0);
-
-        Color active = Color.Lerp(InactiveColor, NormalColor, VisibleColorLerp.Value);
-        Color inactive = Color.Lerp(NormalColor, InactiveColor, VisibleColorLerp.Value);
-
-        TitleTextMain.color = (showAtAll && showMain) ? active : inactive;
-        TitleTextMeta.color = (showAtAll && !showMain) ? active : inactive;
-
-        Border.color = active;
-        EffectText.color = active;
-        ClearsText.color = active;
+        Border.color = VisibleColorLerp.Value;
+        NameText.color = VisibleColorLerp.Value;
     }
 }

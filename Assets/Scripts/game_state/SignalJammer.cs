@@ -1,25 +1,13 @@
-﻿using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using UnityEngine;
 
-public abstract class SignalJammer
+[CreateAssetMenu(menuName = "Signal Jammer", fileName = "NewJammer.asset")]
+public class SignalJammer : ScriptableObject
 {
-    public Com this[InputDirection direction] => coms[direction];
-
-    InputDirectionBox<Com> _coms;
-    InputDirectionBox<Com> coms
-    {
-        get
-        {
-            if (_coms == null)
-            {
-                _coms = initializeComs();
-            }
-            return _coms;
-        }
-    }
-
-    protected abstract InputDirectionBox<Com> initializeComs ();
+    public string Name;
+    [TextArea]
+    public string Description;
+    public ComInputStrings ComClassNames;
+    public int MaxHealth, NumCPUs;
+    public float ArmorDecayPerBeat;
 }

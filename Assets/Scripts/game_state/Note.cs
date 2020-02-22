@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class Note
 {
@@ -28,7 +29,7 @@ public class Note
 
 public enum NoteSymbol
 {
-	Zero, One, Two, Three
+	One, Two, Four, Five
 }
 
 public static class NoteSymbolExtentions
@@ -50,5 +51,17 @@ public static class NoteSymbolExtentions
 		if (prev < 0) prev = NUM_SYMBOLS - 1;
 
 		return (NoteSymbol) prev;
+	}
+
+	public static bool HasInChord (this NoteSymbol ns, ComInput ci)
+	{
+		switch (ns)
+		{
+			case NoteSymbol.One: return new List<ComInput> { ComInput.C, ComInput.E, ComInput.G }.Contains(ci);
+			case NoteSymbol.Two: return new List<ComInput> { ComInput.D, ComInput.F, ComInput.A }.Contains(ci);
+			case NoteSymbol.Four: return new List<ComInput> { ComInput.F, ComInput.A, ComInput.C }.Contains(ci);
+			case NoteSymbol.Five: return new List<ComInput> { ComInput.G, ComInput.B, ComInput.D }.Contains(ci);
+			default: throw new ArgumentException("unexpected NoteSymbol " + ns);
+		}
 	}
 }

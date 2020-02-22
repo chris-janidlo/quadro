@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,103 +7,109 @@ using crass;
 
 public class Player
 {
-    public const int ARMOR_DECAY_RATE = 1;
-    public const int NOTE_CLEARS_PER_DIFFICULTY_INCREASE = 24;
-
     public event Action<HitData> Hit;
 
     public readonly Track Track = new Track();
 
     public readonly SignalJammer SignalJammer;
 
-    public readonly BoxedInt Health = new BoxedInt(16, 0, 16);
-    public readonly BoxedInt Armor = new BoxedInt(0, 0, 16);
+    public readonly BoxedInt Health;
+    public readonly BoxedInt Armor;
+
+    public readonly ComInputBox<Com> Coms;
+    public readonly List<CPU> CPUs;
 
     public int ComboCounter { get; private set; }
-    public int DifficultyIncreaseTicker { get; private set; } = NOTE_CLEARS_PER_DIFFICULTY_INCREASE;
+    public int CPUIndex { get; private set; }
 
     public bool Dead => Health.Value == 0;
-    public Command Command => ComboCounter == 0 || justCast ? null : innerCommand;
+    public CPU ActiveCPU => CPUs[CPUIndex];
 
-    Command innerCommand;
-    bool justCast;
+    Com lastCom;
+    float armorDecayCounter;
 
     public Player (SignalJammer signalJammer)
     {
         SignalJammer = signalJammer;
 
+        int mh = signalJammer.MaxHealth;
+        
+        Health = new BoxedInt(mh, 0, mh);
+        Armor = new BoxedInt(0, 0, mh);
+
+        Coms = new ComInputBox<Com>();
+
+        foreach (var direction in EnumUtil.AllValues<ComInput>())
+        {
+            Coms[direction] = Com.FromTypeName(signalJammer.ComClassNames[direction]);
+        }
+
+        CPUs = new List<CPU>(signalJammer.NumCPUs);
+
+        for (int i = 0; i < signalJammer.NumCPUs; i++)
+        {
+            CPUs.Add(new CPU(this));
+        }
+
         Track.DidntAttemptBeat += processHit;
         Track.Beat += decayArmor;
     }
 
-    public void DoComInput (ComInput input)
+    public void DoInput (InputFrame input)
     {
         HitData hit = Track.GetHitByAccuracy();
 
-        if (hit.KillsCommand)
+        if (!hit.ClearedBeat)
         {
             processHit(hit);
+            return;
         }
-        else if (input == ComInput.Cast)
+
+        if (input.ComInput != null)
         {
-            tryCastCommand(hit);
+            tryPlayDirection(input.ComInput.Value, hit);
+        }
+        else if (input.CPUSwitchInput != null)
+        {
+            trySwitchCPU(input.CPUSwitchInput.Value, hit);
         }
         else
         {
-            tryPlayDirection((InputDirection) input, hit);
+            tryExecuteCPU(hit);
         }
     }
 
-    public bool CanComboInto (InputDirection direction)
-    {
-        return innerCommand == null || innerCommand.CanComboInto(direction);
-    }
+    public bool CanComboInto (ComInput direction)
+        => lastCom == null || lastCom.ComboData[direction];
 
     // damage must be a non-negative value
     public void TakeShieldedDamage (int damage)
     {
         if (damage == 0) return;
 
-        if (damage < 0)
-        {
-            throw new ArgumentException($"damage cannot be less than 0 (was given {damage})");
-        }
+        if (damage < 0) throw new ArgumentException($"damage cannot be less than 0 (was given {damage})");
 
         int damageToBeDone = damage;
 
         while (damageToBeDone > 0)
         {
-            if (Armor.Value > 0)
-            {
-                Armor.Value--;
-            }
-            else
-            {
-                Health.Value--;
-            }
+            if (Armor.Value > 0) Armor.Value--;
+            else Health.Value--;
 
             damageToBeDone--;
         }
     }
 
-    void tryPlayDirection (InputDirection direction, HitData originalHit)
+    void tryPlayDirection (ComInput direction, HitData originalHit)
     {
         if (CanComboInto(direction))
         {
-            Com next = SignalJammer[direction];
-            bool thisIsMainCom = innerCommand == null || ComboCounter == 0 || justCast;
+            lastCom = Coms[direction];
 
-            innerCommand = thisIsMainCom ? new Command(next) : innerCommand.PlusMetaCom(next);
-            justCast = false;
+            if (Track.ClosestHittableNote().Symbol.HasInChord(direction))
+                lastCom.DoEffect(ActiveCPU);
 
-            if (innerCommand.LastCom.CanClear(Track.ClosestHittableNote().Symbol))
-            {
-                processHit(originalHit);
-            }
-            else
-            {
-                processHit(originalHit.WithMissReason(MissedHitReason.ComCantClearAttemptedBeat));
-            }
+            processHit(originalHit);
         }
         else
         {
@@ -110,47 +117,50 @@ public class Player
         }
     }
 
-    void tryCastCommand (HitData originalHit)
+    void trySwitchCPU (CPUSwitchInput input, HitData originalHit)
     {
-        if (Command != null)
+        int targetIndex = (int) input;
+
+        if (targetIndex != CPUIndex && targetIndex < CPUs.Count)
         {
+            CPUIndex = targetIndex;
             processHit(originalHit);
-            Command.CastOn(this);
         }
         else
         {
-            processHit(originalHit.WithMissReason(MissedHitReason.InvalidCastInput));
+            processHit(originalHit.WithMissReason(MissedHitReason.AlreadyOnCPU));
         }
+    }
 
-        justCast = true;
+    void tryExecuteCPU (HitData originalHit)
+    {
+        if (ActiveCPU.Instr != null)
+        {
+            ActiveCPU.Execute();
+            processHit(originalHit);
+        }
+        else
+        {
+            processHit(originalHit.WithMissReason(MissedHitReason.CPUHasNoInstr));
+        }
     }
 
     void decayArmor ()
     {
-        if (Track.CurrentBeatPosition == 0)
+        armorDecayCounter += SignalJammer.ArmorDecayPerBeat;
+
+        while (armorDecayCounter >= 1)
         {
-            Armor.Value -= ARMOR_DECAY_RATE;
+            Armor.Value--;
+            armorDecayCounter--;
         }
     }
 
     void processHit (HitData hit)
     {
-        if (hit.KillsCommand)
+        if (!hit.ClearedBeat)
         {
             ComboCounter = 0;
-        }
-        else
-        {
-            ComboCounter++;
-
-            DifficultyIncreaseTicker--;
-
-            if (DifficultyIncreaseTicker <= 0)
-            {
-                DifficultyIncreaseTicker = NOTE_CLEARS_PER_DIFFICULTY_INCREASE;
-                Track.BSteps.Value++;
-                Track.RhythmDifficulty.Value++;
-            }
         }
 
         Health.Value += hit.Quality.Healing();

@@ -15,21 +15,26 @@ public class RealtimeDriver : ADriver
 
     void Awake ()
     {
-        Initialize(new BaseSingleplayerJammer());
+        // TODO: move this initialize call to some kind of scene manager
+        Initialize();
     }
 
-    public override void Initialize (SignalJammer signalJammer)
+    public override void Initialize ()
     {
-        base.Initialize(signalJammer);
+        base.Initialize();
+
+        TimingSource.Play();
     }
 
     void Update ()
     {
+        if (!initialized) return;
+
         Player.Track.CurrentPositionInMeasure = (float) TimingSource.timeSamples * TimingClipBPM / 60 / TimingSource.clip.frequency;
         TimingSource.pitch = (float) Player.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
 
         var input = getInput();
 
-        if (input != null) Player.DoComInput(input.Value);
+        if (!input.FrameIsEmpty) Player.DoInput(input);
     }
 }
