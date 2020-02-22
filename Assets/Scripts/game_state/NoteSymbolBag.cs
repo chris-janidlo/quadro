@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using crass;
 
-// rolling our own bag implementation here since 1) it's transition based and 2) we want to seed the rng and as of time of commiting that's impossible in BagRandomizer
 public class NoteSymbolBag
 {
 	public enum Transition
