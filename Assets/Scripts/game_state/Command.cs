@@ -4,32 +4,32 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-public abstract class Com
+public abstract class Command
 {
-    public static Com FromTypeName (string name)
+    public static Command FromTypeName (string name)
     {
         // TODO: not sure if this is right
-        // TODO: restrict coms to a specific namespace
-        return (Com) Activator.CreateInstance(null, name).Unwrap();
+        // TODO: restrict commands to a specific namespace
+        return (Command) Activator.CreateInstance(null, name).Unwrap();
     }
 
-    protected struct ComData
+    protected struct CommandData
     {
         public string Name, Description;
 
         // helps to have a color for consistent visual language
         public Color Color;
 
-        // the coms that can follow this
-        public ComInputBools ComboData;
+        // the commands that can follow this
+        public CommandInputBools ComboData;
     }
 
-    protected abstract ComData data { get; }
+    protected abstract CommandData data { get; }
 
     public string Name => data.Name;
     public string Description => data.Description;
     public Color Color => data.Color;
-    public ComInputBools ComboData => data.ComboData;
+    public CommandInputBools ComboData => data.ComboData;
 
     public abstract void DoEffect (CPU currentCPU);
 }

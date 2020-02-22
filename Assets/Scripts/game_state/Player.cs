@@ -16,7 +16,7 @@ public class Player
     public readonly BoxedInt Health;
     public readonly BoxedInt Armor;
 
-    public readonly ComInputBox<Com> Coms;
+    public readonly CommandInputBox<Command> Commands;
     public readonly List<CPU> CPUs;
 
     public int ComboCounter { get; private set; }
@@ -25,7 +25,7 @@ public class Player
     public bool Dead => Health.Value == 0;
     public CPU ActiveCPU => CPUs[CPUIndex];
 
-    Com lastCom;
+    Command lastCommand;
     float armorDecayCounter;
 
     public Player (SignalJammer signalJammer)
@@ -37,11 +37,11 @@ public class Player
         Health = new BoxedInt(mh, 0, mh);
         Armor = new BoxedInt(0, 0, mh);
 
-        Coms = new ComInputBox<Com>();
+        Commands = new CommandInputBox<Command>();
 
-        foreach (var direction in EnumUtil.AllValues<ComInput>())
+        foreach (var direction in EnumUtil.AllValues<CommandInput>())
         {
-            Coms[direction] = Com.FromTypeName(signalJammer.ComClassNames[direction]);
+            Commands[direction] = Command.FromTypeName(signalJammer.CommandClassNames[direction]);
         }
 
         CPUs = new List<CPU>(signalJammer.NumCPUs);
@@ -65,9 +65,9 @@ public class Player
             return;
         }
 
-        if (input.ComInput != null)
+        if (input.CommandInput != null)
         {
-            tryPlayDirection(input.ComInput.Value, hit);
+            tryPlayDirection(input.CommandInput.Value, hit);
         }
         else if (input.CPUSwitchInput != null)
         {
@@ -79,8 +79,8 @@ public class Player
         }
     }
 
-    public bool CanComboInto (ComInput direction)
-        => lastCom == null || lastCom.ComboData[direction];
+    public bool CanComboInto (CommandInput direction)
+        => lastCommand == null || lastCommand.ComboData[direction];
 
     // damage must be a non-negative value
     public void TakeShieldedDamage (int damage)
@@ -100,20 +100,20 @@ public class Player
         }
     }
 
-    void tryPlayDirection (ComInput direction, HitData originalHit)
+    void tryPlayDirection (CommandInput direction, HitData originalHit)
     {
         if (CanComboInto(direction))
         {
-            lastCom = Coms[direction];
+            lastCommand = Commands[direction];
 
             if (Track.ClosestHittableNote().Symbol.HasInChord(direction))
-                lastCom.DoEffect(ActiveCPU);
+                lastCommand.DoEffect(ActiveCPU);
 
             processHit(originalHit);
         }
         else
         {
-            processHit(originalHit.WithMissReason(MissedHitReason.ComCantCombo));
+            processHit(originalHit.WithMissReason(MissedHitReason.CommandCantCombo));
         }
     }
 

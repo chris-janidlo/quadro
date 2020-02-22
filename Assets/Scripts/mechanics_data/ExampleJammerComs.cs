@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExampleJammerComA : Com
+public class ExampleJammerCommandA : Command
 {
-	protected override ComData data => new ComData
+	protected override CommandData data => new CommandData
     {
         Name = "A",
         Description = "",
         Color = Color.clear,
-        ComboData = new ComInputBools
+        ComboData = new CommandInputBools
         {
             A = true,
             B = true,
@@ -27,14 +27,14 @@ public class ExampleJammerComA : Com
 	}
 }
 
-public class ExampleJammerComB : Com
+public class ExampleJammerCommandB : Command
 {
-	protected override ComData data => new ComData
+	protected override CommandData data => new CommandData
     {
         Name = "B",
         Description = "",
         Color = Color.clear,
-        ComboData = new ComInputBools
+        ComboData = new CommandInputBools
         {
             A = true,
             B = true,
@@ -52,14 +52,14 @@ public class ExampleJammerComB : Com
 	}
 }
 
-public class ExampleJammerComC : Com
+public class ExampleJammerCommandC : Command
 {
-	protected override ComData data => new ComData
+	protected override CommandData data => new CommandData
     {
         Name = "C",
         Description = "",
         Color = Color.clear,
-        ComboData = new ComInputBools
+        ComboData = new CommandInputBools
         {
             A = true,
             B = true,
@@ -77,14 +77,14 @@ public class ExampleJammerComC : Com
 	}
 }
 
-public class ExampleJammerComD : Com
+public class ExampleJammerCommandD : Command
 {
-	protected override ComData data => new ComData
+	protected override CommandData data => new CommandData
     {
         Name = "D",
         Description = "",
         Color = Color.clear,
-        ComboData = new ComInputBools
+        ComboData = new CommandInputBools
         {
             A = true,
             B = true,
@@ -102,14 +102,14 @@ public class ExampleJammerComD : Com
 	}
 }
 
-public class ExampleJammerComE : Com
+public class ExampleJammerCommandE : Command
 {
-	protected override ComData data => new ComData
+	protected override CommandData data => new CommandData
     {
         Name = "E",
         Description = "",
         Color = Color.clear,
-        ComboData = new ComInputBools
+        ComboData = new CommandInputBools
         {
             A = true,
             B = true,
@@ -127,14 +127,14 @@ public class ExampleJammerComE : Com
 	}
 }
 
-public class ExampleJammerComF : Com
+public class ExampleJammerCommandF : Command
 {
-	protected override ComData data => new ComData
+	protected override CommandData data => new CommandData
     {
         Name = "F",
         Description = "",
         Color = Color.clear,
-        ComboData = new ComInputBools
+        ComboData = new CommandInputBools
         {
             A = true,
             B = true,
@@ -152,14 +152,14 @@ public class ExampleJammerComF : Com
 	}
 }
 
-public class ExampleJammerComG : Com
+public class ExampleJammerCommandG : Command
 {
-	protected override ComData data => new ComData
+	protected override CommandData data => new CommandData
     {
         Name = "G",
         Description = "",
         Color = Color.clear,
-        ComboData = new ComInputBools
+        ComboData = new CommandInputBools
         {
             A = true,
             B = true,

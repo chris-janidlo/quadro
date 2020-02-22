@@ -2,18 +2,18 @@ signal jammers
 	high combo
 		commands all do very little at first, but very slowly build up to eventually huge payoffs
 			commands are based off the combo counter
-			meta coms flip things around? like a jester assassin kinda feel?
-		highly likely to have 8 coms at their disposal
+			meta commands flip things around? like a jester assassin kinda feel?
+		highly likely to have 8 commands at their disposal
 
 	low combo
 		commands on their own hit fairly hard, but the combos are very short
-			maybe like meta coms immediately cancel out command effects
-		there are like 1 or 2 combos that have 2 coms but all the rest are just single com
-		in order to balance out the requirement to hit cast at every other beat, make it hard to clear coms in general
-			like you should have to look a couple coms ahead to plan
+			maybe like meta commands immediately cancel out command effects
+		there are like 1 or 2 combos that have 2 commands but all the rest are just single command
+		in order to balance out the requirement to hit cast at every other beat, make it hard to clear commands in general
+			like you should have to look a couple commands ahead to plan
 
-	chaotic/complex
-		the options available to you every com are based on rng and have complex interactions with one another
+	chaotic/commandplex
+		the options available to you every command are based on rng and have commandplex interactions with one another
 		likes playing at low BPMs
 
 	debuffer
@@ -30,25 +30,25 @@ signal jammers
 
 	jammer with a fluctuating number of cpus, where instead of jumping between cpus, they go one up or down
 
-what coms are shared between jammers?
+what commands are shared between jammers?
 
 charge system, but where the charge only goes to your active cpu, and makes the effect much stronger
 
 expressive buttons ideas
 	only "required" notes hurt you when you miss them
 		can be paired with note colors idea
-	? change the concept of coms "clearing" notes to notes "empowering" coms. now coms only add to the command if the current note empowers the com (otherwise do chip damage to opponent or something)
-	some mechanism whereby you can bail out of a com? or where you can store coms for later?
-		maybe something like you have multiple cpus, each with various register states and statements in their memories. you can press the associated number button while on a beat to switch to that cpu. coms overwrite register/instruction state
+	? change the concept of commands "clearing" notes to notes "empowering" commands. now commands only add to the command if the current note empowers the command (otherwise do chip damage to opponent or something)
+	some mechanism whereby you can bail out of a command? or where you can store commands for later?
+		maybe something like you have multiple cpus, each with various register states and statements in their memories. you can press the associated number button while on a beat to switch to that cpu. commands overwrite register/instruction state
 	different note colors, which do different kinds of damage if you fail to properly clear them
 
 expressive rhythm system ideas
-	except for evil notes, completely get rid of notes. instead, do a timing system
+	except for evil notes, commandpletely get rid of notes. instead, do a timing system
 		every note has a set of timings. that set changes depending on what part of the measure and what part of the beat the note was played on
 		after playing a note, the next note must be played during one of the timing windows
 		for example, a note might have timings equivalent to an eighth note and a triplet. say the player plays the note at measure position 1. the next note must be played close to either 1.333333 or 1.5. if the note is played on 1.33333, future note timings will likely be restricted to multiples/factors of triplets to not sound weird
 
-com idea dump
+command idea dump
 	register damage lower all registers of cpu by 1 to 0 at lowest
 	lock off a cpu from any changes for x beats
 	bpm damage
@@ -62,8 +62,8 @@ com idea dump
 	boomerang (hits once, waits a while, hits again. if opponent "dodges" it hurts the player)
 	cpu measures the average accuracy of [the last n hits on it / every hit on it since last cast] and that accuracy determines chance to hit on certain instrs
 	explosion that hits you as much or more as it hits the opponent
-	booby trapping cpus/registers/coms/measure positions/note symbols
-		for whatever gameplay object is booby trapped, interacting with it (ie hitting a com, switching or adding to a cpu, clearing a certain note symbol, etc) deals damage to you
+	booby trapping cpus/registers/commands/measure positions/note symbols
+		for whatever gameplay object is booby trapped, interacting with it (ie hitting a command, switching or adding to a cpu, clearing a certain note symbol, etc) deals damage to you
 		various ways it could work
 			you and opponent are both booby trapped, whoever hits it first takes damage and clears it for both
 			only your opponent is trapped, and only for a certain number of turns

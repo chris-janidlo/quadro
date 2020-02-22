@@ -8,11 +8,11 @@ TODO:
 		ending difficulty incorporating broken triplets and sixteenth note patterns
 
 ===== CODE =====
-	make full com diamond visual clickable (including command)
+	make full command diamond visual clickable (including command)
 
-	move com (in)active colors to Colors.cs
+	move command (in)active colors to Colors.cs
 
-	group command visual in with com diamond on the code side?
+	group command visual in with command diamond on the code side?
 
 	add additional jammers
 
@@ -43,9 +43,9 @@ TODO:
 		transition from one non-empty to another: delete then type
 		probably include some dope ass fading as well
 
-	physical com input button interface
+	physical command input button interface
 		heavily inspired by 80s computer keyboards like commodore vic-20 and zx spectrum
-		each com is a radio-ish button with an led indicator. the button top has the com's name. depending on the com, there's some indication about stuff like what it can clear and what it can combo to (grease pencil, tape with pen on it, fancy embossed stuff). if the led is lit, you can play the com. the button's visible "pushable" state (ie, in or out) corresponds with the led. when you play a valid com input, it depresses, any non-comboable coms depress as well, and any comboable coms pop out
+		each command is a radio-ish button with an led indicator. the button top has the command's name. depending on the command, there's some indication about stuff like what it can clear and what it can combo to (grease pencil, tape with pen on it, fancy embossed stuff). if the led is lit, you can play the command. the button's visible "pushable" state (ie, in or out) corresponds with the led. when you play a valid command input, it depresses, any non-comboable commands depress as well, and any comboable commands pop out
 		also have a radio button section for cpu switching
 
 	make hit quality feedback emanate from the beat line
@@ -55,6 +55,6 @@ TODO:
 		difficulty level
 		bsteps
 	
-	make com diamond cards flash on input
+	make command diamond cards flash on input
 
 	make command in center of diamond match outer d-pad active/inactive indication

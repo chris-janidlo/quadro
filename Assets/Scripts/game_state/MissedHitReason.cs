@@ -6,7 +6,7 @@ public enum MissedHitReason
     NeverAttemptedBeat,
     ClosestBeatIsOff,
     ClosestBeatOutOfRange,
-    ComCantCombo,
+    CommandCantCombo,
 	AlreadyOnCPU,
     CPUHasNoInstr
 }
@@ -15,6 +15,7 @@ public static class MissedHitReasonExtensions
 {
 	public static int Damage (this MissedHitReason reason)
 	{
+		return 0;
 		switch (reason)
 		{
 			case MissedHitReason.NeverAttemptedBeat:
@@ -24,7 +25,7 @@ public static class MissedHitReasonExtensions
 
 			case MissedHitReason.AlreadyAttemptedBeat:
 			case MissedHitReason.AlreadyOnCPU:
-			case MissedHitReason.ComCantCombo:
+			case MissedHitReason.CommandCantCombo:
 			case MissedHitReason.CPUHasNoInstr:
 				return 3;
 			

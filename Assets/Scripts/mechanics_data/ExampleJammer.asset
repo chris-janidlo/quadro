@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: example
   Description: blah blah blah
-  ComClassNames:
-    A: ExampleJammerComA
-    B: ExampleJammerComB
-    C: ExampleJammerComC
-    D: ExampleJammerComD
-    E: ExampleJammerComE
-    F: ExampleJammerComF
-    G: ExampleJammerComG
+  CommandClassNames:
+    A: ExampleJammerCommandA
+    B: ExampleJammerCommandB
+    C: ExampleJammerCommandC
+    D: ExampleJammerCommandD
+    E: ExampleJammerCommandE
+    F: ExampleJammerCommandF
+    G: ExampleJammerCommandG
   MaxHealth: 16
   NumCPUs: 4
   ArmorDecayPerBeat: 0.25

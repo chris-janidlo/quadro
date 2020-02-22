@@ -10,14 +10,14 @@ public class SignalJammerVisualizer : MonoBehaviour, IDriverSubscriber
 {
 	public ADriver Driver { get; set; }
 
-    public ComVisualBox ComVisuals;
+    public CommandVisualBox CommandVisuals;
     public List<CPUVisual> CPUVisuals;
 
     void Start ()
     {
-        foreach (ComInput dir in EnumUtil.AllValues<ComInput>())
+        foreach (CommandInput dir in EnumUtil.AllValues<CommandInput>())
         {
-            ComVisuals[dir].Initialize(dir);
+            CommandVisuals[dir].Initialize(dir);
         }
 
         for (int i = 0; i < Driver.Player.CPUs.Count; i++)
@@ -28,4 +28,4 @@ public class SignalJammerVisualizer : MonoBehaviour, IDriverSubscriber
 }
 
 [Serializable]
-public class ComVisualBox : ComInputBox<ComVisual> {}
+public class CommandVisualBox : CommandInputBox<CommandVisual> {}

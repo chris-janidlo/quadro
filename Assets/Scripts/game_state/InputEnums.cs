@@ -3,15 +3,15 @@ using crass;
 
 public struct InputFrame
 {
-    public readonly ComInput? ComInput;
+    public readonly CommandInput? CommandInput;
     public readonly CPUSwitchInput? CPUSwitchInput;
     public readonly bool CPUExecuteInput;
 
-    public bool FrameIsEmpty => ComInput == null && CPUSwitchInput == null && !CPUExecuteInput;
+    public bool FrameIsEmpty => CommandInput == null && CPUSwitchInput == null && !CPUExecuteInput;
 
-    public InputFrame (ComInput? com, CPUSwitchInput? cpuSwitch, bool cpuExecute)
+    public InputFrame (CommandInput? command, CPUSwitchInput? cpuSwitch, bool cpuExecute)
     {
-        ComInput = com;
+        CommandInput = command;
         CPUSwitchInput = cpuSwitch;
         CPUExecuteInput = cpuExecute;
     }
@@ -19,53 +19,53 @@ public struct InputFrame
 
 
 
-public enum ComInput
+public enum CommandInput
 {
     A, B, C, D, E, F, G
 }
 
-public class ComInputBox<T>
+public class CommandInputBox<T>
 {
     public T A, B, C, D, E, F, G;
 
-    public T this [ComInput input]
+    public T this [CommandInput input]
     {
         get
         {
             switch (input)
             {
-                case ComInput.A: return A;
-                case ComInput.B: return B;
-                case ComInput.C: return C;
-                case ComInput.D: return D;
-                case ComInput.E: return E;
-                case ComInput.F: return F;
-                case ComInput.G: return G;
-                default: throw new ArgumentException("unexpected ComInput value " + input);
+                case CommandInput.A: return A;
+                case CommandInput.B: return B;
+                case CommandInput.C: return C;
+                case CommandInput.D: return D;
+                case CommandInput.E: return E;
+                case CommandInput.F: return F;
+                case CommandInput.G: return G;
+                default: throw new ArgumentException("unexpected CommandInput value " + input);
             }
         }
         set
         {
             switch (input)
             {
-                case ComInput.A: A = value; break;
-                case ComInput.B: B = value; break;
-                case ComInput.C: C = value; break;
-                case ComInput.D: D = value; break;
-                case ComInput.E: E = value; break;
-                case ComInput.F: F = value; break;
-                case ComInput.G: G = value; break;
-                default: throw new ArgumentException("unexpected ComInput value " + input);
+                case CommandInput.A: A = value; break;
+                case CommandInput.B: B = value; break;
+                case CommandInput.C: C = value; break;
+                case CommandInput.D: D = value; break;
+                case CommandInput.E: E = value; break;
+                case CommandInput.F: F = value; break;
+                case CommandInput.G: G = value; break;
+                default: throw new ArgumentException("unexpected CommandInput value " + input);
             }
         }
     }
 }
 
 [Serializable]
-public class ComInputStrings : ComInputBox<string> {}
+public class CommandInputStrings : CommandInputBox<string> {}
 
 [Serializable]
-public class ComInputBools : ComInputBox<bool> {}
+public class CommandInputBools : CommandInputBox<bool> {}
 
 
 

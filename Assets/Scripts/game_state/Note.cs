@@ -53,14 +53,14 @@ public static class NoteSymbolExtentions
 		return (NoteSymbol) prev;
 	}
 
-	public static bool HasInChord (this NoteSymbol ns, ComInput ci)
+	public static bool HasInChord (this NoteSymbol ns, CommandInput ci)
 	{
 		switch (ns)
 		{
-			case NoteSymbol.One: return new List<ComInput> { ComInput.C, ComInput.E, ComInput.G }.Contains(ci);
-			case NoteSymbol.Two: return new List<ComInput> { ComInput.D, ComInput.F, ComInput.A }.Contains(ci);
-			case NoteSymbol.Four: return new List<ComInput> { ComInput.F, ComInput.A, ComInput.C }.Contains(ci);
-			case NoteSymbol.Five: return new List<ComInput> { ComInput.G, ComInput.B, ComInput.D }.Contains(ci);
+			case NoteSymbol.One: return new List<CommandInput> { CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
+			case NoteSymbol.Two: return new List<CommandInput> { CommandInput.D, CommandInput.F, CommandInput.A }.Contains(ci);
+			case NoteSymbol.Four: return new List<CommandInput> { CommandInput.F, CommandInput.A, CommandInput.C }.Contains(ci);
+			case NoteSymbol.Five: return new List<CommandInput> { CommandInput.G, CommandInput.B, CommandInput.D }.Contains(ci);
 			default: throw new ArgumentException("unexpected NoteSymbol " + ns);
 		}
 	}

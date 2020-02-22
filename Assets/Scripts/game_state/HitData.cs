@@ -47,7 +47,7 @@ public class HitData
     public string ShortDescription ()
     {
         if (MissReason != null &&
-            (MissReason.Value == MissedHitReason.ComCantCombo ||
+            (MissReason.Value == MissedHitReason.CommandCantCombo ||
              MissReason.Value == MissedHitReason.CPUHasNoInstr ||
              MissReason.Value == MissedHitReason.AlreadyOnCPU))
         {

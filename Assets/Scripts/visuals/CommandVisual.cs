@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using crass;
 
-public class ComVisual : MonoBehaviour, IDriverSubscriber
+public class CommandVisual : MonoBehaviour, IDriverSubscriber
 {
     public ADriver Driver { get; set; }
 
@@ -15,15 +15,15 @@ public class ComVisual : MonoBehaviour, IDriverSubscriber
     public Image Border;
     public TextMeshProUGUI NameText;
 
-    Com com => Driver.Player.Coms[dir];
+    Command command => Driver.Player.Commands[dir];
 
-    ComInput dir;
+    CommandInput dir;
 
-    public void Initialize (ComInput dir)
+    public void Initialize (CommandInput dir)
     {
         this.dir = dir;
 
-        NameText.text = com.Name;
+        NameText.text = command.Name;
 
         VisibleColorLerp.AttachMonoBehaviour(this);
     }

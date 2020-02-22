@@ -1205,7 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171d633b6b900403980519c2e87f7c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComVisuals:
+  CommandVisuals:
     A: {fileID: 1086725475}
     B: {fileID: 1498169487}
     C: {fileID: 1775711061}
@@ -1560,7 +1560,7 @@ GameObject:
   - component: {fileID: 1112551192}
   - component: {fileID: 1112551191}
   m_Layer: 5
-  m_Name: Coms
+  m_Name: Commands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4924,14 +4924,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SignalJammer: {fileID: 11400000, guid: 1e0c0fb48e1484fa398b31a0e621cbfe, type: 2}
-  ComKeys:
-    A: a
-    B: s
-    C: d
-    D: f
-    E: w
-    F: e
-    G: r
+  CommandKeys:
+    A: q
+    B: w
+    C: e
+    D: r
+    E: a
+    F: s
+    G: d
   CPUSwitchKeys:
     Zero: 1
     One: 2
