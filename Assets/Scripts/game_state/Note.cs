@@ -57,6 +57,15 @@ public static class NoteSymbolExtentions
 	{
 		switch (ns)
 		{
+			// frequencies:
+				// C - 3	(C, F, a7)
+				// D - 1	(G7)
+				// E - 2	(C, a7)
+				// F - 2	(F, G7)
+				// G - 3	(C, G7, a7)
+				// A - 2	(F, a7)
+				// B - 1	(G7)
+
 			// C major
 			case NoteSymbol.One: return new List<CommandInput> { CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
 			// F major
