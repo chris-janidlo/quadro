@@ -57,10 +57,14 @@ public static class NoteSymbolExtentions
 	{
 		switch (ns)
 		{
+			// C major
 			case NoteSymbol.One: return new List<CommandInput> { CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
-			case NoteSymbol.Two: return new List<CommandInput> { CommandInput.D, CommandInput.F, CommandInput.A }.Contains(ci);
-			case NoteSymbol.Four: return new List<CommandInput> { CommandInput.F, CommandInput.A, CommandInput.C }.Contains(ci);
-			case NoteSymbol.Five: return new List<CommandInput> { CommandInput.G, CommandInput.B, CommandInput.D }.Contains(ci);
+			// F major
+			case NoteSymbol.Two: return new List<CommandInput> { CommandInput.F, CommandInput.A, CommandInput.C }.Contains(ci);
+			// G dominant 7
+			case NoteSymbol.Four: return new List<CommandInput> { CommandInput.G, CommandInput.B, CommandInput.D, CommandInput.F }.Contains(ci);
+			// a minor 7
+			case NoteSymbol.Five: return new List<CommandInput> { CommandInput.A, CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
 			default: throw new ArgumentException("unexpected NoteSymbol " + ns);
 		}
 	}
