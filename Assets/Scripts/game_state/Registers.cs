@@ -49,6 +49,11 @@ public struct RegVec
 	public static RegVec Max => new RegVec(Register.MAX_VALUE, Register.MAX_VALUE, Register.MAX_VALUE, Register.MAX_VALUE);
 	public static RegVec One => new RegVec(1, 1, 1, 1);
 
+	public static RegVec Basis0 = new RegVec(1, 0, 0, 0);
+	public static RegVec Basis1 = new RegVec(0, 1, 0, 0);
+	public static RegVec Basis2 = new RegVec(0, 0, 1, 0);
+	public static RegVec Basis3 = new RegVec(0, 0, 0, 1);
+
 	public Register this [int i]
 	{
 		get
