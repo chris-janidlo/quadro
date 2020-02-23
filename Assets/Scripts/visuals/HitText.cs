@@ -14,7 +14,12 @@ public class HitText : MonoBehaviour, IDriverSubscriber
     void Start ()
     {
         Text.text = "";
-        Driver.Player.Hit += hit => { StopAllCoroutines(); StartCoroutine(messageRoutine(hit)); };
+        Driver.Player.Hit += hit =>
+        {
+            if (!hit.ClearedBeat && hit.MissReason == MissedHitReason.NeverAttemptedBeat) return;
+            StopAllCoroutines();
+            StartCoroutine(messageRoutine(hit));
+        };
     }
 
     IEnumerator messageRoutine (HitData hit)

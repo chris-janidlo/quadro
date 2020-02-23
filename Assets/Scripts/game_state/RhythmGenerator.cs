@@ -90,7 +90,7 @@ public class RhythmGenerator
 			},
 			{
 				7,
-				new CutTimeStrategy(CutTimeStrategy.NoteLength.Half, 0.5f)
+				new CutTimeStrategy(CutTimeStrategy.NoteLength.Quarter, 0)
 			},
 			{
 				8,
