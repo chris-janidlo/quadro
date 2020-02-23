@@ -9,7 +9,7 @@ public class DriverInjector : MonoBehaviour
 
     void Awake ()
     {
-        foreach (IDriverSubscriber subscriber in FindObjectsOfType<MonoBehaviour>().OfType<IDriverSubscriber>())
+        foreach (IDriverSubscriber subscriber in GetComponentsInChildren<IDriverSubscriber>())
         {
             subscriber.Driver = Driver;
         }
