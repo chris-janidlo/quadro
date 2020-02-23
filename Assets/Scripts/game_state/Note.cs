@@ -29,18 +29,12 @@ public class Note
 
 public enum NoteSymbol
 {
-	One, Two, Four, Five
+	C, F, G7, a7
 }
 
 public static class NoteSymbolExtentions
 {
 	public static int NUM_SYMBOLS => Enum.GetNames(typeof(NoteSymbol)).Length;
-
-	public static char ToRadixRepresentation (this NoteSymbol ns) =>
-		"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"[(int) ns];
-
-	public static char ToRadixRepresentation (this NoteSymbol? ns) =>
-		ns == null ? ' ' : ToRadixRepresentation(ns.Value);
 	
 	public static NoteSymbol Next (this NoteSymbol ns) => (NoteSymbol) (((int) ns + 1) % NUM_SYMBOLS);
 
@@ -66,14 +60,10 @@ public static class NoteSymbolExtentions
 				// A - 2	(F, a7)
 				// B - 1	(G7)
 
-			// C major
-			case NoteSymbol.One: return new List<CommandInput> { CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
-			// F major
-			case NoteSymbol.Two: return new List<CommandInput> { CommandInput.F, CommandInput.A, CommandInput.C }.Contains(ci);
-			// G dominant 7
-			case NoteSymbol.Four: return new List<CommandInput> { CommandInput.G, CommandInput.B, CommandInput.D, CommandInput.F }.Contains(ci);
-			// a minor 7
-			case NoteSymbol.Five: return new List<CommandInput> { CommandInput.A, CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
+			case NoteSymbol.C: return new List<CommandInput> { CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
+			case NoteSymbol.F: return new List<CommandInput> { CommandInput.F, CommandInput.A, CommandInput.C }.Contains(ci);
+			case NoteSymbol.G7: return new List<CommandInput> { CommandInput.G, CommandInput.B, CommandInput.D, CommandInput.F }.Contains(ci);
+			case NoteSymbol.a7: return new List<CommandInput> { CommandInput.A, CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
 			default: throw new ArgumentException("unexpected NoteSymbol " + ns);
 		}
 	}

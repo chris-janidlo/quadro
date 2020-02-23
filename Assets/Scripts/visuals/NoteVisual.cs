@@ -20,7 +20,7 @@ public class NoteVisual : MonoBehaviour
 		this.start = start;
 		this.target = target;
 
-		Text.text = note.Symbol.ToRadixRepresentation().ToString();
+		Text.text = note.Symbol.ToString();
 
 		track.NoteDespawned += n =>
 		{

@@ -22,6 +22,6 @@ MonoBehaviour:
     E: ExampleJammerCommandE
     F: ExampleJammerCommandF
     G: ExampleJammerCommandG
-  MaxHealth: 16
+  MaxHealth: 100
   NumCPUs: 4
-  ArmorDecayPerBeat: 0.25
+  ArmorDecayPerBeat: 1

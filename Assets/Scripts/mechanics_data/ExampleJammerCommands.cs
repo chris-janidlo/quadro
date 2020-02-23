@@ -31,8 +31,8 @@ public class ExampleJammerCommandD : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "R3 rMin",
-        Description = "Sets R3 to minimum(r0, r1, r2)",
+        Name = "R1 rMin",
+        Description = "Sets R1 to minimum(r0, r2, r3)",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -51,9 +51,9 @@ public class ExampleJammerCommandD : Command
         cpu.Registers = new RegVec
         (
             cpu.Registers.R0,
-            cpu.Registers.R1,
+            Mathf.Min(cpu.Registers.R0, cpu.Registers.R2, cpu.Registers.R3),
             cpu.Registers.R2,
-            Mathf.Min(cpu.Registers.R0, cpu.Registers.R1, cpu.Registers.R2)
+            cpu.Registers.R3
         );
 	}
 }
@@ -62,8 +62,8 @@ public class ExampleJammerCommandE : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "R1 Up",
-        Description = "Increases R1 by 3 (WARNING: can cause overflow)",
+        Name = "R2 Up",
+        Description = "Increases R2 by 3 (WARNING: can cause overflow)",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -79,7 +79,7 @@ public class ExampleJammerCommandE : Command
 
 	public override void DoEffect (CPU cpu)
 	{
-        cpu.Registers.R1 += 3;
+        cpu.Registers.R2 += 3;
 	}
 }
 
@@ -87,8 +87,8 @@ public class ExampleJammerCommandF : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "R2 HUP",
-        Description = "Increases R2 by half of R0",
+        Name = "R3 HUP",
+        Description = "Increases R3 by R0 / 2",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -104,7 +104,7 @@ public class ExampleJammerCommandF : Command
 
 	public override void DoEffect (CPU cpu)
 	{
-        cpu.Registers.R2 += cpu.Registers.R0 / 2;
+        cpu.Registers = RegVec.SafeAdd(cpu.Registers, RegVec.Basis3 * cpu.Registers.R0 / 2);
 	}
 }
 
@@ -113,7 +113,7 @@ public class ExampleJammerCommandG : Command
 	protected override CommandData _data => new CommandData
     {
         Name = "Instr HIT",
-        Description = "Sets instr: deal R0 * (R1 + R3) + R2 damage",
+        Description = "Sets instr: deal [R0 * (R1 + R3) / 2 + R2] damage",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -133,8 +133,9 @@ public class ExampleJammerCommandG : Command
 
 		public override RegVec DoBehavior (RegVec v, Player owner)
 		{
-            int damage = v.R0 * (v.R1 + v.R3) + v.R2;
+            int damage = v.R0 * (v.R2 + v.R1) / 2 + v.R3;
             // TODO:
+            Debug.Log(v);
             Debug.Log($"would deal {damage} damage to the opponent");
             return RegVec.Zero;
 		}
@@ -148,7 +149,7 @@ public class ExampleJammerCommandA : Command
 	protected override CommandData _data => new CommandData
     {
         Name = "Instr BLK",
-        Description = "Sets instr: increase armor by R0 + R1 + R2 + R3",
+        Description = "Sets instr: add [R0 + R1 + R2 + R3] armor",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {

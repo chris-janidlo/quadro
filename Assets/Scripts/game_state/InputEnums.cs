@@ -21,12 +21,12 @@ public struct InputFrame
 
 public enum CommandInput
 {
-    A, B, C, D, E, F, G
+    C, D, E, F, G, A, B
 }
 
 public class CommandInputBox<T>
 {
-    public T A, B, C, D, E, F, G;
+    public T C, D, E, F, G, A, B;
 
     public T this [CommandInput input]
     {
@@ -34,13 +34,13 @@ public class CommandInputBox<T>
         {
             switch (input)
             {
-                case CommandInput.A: return A;
-                case CommandInput.B: return B;
                 case CommandInput.C: return C;
                 case CommandInput.D: return D;
                 case CommandInput.E: return E;
                 case CommandInput.F: return F;
                 case CommandInput.G: return G;
+                case CommandInput.A: return A;
+                case CommandInput.B: return B;
                 default: throw new ArgumentException("unexpected CommandInput value " + input);
             }
         }
@@ -48,13 +48,13 @@ public class CommandInputBox<T>
         {
             switch (input)
             {
-                case CommandInput.A: A = value; break;
-                case CommandInput.B: B = value; break;
                 case CommandInput.C: C = value; break;
                 case CommandInput.D: D = value; break;
                 case CommandInput.E: E = value; break;
                 case CommandInput.F: F = value; break;
                 case CommandInput.G: G = value; break;
+                case CommandInput.A: A = value; break;
+                case CommandInput.B: B = value; break;
                 default: throw new ArgumentException("unexpected CommandInput value " + input);
             }
         }
