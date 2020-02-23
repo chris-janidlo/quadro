@@ -149,7 +149,7 @@ public class ExampleJammerCommandA : Command
 	protected override CommandData _data => new CommandData
     {
         Name = "Instr BLK",
-        Description = "Sets instr: add [R0 + R1 + R2 + R3] armor",
+        Description = "Sets instr: add [R0 * (R1 + R3) + R2] armor",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -169,7 +169,7 @@ public class ExampleJammerCommandA : Command
 
 		public override RegVec DoBehavior (RegVec v, Player owner)
 		{
-            owner.Armor.Value += v.R0 + v.R1 + v.R2 + v.R3;
+            owner.Armor.Value = v.R0 * (v.R2 + v.R1) + v.R3;
             return RegVec.Zero;
 		}
 	}
@@ -198,7 +198,7 @@ public class ExampleJammerCommandB : Command
 
 	class instr : CPU.Instruction
 	{
-		public override string Name => "CPM";
+		public override string Name => "BPM";
 
 		public override RegVec DoBehavior (RegVec v, Player owner)
 		{
