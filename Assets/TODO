@@ -2,10 +2,7 @@ FIXME:
 
 TODO:
 ===== GAMEPLAY =====
-	major beat difficulty tuning
-		current difficulty should be somewhere in 50%-75% range
-		starting difficulty as easy as every 2 beats or every 4 beats
-		ending difficulty incorporating broken triplets and sixteenth note patterns
+	how the hecc is input gonna work when you need 12 buttons per player
 
 ===== CODE =====
 	move command (in)active colors to Colors.cs
@@ -13,8 +10,6 @@ TODO:
 	add additional jammers
 
 	add some kind of match info object containing the friendly player and the opposing player, and pass that to commands
-
-	make driver dependency injection generic enough to work with any number of players
 
 	sync up music sources with timing source
 
@@ -40,9 +35,10 @@ TODO:
 			alternatively, might want to redo the chord generation so that this isn't a constraint
 
 ===== UI =====
-	group UI for CPUs + resource bars + misc UI section and put it all on an in-game terminal monitor
+	group UI for CPUs(?) + resource bars + misc UI section and put it all on an in-game terminal monitor
 		80x60 character terminal? *pure text UI????*
 		give it some curve and make the characters bleed a little light
+		might put CPUs in a little LCD screen instead depending on the jammer
 
 	reusable hacker typing animation component
 		probably using Transitionable
