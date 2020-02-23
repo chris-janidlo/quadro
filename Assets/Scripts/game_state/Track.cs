@@ -56,9 +56,9 @@ public class Track
     // the actual value that is currently in play, which lags behind BSteps a bit (based on an easing function) in order to make the BPM change not so sudden
     double apparentBSteps;
 
-    public Track ()
+    public Track (int seed)
     {
-        generator = new RhythmGenerator(this, BEATS_PER_MEASURE);
+        generator = new RhythmGenerator(this, BEATS_PER_MEASURE, seed);
         apparentBSteps = BSteps.Value;
     }
 

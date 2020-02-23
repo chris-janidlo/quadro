@@ -9,7 +9,9 @@ public class Player
 {
     public event Action<HitData> Hit;
 
-    public readonly Track Track = new Track();
+    public Player Opponent;
+
+    public readonly Track Track;
 
     public readonly SignalJammer SignalJammer;
 
@@ -28,8 +30,10 @@ public class Player
     Command lastCommand;
     float armorDecayCounter;
 
-    public Player (SignalJammer signalJammer)
+    public Player (SignalJammer signalJammer, int seed)
     {
+        Track = new Track(seed);
+    
         SignalJammer = signalJammer;
 
         int mh = signalJammer.MaxHealth;

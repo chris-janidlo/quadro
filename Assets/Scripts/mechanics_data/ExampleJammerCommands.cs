@@ -133,10 +133,7 @@ public class ExampleJammerCommandG : Command
 
 		public override RegVec DoBehavior (RegVec v, Player owner)
 		{
-            int damage = v.R0 * (v.R2 + v.R1) / 2 + v.R3;
-            // TODO:
-            Debug.Log(v);
-            Debug.Log($"would deal {damage} damage to the opponent");
+            owner.Opponent.TakeShieldedDamage(v.R0 * (v.R2 + v.R1) / 2 + v.R3);
             return RegVec.Zero;
 		}
 	}

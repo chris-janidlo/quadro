@@ -13,15 +13,9 @@ public class RealtimeDriver : ADriver
 
     float inverseAudioFrequency;
 
-    void Awake ()
+    public override void Initialize (int seed)
     {
-        // TODO: move this initialize call to some kind of scene manager
-        Initialize();
-    }
-
-    public override void Initialize ()
-    {
-        base.Initialize();
+        base.Initialize(seed);
 
         TimingSource.Play();
     }

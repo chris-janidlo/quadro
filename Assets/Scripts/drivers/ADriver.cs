@@ -17,9 +17,9 @@ public abstract class ADriver : MonoBehaviour
 
     protected bool initialized;
 
-    public virtual void Initialize ()
+    public virtual void Initialize (int seed)
     {
-        Player = new Player(SignalJammer);
+        Player = new Player(SignalJammer, seed);
         initialized = true;
     }
 
