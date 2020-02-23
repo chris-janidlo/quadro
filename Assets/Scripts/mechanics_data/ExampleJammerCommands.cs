@@ -182,7 +182,7 @@ public class ExampleJammerCommandB : Command
 	protected override CommandData _data => new CommandData
     {
         Name = "Instr BPM",
-        Description = "Sets instr: increase BPM by R3",
+        Description = "Sets instr: increase BPM by R1",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -202,7 +202,7 @@ public class ExampleJammerCommandB : Command
 
 		public override RegVec DoBehavior (RegVec v, Player owner)
 		{
-            owner.Track.BSteps.Value += v.R3;
+            owner.Track.BSteps.Value += v.R1;
             return v;
 		}
 	}
