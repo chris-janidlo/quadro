@@ -103,6 +103,8 @@ public struct RegVec
 	public static RegVec operator - (RegVec a, RegVec b) => a + (-b);
 
 	public static RegVec operator * (RegVec v, double d) => new RegVec((int) (v.R0 * d), (int) (v.R1 * d), (int) (v.R2 * d), (int) (v.R3 * d));
+	public static RegVec operator * (double d, RegVec v) => v * d;
+
 	public static RegVec operator / (RegVec v, double d)
 	{
 		if (d == 0) throw new DivideByZeroException();
