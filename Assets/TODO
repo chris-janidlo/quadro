@@ -5,15 +5,9 @@ TODO:
 	how the hecc is input gonna work when you need 12 buttons per player
 
 ===== CODE =====
-	move command (in)active colors to Colors.cs
-
-	add additional jammers
-
-	add some kind of match info object containing the friendly player and the opposing player, and pass that to commands
+	create AI
 
 	sync up music sources with timing source
-
-	reduce primitive obsession in track (bsteps, rhythm difficulty)?
 
 ===== MUSIC =====
 	create basic beat
