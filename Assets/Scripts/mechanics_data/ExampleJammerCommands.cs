@@ -21,9 +21,9 @@ public class ExampleJammerCommandC : Command
         }
     };
 
-	public override void DoEffect (CPU cpu)
+	public override void DoEffect (Player owner)
 	{
-        cpu.Registers.R0 += 3;
+        owner.ActiveCPU.Registers.R0 += 3;
 	}
 }
 
@@ -46,8 +46,10 @@ public class ExampleJammerCommandD : Command
         }
     };
 
-	public override void DoEffect (CPU cpu)
+	public override void DoEffect (Player owner)
 	{
+        CPU cpu = owner.ActiveCPU;
+
         cpu.Registers = new RegVec
         (
             cpu.Registers.R0,
@@ -77,9 +79,9 @@ public class ExampleJammerCommandE : Command
         }
     };
 
-	public override void DoEffect (CPU cpu)
+	public override void DoEffect (Player owner)
 	{
-        cpu.Registers.R2 += 3;
+        owner.ActiveCPU.Registers.R2 += 3;
 	}
 }
 
@@ -102,8 +104,9 @@ public class ExampleJammerCommandF : Command
         }
     };
 
-	public override void DoEffect (CPU cpu)
+	public override void DoEffect (Player owner)
 	{
+        CPU cpu = owner.ActiveCPU;
         cpu.Registers = RegVec.SafeAdd(cpu.Registers, RegVec.Basis3 * cpu.Registers.R0 / 2);
 	}
 }
@@ -127,18 +130,13 @@ public class ExampleJammerCommandG : Command
         }
     };
 
-	class instr : CPU.Instruction
-	{
-		public override string Name => "HIT";
+    public override void DoEffect (Player owner)
+    {
+        RegVec v = owner.ActiveCPU.Registers;
 
-		public override RegVec DoBehavior (RegVec v, Player owner)
-		{
-            owner.Opponent.TakeShieldedDamage(v.R0 * (v.R2 + v.R1) / 2 + v.R3);
-            return RegVec.Zero;
-		}
-	}
-
-	public override void DoEffect (CPU cpu) => cpu.Instr = new instr();
+        owner.Opponent.TakeShieldedDamage(v.R0 * (v.R2 + v.R1) / 2 + v.R3);
+        owner.ActiveCPU.FlushRegisters();
+    }
 }
 
 public class ExampleJammerCommandA : Command
@@ -160,18 +158,13 @@ public class ExampleJammerCommandA : Command
         }
     };
 
-	class instr : CPU.Instruction
-	{
-		public override string Name => "BLK";
+    public override void DoEffect (Player owner)
+    {
+        RegVec v = owner.ActiveCPU.Registers;
 
-		public override RegVec DoBehavior (RegVec v, Player owner)
-		{
-            owner.Armor.Value = v.R0 * (v.R2 + v.R1) + v.R3;
-            return RegVec.Zero;
-		}
-	}
-
-	public override void DoEffect (CPU cpu) => cpu.Instr = new instr();
+        owner.Armor.Value = v.R0 * (v.R2 + v.R1) + v.R3;
+        owner.ActiveCPU.FlushRegisters();
+    }
 }
 
 public class ExampleJammerCommandB : Command
@@ -193,16 +186,8 @@ public class ExampleJammerCommandB : Command
         }
     };
 
-	class instr : CPU.Instruction
-	{
-		public override string Name => "BPM";
-
-		public override RegVec DoBehavior (RegVec v, Player owner)
-		{
-            owner.Track.BSteps.Value += v.R1;
-            return v;
-		}
-	}
-
-	public override void DoEffect (CPU cpu) => cpu.Instr = new instr();
+    public override void DoEffect (Player owner)
+    {
+        owner.Track.BSteps.Value += owner.ActiveCPU.Registers.R1;
+    }
 }

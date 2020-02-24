@@ -14,7 +14,6 @@ public class CPUVisual : MonoBehaviour, IDriverSubscriber
     public TransitionableColor VisibleColorLerp;
 
     public Image Background;
-	public TextMeshProUGUI InstructionText;
 	public List<TextMeshProUGUI> RegisterTexts;
     public List<TextMeshProUGUI> Labels;
 
@@ -34,11 +33,9 @@ public class CPUVisual : MonoBehaviour, IDriverSubscriber
         VisibleColorLerp.StartTransitionToIfNotAlreadyStarted(Driver.Player.CPUIndex == index ? ActiveColor : InactiveColor);
 
         Background.color = VisibleColorLerp.Value;
-		InstructionText.color = VisibleColorLerp.Value;
         foreach (var r in RegisterTexts) r.color = VisibleColorLerp.Value;
         foreach (var l in Labels) l.color = VisibleColorLerp.Value;
 
-		InstructionText.text = cpu.Instr?.Name ?? "";
 		for (int i = 0; i < 4; i++) RegisterTexts[i].text = cpu.Registers[i].ToString();
     }
 }

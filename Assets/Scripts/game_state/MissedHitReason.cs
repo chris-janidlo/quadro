@@ -7,7 +7,6 @@ public enum MissedHitReason
     ClosestBeatIsOff,
     ClosestBeatOutOfRange,
     CommandCantCombo,
-	AlreadyOnCPU,
     CPUHasNoInstr
 }
 
@@ -23,7 +22,6 @@ public static class MissedHitReasonExtensions
 			case MissedHitReason.ClosestBeatOutOfRange:
 			case MissedHitReason.ClosestBeatIsOff:
 			case MissedHitReason.AlreadyAttemptedBeat:
-			case MissedHitReason.AlreadyOnCPU:
 			case MissedHitReason.CommandCantCombo:
 			case MissedHitReason.CPUHasNoInstr:
 				return 6;

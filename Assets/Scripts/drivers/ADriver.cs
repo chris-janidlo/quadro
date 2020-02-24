@@ -11,7 +11,6 @@ public abstract class ADriver : MonoBehaviour
 
     public CommandInputStrings CommandKeys;
     public CPUSwitchInputStrings CPUSwitchKeys;
-    public string CPUExecuteKey;
 
     public Player Player { get; private set; }
 
@@ -33,9 +32,7 @@ public abstract class ADriver : MonoBehaviour
 
             EnumUtil.AllValues<CPUSwitchInput>()
                 .Select(csi => (CPUSwitchInput?) csi)
-                .FirstOrDefault(csin => Input.GetKeyDown(CPUSwitchKeys[csin.Value])),
-
-            Input.GetKeyDown(CPUExecuteKey)
+                .FirstOrDefault(csin => Input.GetKeyDown(CPUSwitchKeys[csin.Value]))
         );
     }
 }

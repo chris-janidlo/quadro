@@ -5,15 +5,13 @@ public struct InputFrame
 {
     public readonly CommandInput? CommandInput;
     public readonly CPUSwitchInput? CPUSwitchInput;
-    public readonly bool CPUExecuteInput;
 
-    public bool FrameIsEmpty => CommandInput == null && CPUSwitchInput == null && !CPUExecuteInput;
+    public bool FrameIsEmpty => CommandInput == null && CPUSwitchInput == null;
 
-    public InputFrame (CommandInput? command, CPUSwitchInput? cpuSwitch, bool cpuExecute)
+    public InputFrame (CommandInput? command, CPUSwitchInput? cpuSwitch)
     {
         CommandInput = command;
         CPUSwitchInput = cpuSwitch;
-        CPUExecuteInput = cpuExecute;
     }
 }
 

@@ -48,8 +48,7 @@ public class HitData
     {
         if (MissReason != null &&
             (MissReason.Value == MissedHitReason.CommandCantCombo ||
-             MissReason.Value == MissedHitReason.CPUHasNoInstr ||
-             MissReason.Value == MissedHitReason.AlreadyOnCPU))
+             MissReason.Value == MissedHitReason.CPUHasNoInstr))
         {
             return "Invalid";
         }

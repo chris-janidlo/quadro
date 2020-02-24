@@ -61,25 +61,21 @@ public class Player
 
     public void DoInput (InputFrame input)
     {
+        if (input.CPUSwitchInput != null)
+        {
+            CPUIndex = (int) input.CPUSwitchInput.Value;
+            return;
+        }
+
         HitData hit = Track.GetHitByAccuracy();
 
         if (!hit.ClearedBeat)
         {
             processHit(hit);
-            return;
         }
-
-        if (input.CommandInput != null)
+        else if (input.CommandInput != null)
         {
             tryPlayDirection(input.CommandInput.Value, hit);
-        }
-        else if (input.CPUSwitchInput != null)
-        {
-            trySwitchCPU(input.CPUSwitchInput.Value, hit);
-        }
-        else
-        {
-            tryExecuteCPU(hit);
         }
     }
 
@@ -111,41 +107,13 @@ public class Player
             lastCommand = Commands[direction];
 
             if (Track.ClosestHittableNote().Symbol.HasInChord(direction))
-                lastCommand.DoEffect(ActiveCPU);
+                lastCommand.DoEffect(this);
 
             processHit(originalHit);
         }
         else
         {
             processHit(originalHit.WithMissReason(MissedHitReason.CommandCantCombo));
-        }
-    }
-
-    void trySwitchCPU (CPUSwitchInput input, HitData originalHit)
-    {
-        int targetIndex = (int) input;
-
-        if (targetIndex != CPUIndex && targetIndex < CPUs.Count)
-        {
-            CPUIndex = targetIndex;
-            processHit(originalHit);
-        }
-        else
-        {
-            processHit(originalHit.WithMissReason(MissedHitReason.AlreadyOnCPU));
-        }
-    }
-
-    void tryExecuteCPU (HitData originalHit)
-    {
-        if (ActiveCPU.Instr != null)
-        {
-            ActiveCPU.Execute();
-            processHit(originalHit);
-        }
-        else
-        {
-            processHit(originalHit.WithMissReason(MissedHitReason.CPUHasNoInstr));
         }
     }
 
