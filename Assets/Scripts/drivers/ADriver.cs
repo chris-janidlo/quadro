@@ -9,9 +9,6 @@ public abstract class ADriver : MonoBehaviour
 {
     public SignalJammer SignalJammer;
 
-    public CommandInputStrings CommandKeys;
-    public CPUSwitchInputStrings CPUSwitchKeys;
-
     public Player Player { get; private set; }
 
     protected bool initialized;
@@ -20,19 +17,5 @@ public abstract class ADriver : MonoBehaviour
     {
         Player = new Player(SignalJammer, seed);
         initialized = true;
-    }
-
-    protected InputFrame getInput ()
-    {
-        return new InputFrame
-        (
-            EnumUtil.AllValues<CommandInput>()
-                .Select(ci => (CommandInput?) ci)
-                .FirstOrDefault(cin => Input.GetKeyDown(CommandKeys[cin.Value])),
-
-            EnumUtil.AllValues<CPUSwitchInput>()
-                .Select(csi => (CPUSwitchInput?) csi)
-                .FirstOrDefault(csin => Input.GetKeyDown(CPUSwitchKeys[csin.Value]))
-        );
     }
 }
