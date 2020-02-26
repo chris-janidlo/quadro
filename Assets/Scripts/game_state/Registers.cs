@@ -96,6 +96,17 @@ public struct RegVec
 		);
 	}
 
+	public static RegVec SafeSubtract (RegVec a, RegVec b)
+	{
+		return new RegVec
+		(
+			Math.Max(a.R0 - b.R0, 0),
+			Math.Max(a.R1 - b.R1, 0),
+			Math.Max(a.R2 - b.R2, 0),
+			Math.Max(a.R3 - b.R3, 0)
+		);
+	}
+
 	public static RegVec operator + (RegVec v) => v;
 	public static RegVec operator - (RegVec v) => new RegVec(-v.R0, -v.R1, -v.R2, -v.R3);
 

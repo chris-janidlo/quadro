@@ -33,5 +33,5 @@ public abstract class Command
     public Color Color => cachedData.Color;
     public CommandInputBools ComboData => cachedData.ComboData;
 
-    public abstract void DoEffect (Player owner);
+    public abstract RegVec DoEffect (Player owner, RegVec inputVector);
 }

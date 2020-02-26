@@ -7,7 +7,7 @@ public class ExampleJammerCommandC : Command
 	protected override CommandData _data => new CommandData
     {
         Name = "R0 Up",
-        Description = "Increases R0 by 3 (WARNING: can cause overflow)",
+        Description = "Increases R0 by 1",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -21,9 +21,9 @@ public class ExampleJammerCommandC : Command
         }
     };
 
-	public override void DoEffect (Player owner)
+	public override RegVec DoEffect (Player owner, RegVec inputVector)
 	{
-        owner.ActiveCPU.Registers.R0 += 3;
+        return RegVec.SafeAdd(inputVector, RegVec.Basis0);
 	}
 }
 
@@ -31,8 +31,8 @@ public class ExampleJammerCommandD : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "R1 rMin",
-        Description = "Sets R1 to minimum(r0, r2, r3)",
+        Name = "R1,2 Up",
+        Description = "Increases R1 and R2 by 1",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -46,17 +46,9 @@ public class ExampleJammerCommandD : Command
         }
     };
 
-	public override void DoEffect (Player owner)
+	public override RegVec DoEffect (Player owner, RegVec inputVector)
 	{
-        CPU cpu = owner.ActiveCPU;
-
-        cpu.Registers = new RegVec
-        (
-            cpu.Registers.R0,
-            Mathf.Min(cpu.Registers.R0, cpu.Registers.R2, cpu.Registers.R3),
-            cpu.Registers.R2,
-            cpu.Registers.R3
-        );
+        return RegVec.SafeAdd(inputVector, RegVec.Basis1 + RegVec.Basis2);
 	}
 }
 
@@ -64,8 +56,8 @@ public class ExampleJammerCommandE : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "R2 Up",
-        Description = "Increases R2 by 3 (WARNING: can cause overflow)",
+        Name = "R3 Up",
+        Description = "Increases R3 by 1",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -79,9 +71,9 @@ public class ExampleJammerCommandE : Command
         }
     };
 
-	public override void DoEffect (Player owner)
+	public override RegVec DoEffect (Player owner, RegVec inputVector)
 	{
-        owner.ActiveCPU.Registers.R2 += 3;
+        return RegVec.SafeAdd(inputVector, RegVec.Basis3);
 	}
 }
 
@@ -89,8 +81,8 @@ public class ExampleJammerCommandF : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "R3 HUP",
-        Description = "Increases R3 by R0 / 2",
+        Name = "HIT L",
+        Description = "Deal R0 * R1 damage",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -104,10 +96,10 @@ public class ExampleJammerCommandF : Command
         }
     };
 
-	public override void DoEffect (Player owner)
+	public override RegVec DoEffect (Player owner, RegVec inputVector)
 	{
-        CPU cpu = owner.ActiveCPU;
-        cpu.Registers = RegVec.SafeAdd(cpu.Registers, RegVec.Basis3 * cpu.Registers.R0 / 2);
+        owner.Opponent.Health.Value -= inputVector.R0 * inputVector.R1;
+        return inputVector / 2;
 	}
 }
 
@@ -115,8 +107,8 @@ public class ExampleJammerCommandG : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "Instr HIT",
-        Description = "Sets instr: deal [R0 * (R1 + R3) / 2 + R2] damage",
+        Name = "HIT H",
+        Description = "Deal R2 * R3 damage",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -130,12 +122,10 @@ public class ExampleJammerCommandG : Command
         }
     };
 
-    public override void DoEffect (Player owner)
+    public override RegVec DoEffect (Player owner, RegVec inputVector)
     {
-        RegVec v = owner.ActiveCPU.Registers;
-
-        owner.Opponent.TakeShieldedDamage(v.R0 * (v.R2 + v.R1) / 2 + v.R3);
-        owner.ActiveCPU.FlushRegisters();
+        owner.Opponent.Health.Value -= inputVector.R2 * inputVector.R3;
+        return inputVector / 2;
     }
 }
 
@@ -143,8 +133,8 @@ public class ExampleJammerCommandA : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "Instr BLK",
-        Description = "Sets instr: add [R0 * (R1 + R3) + R2] armor",
+        Name = "BLK",
+        Description = "Add R1 * R2 armor",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -158,12 +148,10 @@ public class ExampleJammerCommandA : Command
         }
     };
 
-    public override void DoEffect (Player owner)
+    public override RegVec DoEffect (Player owner, RegVec inputVector)
     {
-        RegVec v = owner.ActiveCPU.Registers;
-
-        owner.Armor.Value = v.R0 * (v.R2 + v.R1) + v.R3;
-        owner.ActiveCPU.FlushRegisters();
+        owner.Armor.Value += inputVector.R1 * inputVector.R2;
+        return RegVec.SafeSubtract(inputVector, RegVec.One);
     }
 }
 
@@ -171,8 +159,8 @@ public class ExampleJammerCommandB : Command
 {
 	protected override CommandData _data => new CommandData
     {
-        Name = "Instr BPM",
-        Description = "Sets instr: increase BPM by R1",
+        Name = "RGMIN",
+        Description = "Deal 2 register damage to the enemy CPU corresponding to your highest active register (WARNING: can cause underflow)",
         Color = Color.clear,
         ComboData = new CommandInputBools
         {
@@ -186,8 +174,16 @@ public class ExampleJammerCommandB : Command
         }
     };
 
-    public override void DoEffect (Player owner)
+    public override RegVec DoEffect (Player owner, RegVec inputVector)
     {
-        owner.Track.BSteps.Value += owner.ActiveCPU.Registers.R1;
+        int maxReg = 0;
+
+        for (int i = 1; i < 4; i++)
+        {
+            if (inputVector[i] > inputVector[maxReg]) maxReg = i;
+        }
+
+        owner.Opponent.CPUs[maxReg].Registers -= RegVec.One * 2;
+        return inputVector / 3;
     }
 }

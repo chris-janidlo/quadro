@@ -107,7 +107,7 @@ public class Player
             lastCommand = Commands[direction];
 
             if (Track.ClosestHittableNote().Symbol.HasInChord(direction))
-                lastCommand.DoEffect(this);
+                ActiveCPU.Registers = lastCommand.DoEffect(this, ActiveCPU.Registers);
 
             processHit(originalHit);
         }
