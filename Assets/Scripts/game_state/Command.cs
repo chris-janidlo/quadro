@@ -8,7 +8,6 @@ public abstract class Command
 {
     public static Command FromTypeName (string name)
     {
-        // TODO: not sure if this is right
         // TODO: restrict commands to a specific namespace
         return (Command) Activator.CreateInstance(null, name).Unwrap();
     }
