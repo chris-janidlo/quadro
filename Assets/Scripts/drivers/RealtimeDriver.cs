@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-// requires that TimingSource has a clip of 4 seconds of silence (one 4/4 measure at 60 BPM) set to loop
 public class RealtimeDriver : ADriver, QuadroInput.IPlayerActions
 {
     public AudioSource TimingSource;
