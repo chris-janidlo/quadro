@@ -79,9 +79,6 @@ public class Player
         }
     }
 
-    public bool CanComboInto (CommandInput direction)
-        => lastCommand == null || lastCommand.ComboData[direction];
-
     // damage must be a non-negative value
     public void TakeShieldedDamage (int damage)
     {
@@ -102,19 +99,12 @@ public class Player
 
     void tryPlayDirection (CommandInput direction, HitData originalHit)
     {
-        if (CanComboInto(direction))
-        {
-            lastCommand = Commands[direction];
+        lastCommand = Commands[direction];
 
-            if (Track.ClosestHittableNote().Symbol.HasInChord(direction))
-                ActiveCPU.Registers = lastCommand.DoEffect(this, ActiveCPU.Registers);
+        if (Track.ClosestHittableNote().Symbol.HasInChord(direction))
+            ActiveCPU.Registers = lastCommand.DoEffect(this, ActiveCPU.Registers);
 
-            processHit(originalHit);
-        }
-        else
-        {
-            processHit(originalHit.WithMissReason(MissedHitReason.CommandCantCombo));
-        }
+        processHit(originalHit);
     }
 
     void decayArmor ()

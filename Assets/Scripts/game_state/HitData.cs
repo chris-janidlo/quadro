@@ -46,13 +46,6 @@ public class HitData
 
     public string ShortDescription ()
     {
-        if (MissReason != null &&
-            (MissReason.Value == MissedHitReason.CommandCantCombo ||
-             MissReason.Value == MissedHitReason.CPUHasNoInstr))
-        {
-            return "Invalid";
-        }
-
         return Quality.ToString();
     }
 

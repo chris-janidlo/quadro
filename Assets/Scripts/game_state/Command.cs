@@ -18,9 +18,6 @@ public abstract class Command
 
         // helps to have a color for consistent visual language
         public Color Color;
-
-        // the commands that can follow this
-        public CommandInputBools ComboData;
     }
 
     protected abstract CommandData _data { get; }
@@ -31,7 +28,6 @@ public abstract class Command
     public string Name => cachedData.Name;
     public string Description => cachedData.Description;
     public Color Color => cachedData.Color;
-    public CommandInputBools ComboData => cachedData.ComboData;
 
     public abstract RegVec DoEffect (Player owner, RegVec inputVector);
 }

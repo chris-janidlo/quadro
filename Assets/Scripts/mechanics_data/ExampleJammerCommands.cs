@@ -8,17 +8,7 @@ public class ExampleJammerCommandC : Command
     {
         Name = "R0 Up",
         Description = "Increases R0 by 1",
-        Color = Color.clear,
-        ComboData = new CommandInputBools
-        {
-            A = true,
-            B = true,
-            C = true,
-            D = true,
-            E = true,
-            F = true,
-            G = true
-        }
+        Color = Color.clear
     };
 
 	public override RegVec DoEffect (Player owner, RegVec inputVector)
@@ -33,17 +23,7 @@ public class ExampleJammerCommandD : Command
     {
         Name = "R1,2 Up",
         Description = "Increases R1 and R2 by 1",
-        Color = Color.clear,
-        ComboData = new CommandInputBools
-        {
-            A = true,
-            B = true,
-            C = true,
-            D = true,
-            E = true,
-            F = true,
-            G = true
-        }
+        Color = Color.clear
     };
 
 	public override RegVec DoEffect (Player owner, RegVec inputVector)
@@ -58,17 +38,7 @@ public class ExampleJammerCommandE : Command
     {
         Name = "R3 Up",
         Description = "Increases R3 by 1",
-        Color = Color.clear,
-        ComboData = new CommandInputBools
-        {
-            A = true,
-            B = true,
-            C = true,
-            D = true,
-            E = true,
-            F = true,
-            G = true
-        }
+        Color = Color.clear
     };
 
 	public override RegVec DoEffect (Player owner, RegVec inputVector)
@@ -83,17 +53,7 @@ public class ExampleJammerCommandF : Command
     {
         Name = "HIT L",
         Description = "Deal R0 * R1 damage",
-        Color = Color.clear,
-        ComboData = new CommandInputBools
-        {
-            A = true,
-            B = true,
-            C = true,
-            D = true,
-            E = true,
-            F = true,
-            G = true
-        }
+        Color = Color.clear
     };
 
 	public override RegVec DoEffect (Player owner, RegVec inputVector)
@@ -109,17 +69,7 @@ public class ExampleJammerCommandG : Command
     {
         Name = "HIT H",
         Description = "Deal R2 * R3 damage",
-        Color = Color.clear,
-        ComboData = new CommandInputBools
-        {
-            A = true,
-            B = true,
-            C = true,
-            D = true,
-            E = true,
-            F = true,
-            G = true
-        }
+        Color = Color.clear
     };
 
     public override RegVec DoEffect (Player owner, RegVec inputVector)
@@ -135,17 +85,7 @@ public class ExampleJammerCommandA : Command
     {
         Name = "BLK",
         Description = "Add R1 * R2 armor",
-        Color = Color.clear,
-        ComboData = new CommandInputBools
-        {
-            A = true,
-            B = true,
-            C = true,
-            D = true,
-            E = true,
-            F = true,
-            G = true
-        }
+        Color = Color.clear
     };
 
     public override RegVec DoEffect (Player owner, RegVec inputVector)
@@ -161,17 +101,7 @@ public class ExampleJammerCommandB : Command
     {
         Name = "RGMIN",
         Description = "Deal 2 register damage to the enemy CPU corresponding to your highest active register (WARNING: can cause underflow)",
-        Color = Color.clear,
-        ComboData = new CommandInputBools
-        {
-            A = true,
-            B = true,
-            C = true,
-            D = true,
-            E = true,
-            F = true,
-            G = true
-        }
+        Color = Color.clear
     };
 
     public override RegVec DoEffect (Player owner, RegVec inputVector)
