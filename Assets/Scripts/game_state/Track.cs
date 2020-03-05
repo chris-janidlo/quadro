@@ -9,12 +9,13 @@ using crass;
 public class Track
 {
 	public event Action Beat;
-    public event Action<HitData> DidntAttemptBeat;
     public event Action<Note> NoteSpawned, NoteDespawned;
 
     public const int BEATS_PER_MEASURE = 4;
     public const int BEATS_SHOWN_IN_ADVANCE = 8;
     public const int BPM_PER_BSTEP = 10;
+
+    static readonly IReadOnlyList<int> LEGAL_SUBDIVISIONS = new List<int> { 3, 4 };
 
     // never get the current BPM from this value; always get it from BPM property below
     public readonly BoxedInt BSteps = new BoxedInt(8, 4, 20);
@@ -29,9 +30,9 @@ public class Track
         get => _beatPos;
         set
         {
-            if (value < 0 || value >= Track.BEATS_PER_MEASURE)
+            if (value < 0 || value >= BEATS_PER_MEASURE)
             {
-                throw new ArgumentException($"value must be in range [0, {Track.BEATS_PER_MEASURE}); was given ${value}");
+                throw new ArgumentException($"value must be in range [0, {BEATS_PER_MEASURE}); was given ${value}");
             }
 
             _beatPos = value;
@@ -49,8 +50,11 @@ public class Track
     List<Note> notes = new List<Note>();
     RhythmGenerator generator;
 
+    List<int> currentlyLegalSubdivisions;
+
     int beatTicker = -1, emptyBeatSpawnTicker;
-    Note previousHittableNote;
+
+    double previousHittablePositionInBeat;
     bool closestHittableNoteAttempted;
 
     // the actual value that is currently in play, which lags behind BSteps a bit (based on an easing function) in order to make the BPM change not so sudden
@@ -59,48 +63,50 @@ public class Track
     public Track (int seed)
     {
         generator = new RhythmGenerator(this, BEATS_PER_MEASURE, seed);
+
         apparentBSteps = BSteps.Value;
+        currentlyLegalSubdivisions = new List<int>(LEGAL_SUBDIVISIONS);
     }
 
-    public HitData GetHitByAccuracy ()
+    public HitData TryHitNow ()
     {
-        HitData hit = null;
-        double hitDistance = Math.Abs(CurrentPositionInMeasure - closestBeatPosition);
+        double closestTargetTime = closestTargetablePositionInBeat();
 
-        if (closestHittableNoteAttempted)
-            hit = new HitData(hitDistance, MissedHitReason.AlreadyAttemptedBeat);
+        HitData hit = new HitData(Math.Abs(CurrentPositionInBeat - closestTargetTime));
 
+        if (closestHittableNoteAttempted) hit = hit.WithMissReason(MissedHitReason.AlreadyAttemptedBeat);
         closestHittableNoteAttempted = true;
 
-        if (hit == null && ClosestHittableNote() == null)
-            hit = new HitData(hitDistance, MissedHitReason.ClosestBeatIsOff);
-
-        if (hit == null)
-            hit = new HitData(hitDistance);
+        if (!hit.ClearedBeat)
+        {
+            currentlyLegalSubdivisions.Clear();
+        }
+        else if (closestTargetTime % 1 != 0)
+        {
+            currentlyLegalSubdivisions.RemoveAll(s => closestTargetTime % ((double) 1 / s) != 0);
+        }
 
         return hit;
     }
 
-    // closest note that is not a miss
-    public Note ClosestHittableNote ()
+    public NoteSymbol CurrentChord ()
     {
-        Note closest = null;
-        double currentDistance = double.MaxValue;
+        return notes.Where(n => n.BeatsUntilThisNote >= -1).OrderBy(n => n.BeatsUntilThisNote).First().Symbol;
+    }
 
-        foreach (Note note in notes)
+    double closestTargetablePositionInBeat ()
+    {
+        List<double> targetablePositions = new List<double> { 0, 1 };
+
+        foreach (int subdivision in currentlyLegalSubdivisions)
         {
-            if (note.BeatsUntilThisNote > 1) continue;
-
-            double distance = Math.Abs(note.BeatsUntilThisNote);
-
-            if (distance <= HitQuality.Miss.BeatDistanceRange().x && distance < currentDistance)
-            {
-                closest = note;
-                currentDistance = distance;
-            }
+            double smallestDuration = (double) 1 / subdivision;
+            for (int i = 0; i < subdivision; i++) targetablePositions.Add(smallestDuration * i);
         }
 
-        return closest;
+        return targetablePositions
+            .OrderBy(p => Math.Abs(CurrentPositionInBeat - p))
+            .First();
     }
 
     void audioTimeDidUpdate ()
@@ -115,6 +121,9 @@ public class Track
 
             clearStaleNotes();
             spawnNotesForNextBeat();
+
+            currentlyLegalSubdivisions.Clear();
+            currentlyLegalSubdivisions.AddRange(LEGAL_SUBDIVISIONS);
         }
 
         if (apparentBSteps != BSteps.Value)
@@ -122,24 +131,13 @@ public class Track
             apparentBSteps = Mathf.Lerp((float) apparentBSteps, BSteps.Value, EasingFunction.EaseInQuint(0, 1, (float) CurrentPositionInBeat));
         }
 
-        var closestHittableNote = ClosestHittableNote();
+        double closestHittablePositionInBeat = closestTargetablePositionInBeat();
 
-        if (previousHittableNote != closestHittableNote)
+        if (closestHittablePositionInBeat != previousHittablePositionInBeat)
         {
-            // we have entered this if because one of the following is true:
-                // the previous note is out of hittable range
-                // a new note is closer than the previous note, even though they're closer to each other than 2*hittable range
-            // in either case, in the current naive implementation, we now know whether or not the player ever attempted the previous note.
-        
-            // if the player completely skipped this beat when they shouldn't have, fail
-            if (previousHittableNote != null && !closestHittableNoteAttempted)
-            {
-                DidntAttemptBeat?.Invoke(new HitData(CurrentPositionInBeat, MissedHitReason.NeverAttemptedBeat));
-            }
-
-            closestHittableNoteAttempted = false;
-
-            previousHittableNote = closestHittableNote;
+            if (!(closestHittablePositionInBeat == 0 && previousHittablePositionInBeat == 1))
+                closestHittableNoteAttempted = false;
+            previousHittablePositionInBeat = closestHittablePositionInBeat;
         }
     }
 

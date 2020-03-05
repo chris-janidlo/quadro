@@ -16,7 +16,6 @@ public class HitText : MonoBehaviour, IDriverSubscriber
         Text.text = "";
         Driver.Player.Hit += hit =>
         {
-            if (!hit.ClearedBeat && hit.MissReason == MissedHitReason.NeverAttemptedBeat) return;
             StopAllCoroutines();
             StartCoroutine(messageRoutine(hit));
         };

@@ -7,6 +7,8 @@ using crass;
 
 public class Player
 {
+    public const int MISS_DAMAGE = 10;
+
     public event Action<HitData> Hit;
 
     public Player Opponent;
@@ -33,7 +35,7 @@ public class Player
     public Player (SignalJammer signalJammer, int seed)
     {
         Track = new Track(seed);
-    
+
         SignalJammer = signalJammer;
 
         int mh = signalJammer.MaxHealth;
@@ -55,7 +57,6 @@ public class Player
             CPUs.Add(new CPU(this));
         }
 
-        Track.DidntAttemptBeat += processHit;
         Track.Beat += decayArmor;
     }
 
@@ -67,7 +68,7 @@ public class Player
             return;
         }
 
-        HitData hit = Track.GetHitByAccuracy();
+        HitData hit = Track.TryHitNow();
 
         if (!hit.ClearedBeat)
         {
@@ -101,7 +102,7 @@ public class Player
     {
         lastCommand = Commands[direction];
 
-        if (Track.ClosestHittableNote().Symbol.HasInChord(direction))
+        if (Track.CurrentChord().HasInChord(direction))
             ActiveCPU.Registers = lastCommand.DoEffect(this, ActiveCPU.Registers);
 
         processHit(originalHit);
@@ -122,11 +123,11 @@ public class Player
     {
         if (!hit.ClearedBeat)
         {
+            TakeShieldedDamage(MISS_DAMAGE);
             ComboCounter = 0;
         }
 
         Health.Value += hit.Quality.Healing();
-        TakeShieldedDamage(hit.MissReason?.Damage() ?? 0);
 
         Hit?.Invoke(hit);
     }
