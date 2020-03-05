@@ -2,31 +2,29 @@ FIXME:
 
 TODO:
 ===== GAMEPLAY =====
-	how the hecc is input gonna work when you need 12 buttons per player
+	better design for registers input zone?
+
+	register that can go negative or two registers?
+
+	chord buffing drill down
+		buff an entire input zone (3 chords, each buffs 4 inputs)
+		buff two adjacent directions across input zones (4 chords, each buffs 6 inputs)
 
 ===== CODE =====
 	create AI
 
+	consistent controls - face buttons, directional buttons, and 3 modifiers
+
+	register changes
+
+	harder timing on smaller beat subdivisions
+
+	chord buff system implementation
+
 	sync up music sources with timing source
 
 ===== MUSIC =====
-	create basic beat
-		dial-up inspired chords
-		chilled out nostalgic chords seem to work well
-
-	determine chords to use
-		want the following properties:
-		should sound appropriate for the aesthetics
-			probably want either really bright extended chords or warm sus chords (or a combination)
-		chords should be flexible, and should allow for dynamic chord substitution in the music engine
-		altogether the chords should contain 7 unique notes forming some kind of scale, which can be mapped onto the command inputs
-		want a specific chord/note frequency:
-			2 of the notes of the scale should show up in 3 of the chords
-			3 of the notes of the scale should show up in 2 of the chords
-			2 of the notes of the scale should show up in 1 of the chords
-		want to do this in ideally 3-4 chords
-		should be able to rearrange the base chords and play them in any order and it should sound reasonably alright
-			alternatively, might want to redo the chord generation so that this isn't a constraint
+	expand basic beat when chord designs are done
 
 ===== UI =====
 	group UI for CPUs(?) + resource bars + misc UI section and put it all on an in-game terminal monitor
