@@ -19,60 +19,52 @@ public class @QuadroInput : IInputActionCollection, IDisposable
             ""id"": ""770b6cfd-f586-4522-832d-57315746260e"",
             ""actions"": [
                 {
-                    ""name"": ""CommandC"",
+                    ""name"": ""Jab"",
                     ""type"": ""Button"",
-                    ""id"": ""9532eb71-50fe-4cac-8fb9-901d301feadb"",
-                    ""expectedControlType"": ""Button"",
+                    ""id"": ""8cadf2bd-792e-4c0a-91d0-d4fe04dcf62c"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""CommandD"",
+                    ""name"": ""Kick"",
                     ""type"": ""Button"",
-                    ""id"": ""29a67bc6-06e6-426b-a5dd-38b387ad83a9"",
-                    ""expectedControlType"": ""Button"",
+                    ""id"": ""e144ae5a-b4bb-4581-bc89-9a9367d17b22"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""CommandE"",
+                    ""name"": ""Utility"",
                     ""type"": ""Button"",
-                    ""id"": ""6c142c5d-8a47-404e-820a-b54e659955db"",
-                    ""expectedControlType"": ""Button"",
+                    ""id"": ""0c78faa7-1bf0-46dd-b378-340cf3d98c9e"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""CommandF"",
+                    ""name"": ""Finisher"",
                     ""type"": ""Button"",
-                    ""id"": ""2d5a5b05-94a4-4833-a4d4-c9176d23b8d4"",
-                    ""expectedControlType"": ""Button"",
+                    ""id"": ""395b3e6b-e365-4bf4-8f88-1e2577735732"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""CommandG"",
+                    ""name"": ""DefenseModifier"",
                     ""type"": ""Button"",
-                    ""id"": ""4b7af74d-499a-454c-ac99-31543ad53ec8"",
-                    ""expectedControlType"": ""Button"",
+                    ""id"": ""3fc6c698-5d22-4a0e-a663-a5dbfe2087fa"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
-                    ""name"": ""CommandA"",
+                    ""name"": ""RegisterModifier"",
                     ""type"": ""Button"",
-                    ""id"": ""a0909a4d-c579-4888-be72-02867259e932"",
-                    ""expectedControlType"": ""Button"",
+                    ""id"": ""e68f8a06-0522-4d7d-a333-b5a485bc616e"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""CommandB"",
-                    ""type"": ""Button"",
-                    ""id"": ""d7dcadaf-ca52-42ca-82be-c443d5efc9ec"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
                     ""name"": ""CPUSelect"",
@@ -85,136 +77,48 @@ public class @QuadroInput : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""West Left Trigger"",
-                    ""id"": ""f435323f-7c76-4d52-8816-d2b9606b393a"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandC"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""74c402d6-2be2-46f4-b17c-5b6612447cb5"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandC"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""54586fbf-3453-48fe-a115-4f2dbe0ee55d"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandC"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""West Right Trigger"",
-                    ""id"": ""268530ff-be63-4bdd-b838-d71fab1aa3b3"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandG"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""f2455a4d-00db-439f-836c-fc7dfd4f895c"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandG"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""d620ff56-204c-4119-b93b-fad6c504b5bf"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandG"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""South Right Trigger"",
-                    ""id"": ""bbd1dbbc-8178-490b-90b0-77dc34527e6a"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandA"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""adcdb5ec-d048-4dfc-8167-857a21e25498"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandA"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""73038fdf-bd63-4d4d-a111-36329be96c7b"",
+                    ""name"": """",
+                    ""id"": ""1143bcd9-c129-4870-b469-378a5bdec648"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CommandA"",
+                    ""action"": ""Jab"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""East Right Trigger"",
-                    ""id"": ""436f9969-d2d3-4eeb-9969-da42b0ba2475"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandB"",
-                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
-                    ""id"": ""d1af0a80-45e3-4d89-9695-d1ce7204cce6"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""name"": """",
+                    ""id"": ""422e2a4e-862f-4970-89ff-867213c638a5"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CommandB"",
+                    ""action"": ""Kick"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""button"",
-                    ""id"": ""4df7924b-9a03-43d0-aaef-bab85315279c"",
+                    ""name"": """",
+                    ""id"": ""bb2d43f1-1e5c-449d-afd7-968befb7be8d"",
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CommandB"",
+                    ""action"": ""Utility"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a7b4022-432c-4926-a57f-17a6c0207b6e"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Finisher"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""Left Stick"",
@@ -272,103 +176,26 @@ public class @QuadroInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""South Left Trigger"",
-                    ""id"": ""c20ee1e6-0e4c-4c5b-92c5-d17f7ba6331e"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandD"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""825dfbb0-841a-437a-aa12-9068fdedc49d"",
+                    ""name"": """",
+                    ""id"": ""cc978675-d866-4383-82fa-29506d1ef6c3"",
                     ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CommandD"",
+                    ""action"": ""DefenseModifier"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""28ef84be-40b9-4b3e-b98a-3b3a68d4d8a0"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandD"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""East Left Trigger"",
-                    ""id"": ""cb8889f4-897f-4693-9897-a1907829e583"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandE"",
-                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
-                    ""id"": ""751c292c-43d0-4267-b24e-56bcab79c7da"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""name"": """",
+                    ""id"": ""1d5b810f-183f-414f-882f-9fe0400539cc"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CommandE"",
+                    ""action"": ""RegisterModifier"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""fe869884-0e81-4195-afb2-4e68b03911f5"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandE"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""North Left Trigger"",
-                    ""id"": ""04877f20-5877-4f50-9a42-f54d3ae48822"",
-                    ""path"": ""ButtonWithOneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandF"",
-                    ""isComposite"": true,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""a6f18992-337a-40f0-b794-b8b2238c1f55"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandF"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""02afac1c-2f0a-4497-81a6-86d3d1acfee8"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CommandF"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -941,13 +768,12 @@ public class @QuadroInput : IInputActionCollection, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_CommandC = m_Player.FindAction("CommandC", throwIfNotFound: true);
-        m_Player_CommandD = m_Player.FindAction("CommandD", throwIfNotFound: true);
-        m_Player_CommandE = m_Player.FindAction("CommandE", throwIfNotFound: true);
-        m_Player_CommandF = m_Player.FindAction("CommandF", throwIfNotFound: true);
-        m_Player_CommandG = m_Player.FindAction("CommandG", throwIfNotFound: true);
-        m_Player_CommandA = m_Player.FindAction("CommandA", throwIfNotFound: true);
-        m_Player_CommandB = m_Player.FindAction("CommandB", throwIfNotFound: true);
+        m_Player_Jab = m_Player.FindAction("Jab", throwIfNotFound: true);
+        m_Player_Kick = m_Player.FindAction("Kick", throwIfNotFound: true);
+        m_Player_Utility = m_Player.FindAction("Utility", throwIfNotFound: true);
+        m_Player_Finisher = m_Player.FindAction("Finisher", throwIfNotFound: true);
+        m_Player_DefenseModifier = m_Player.FindAction("DefenseModifier", throwIfNotFound: true);
+        m_Player_RegisterModifier = m_Player.FindAction("RegisterModifier", throwIfNotFound: true);
         m_Player_CPUSelect = m_Player.FindAction("CPUSelect", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1011,25 +837,23 @@ public class @QuadroInput : IInputActionCollection, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_CommandC;
-    private readonly InputAction m_Player_CommandD;
-    private readonly InputAction m_Player_CommandE;
-    private readonly InputAction m_Player_CommandF;
-    private readonly InputAction m_Player_CommandG;
-    private readonly InputAction m_Player_CommandA;
-    private readonly InputAction m_Player_CommandB;
+    private readonly InputAction m_Player_Jab;
+    private readonly InputAction m_Player_Kick;
+    private readonly InputAction m_Player_Utility;
+    private readonly InputAction m_Player_Finisher;
+    private readonly InputAction m_Player_DefenseModifier;
+    private readonly InputAction m_Player_RegisterModifier;
     private readonly InputAction m_Player_CPUSelect;
     public struct PlayerActions
     {
         private @QuadroInput m_Wrapper;
         public PlayerActions(@QuadroInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @CommandC => m_Wrapper.m_Player_CommandC;
-        public InputAction @CommandD => m_Wrapper.m_Player_CommandD;
-        public InputAction @CommandE => m_Wrapper.m_Player_CommandE;
-        public InputAction @CommandF => m_Wrapper.m_Player_CommandF;
-        public InputAction @CommandG => m_Wrapper.m_Player_CommandG;
-        public InputAction @CommandA => m_Wrapper.m_Player_CommandA;
-        public InputAction @CommandB => m_Wrapper.m_Player_CommandB;
+        public InputAction @Jab => m_Wrapper.m_Player_Jab;
+        public InputAction @Kick => m_Wrapper.m_Player_Kick;
+        public InputAction @Utility => m_Wrapper.m_Player_Utility;
+        public InputAction @Finisher => m_Wrapper.m_Player_Finisher;
+        public InputAction @DefenseModifier => m_Wrapper.m_Player_DefenseModifier;
+        public InputAction @RegisterModifier => m_Wrapper.m_Player_RegisterModifier;
         public InputAction @CPUSelect => m_Wrapper.m_Player_CPUSelect;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -1040,27 +864,24 @@ public class @QuadroInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
             {
-                @CommandC.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandC;
-                @CommandC.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandC;
-                @CommandC.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandC;
-                @CommandD.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandD;
-                @CommandD.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandD;
-                @CommandD.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandD;
-                @CommandE.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandE;
-                @CommandE.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandE;
-                @CommandE.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandE;
-                @CommandF.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandF;
-                @CommandF.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandF;
-                @CommandF.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandF;
-                @CommandG.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandG;
-                @CommandG.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandG;
-                @CommandG.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandG;
-                @CommandA.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandA;
-                @CommandA.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandA;
-                @CommandA.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandA;
-                @CommandB.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandB;
-                @CommandB.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandB;
-                @CommandB.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCommandB;
+                @Jab.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJab;
+                @Jab.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJab;
+                @Jab.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJab;
+                @Kick.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnKick;
+                @Kick.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnKick;
+                @Kick.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnKick;
+                @Utility.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUtility;
+                @Utility.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUtility;
+                @Utility.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUtility;
+                @Finisher.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFinisher;
+                @Finisher.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFinisher;
+                @Finisher.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFinisher;
+                @DefenseModifier.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefenseModifier;
+                @DefenseModifier.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefenseModifier;
+                @DefenseModifier.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefenseModifier;
+                @RegisterModifier.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRegisterModifier;
+                @RegisterModifier.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRegisterModifier;
+                @RegisterModifier.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRegisterModifier;
                 @CPUSelect.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCPUSelect;
                 @CPUSelect.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCPUSelect;
                 @CPUSelect.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCPUSelect;
@@ -1068,27 +889,24 @@ public class @QuadroInput : IInputActionCollection, IDisposable
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @CommandC.started += instance.OnCommandC;
-                @CommandC.performed += instance.OnCommandC;
-                @CommandC.canceled += instance.OnCommandC;
-                @CommandD.started += instance.OnCommandD;
-                @CommandD.performed += instance.OnCommandD;
-                @CommandD.canceled += instance.OnCommandD;
-                @CommandE.started += instance.OnCommandE;
-                @CommandE.performed += instance.OnCommandE;
-                @CommandE.canceled += instance.OnCommandE;
-                @CommandF.started += instance.OnCommandF;
-                @CommandF.performed += instance.OnCommandF;
-                @CommandF.canceled += instance.OnCommandF;
-                @CommandG.started += instance.OnCommandG;
-                @CommandG.performed += instance.OnCommandG;
-                @CommandG.canceled += instance.OnCommandG;
-                @CommandA.started += instance.OnCommandA;
-                @CommandA.performed += instance.OnCommandA;
-                @CommandA.canceled += instance.OnCommandA;
-                @CommandB.started += instance.OnCommandB;
-                @CommandB.performed += instance.OnCommandB;
-                @CommandB.canceled += instance.OnCommandB;
+                @Jab.started += instance.OnJab;
+                @Jab.performed += instance.OnJab;
+                @Jab.canceled += instance.OnJab;
+                @Kick.started += instance.OnKick;
+                @Kick.performed += instance.OnKick;
+                @Kick.canceled += instance.OnKick;
+                @Utility.started += instance.OnUtility;
+                @Utility.performed += instance.OnUtility;
+                @Utility.canceled += instance.OnUtility;
+                @Finisher.started += instance.OnFinisher;
+                @Finisher.performed += instance.OnFinisher;
+                @Finisher.canceled += instance.OnFinisher;
+                @DefenseModifier.started += instance.OnDefenseModifier;
+                @DefenseModifier.performed += instance.OnDefenseModifier;
+                @DefenseModifier.canceled += instance.OnDefenseModifier;
+                @RegisterModifier.started += instance.OnRegisterModifier;
+                @RegisterModifier.performed += instance.OnRegisterModifier;
+                @RegisterModifier.canceled += instance.OnRegisterModifier;
                 @CPUSelect.started += instance.OnCPUSelect;
                 @CPUSelect.performed += instance.OnCPUSelect;
                 @CPUSelect.canceled += instance.OnCPUSelect;
@@ -1256,13 +1074,12 @@ public class @QuadroInput : IInputActionCollection, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnCommandC(InputAction.CallbackContext context);
-        void OnCommandD(InputAction.CallbackContext context);
-        void OnCommandE(InputAction.CallbackContext context);
-        void OnCommandF(InputAction.CallbackContext context);
-        void OnCommandG(InputAction.CallbackContext context);
-        void OnCommandA(InputAction.CallbackContext context);
-        void OnCommandB(InputAction.CallbackContext context);
+        void OnJab(InputAction.CallbackContext context);
+        void OnKick(InputAction.CallbackContext context);
+        void OnUtility(InputAction.CallbackContext context);
+        void OnFinisher(InputAction.CallbackContext context);
+        void OnDefenseModifier(InputAction.CallbackContext context);
+        void OnRegisterModifier(InputAction.CallbackContext context);
         void OnCPUSelect(InputAction.CallbackContext context);
     }
     public interface IUIActions

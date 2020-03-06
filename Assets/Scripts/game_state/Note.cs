@@ -46,25 +46,4 @@ public static class NoteSymbolExtentions
 
 		return (NoteSymbol) prev;
 	}
-
-	public static bool HasInChord (this NoteSymbol ns, CommandInput ci)
-	{
-		switch (ns)
-		{
-			// frequencies:
-				// C - 3	(C, F, a7)
-				// D - 1	(G7)
-				// E - 2	(C, a7)
-				// F - 2	(F, G7)
-				// G - 3	(C, G7, a7)
-				// A - 2	(F, a7)
-				// B - 1	(G7)
-
-			case NoteSymbol.C: return new List<CommandInput> { CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
-			case NoteSymbol.F: return new List<CommandInput> { CommandInput.F, CommandInput.A, CommandInput.C }.Contains(ci);
-			case NoteSymbol.G7: return new List<CommandInput> { CommandInput.G, CommandInput.B, CommandInput.D, CommandInput.F }.Contains(ci);
-			case NoteSymbol.a7: return new List<CommandInput> { CommandInput.A, CommandInput.C, CommandInput.E, CommandInput.G }.Contains(ci);
-			default: throw new ArgumentException("unexpected NoteSymbol " + ns);
-		}
-	}
 }

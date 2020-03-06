@@ -7,7 +7,8 @@ using crass;
 
 public class Player
 {
-    public const int MISS_DAMAGE = 10;
+    public const int MISS_DAMAGE = 10,
+                     NUM_CPUS = 4;
 
     public event Action<HitData> Hit;
 
@@ -20,7 +21,7 @@ public class Player
     public readonly BoxedInt Health;
     public readonly BoxedInt Armor;
 
-    public readonly CommandInputBox<Command> Commands;
+    public readonly CommandMap Commands;
     public readonly List<CPU> CPUs;
 
     public int ComboCounter { get; private set; }
@@ -43,16 +44,19 @@ public class Player
         Health = new BoxedInt(mh, 0, mh);
         Armor = new BoxedInt(0, 0, mh);
 
-        Commands = new CommandInputBox<Command>();
+        Commands = new CommandMap();
 
-        foreach (var direction in EnumUtil.AllValues<CommandInput>())
+        foreach (var zone in EnumUtil.AllValues<CommandZone>())
         {
-            Commands[direction] = Command.FromTypeName(signalJammer.CommandClassNames[direction]);
+            foreach (var button in EnumUtil.AllValues<CommandButton>())
+            {
+                Commands[zone][button] = Command.FromTypeName(signalJammer.CommandClassNames[zone][button]);
+            }
         }
 
-        CPUs = new List<CPU>(signalJammer.NumCPUs);
+        CPUs = new List<CPU>(NUM_CPUS);
 
-        for (int i = 0; i < signalJammer.NumCPUs; i++)
+        for (int i = 0; i < NUM_CPUS; i++)
         {
             CPUs.Add(new CPU(this));
         }
@@ -60,24 +64,19 @@ public class Player
         Track.Beat += decayArmor;
     }
 
-    public void DoInput (InputFrame input)
-    {
-        if (input.CPUSwitchInput != null)
-        {
-            CPUIndex = (int) input.CPUSwitchInput.Value;
-            return;
-        }
+    public void SwitchActiveCPU (CPUSwitchInput input) => CPUIndex = (int) input;
 
+    public void RunCommand (CommandZone zone, CommandButton button)
+    {
         HitData hit = Track.TryHitNow();
 
-        if (!hit.ClearedBeat)
+        if (hit.ClearedBeat)
         {
-            processHit(hit);
+            lastCommand = Commands[zone][button];
+            ActiveCPU.Registers = lastCommand.DoEffect(this, ActiveCPU.Registers);
         }
-        else if (input.CommandInput != null)
-        {
-            tryPlayDirection(input.CommandInput.Value, hit);
-        }
+
+        processHit(hit);
     }
 
     // damage must be a non-negative value
@@ -96,16 +95,6 @@ public class Player
 
             damageToBeDone--;
         }
-    }
-
-    void tryPlayDirection (CommandInput direction, HitData originalHit)
-    {
-        lastCommand = Commands[direction];
-
-        if (Track.CurrentChord().HasInChord(direction))
-            ActiveCPU.Registers = lastCommand.DoEffect(this, ActiveCPU.Registers);
-
-        processHit(originalHit);
     }
 
     void decayArmor ()

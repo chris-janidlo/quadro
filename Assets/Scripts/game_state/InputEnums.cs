@@ -1,80 +1,104 @@
 ﻿using System;
+using UnityEngine;
 using crass;
 
-public struct InputFrame
+public enum CommandButton
 {
-    public readonly CommandInput? CommandInput;
-    public readonly CPUSwitchInput? CPUSwitchInput;
+    Jab, Kick, Utility, Finisher
+}
 
-    public bool FrameIsEmpty => CommandInput == null && CPUSwitchInput == null;
+public enum CommandZone
+{
+    Attack, Defense, Register
+}
 
-    public InputFrame (CommandInput? command, CPUSwitchInput? cpuSwitch)
+public class CommandBox<ValueType, ButtonBoxType>
+    where ButtonBoxType : CommandBox<ValueType, ButtonBoxType>.Buttons<ValueType>, new()
+{
+    public class Buttons<T>
     {
-        CommandInput = command;
-        CPUSwitchInput = cpuSwitch;
+        public T Jab, Kick, Utility, Finisher;
+
+        public T this [CommandButton input]
+        {
+            get
+            {
+                switch (input)
+                {
+                    case CommandButton.Jab: return Jab;
+                    case CommandButton.Kick: return Kick;
+                    case CommandButton.Utility: return Utility;
+                    case CommandButton.Finisher: return Finisher;
+                    default: throw new ArgumentException(message: "unexpected CommandButton value", paramName: nameof(input));
+                }
+            }
+
+            set
+            {
+                switch (input)
+                {
+                    case CommandButton.Jab: Jab = value; break;
+                    case CommandButton.Kick: Kick = value; break;
+                    case CommandButton.Utility: Utility = value; break;
+                    case CommandButton.Finisher: Finisher = value; break;
+                    default: throw new ArgumentException(message: "unexpected CommandButton value", paramName: nameof(input));
+                }
+            }
+        }
     }
-}
 
+    [SerializeField] ButtonBoxType _attack = new ButtonBoxType();
+    public ButtonBoxType Attack => _attack;
+    
+    [SerializeField] ButtonBoxType _defense = new ButtonBoxType();
+    public ButtonBoxType Defense => _defense;
+  
+    [SerializeField] ButtonBoxType _register = new ButtonBoxType();
+    public ButtonBoxType Register => _register;
 
-
-public enum CommandInput
-{
-    C, D, E, F, G, A, B
-}
-
-public class CommandInputBox<T>
-{
-    public T C, D, E, F, G, A, B;
-
-    public T this [CommandInput input]
+    public ButtonBoxType this [CommandZone input]
     {
         get
         {
             switch (input)
             {
-                case CommandInput.C: return C;
-                case CommandInput.D: return D;
-                case CommandInput.E: return E;
-                case CommandInput.F: return F;
-                case CommandInput.G: return G;
-                case CommandInput.A: return A;
-                case CommandInput.B: return B;
-                default: throw new ArgumentException("unexpected CommandInput value " + input);
-            }
-        }
-        set
-        {
-            switch (input)
-            {
-                case CommandInput.C: C = value; break;
-                case CommandInput.D: D = value; break;
-                case CommandInput.E: E = value; break;
-                case CommandInput.F: F = value; break;
-                case CommandInput.G: G = value; break;
-                case CommandInput.A: A = value; break;
-                case CommandInput.B: B = value; break;
-                default: throw new ArgumentException("unexpected CommandInput value " + input);
+                case CommandZone.Attack: return Attack;
+                case CommandZone.Defense: return Defense;
+                case CommandZone.Register: return Register;
+                default: throw new ArgumentException(message: "unexpected CommandZone value", paramName: nameof(input));
             }
         }
     }
 }
 
 [Serializable]
-public class CommandInputStrings : CommandInputBox<string> {}
+public class CommandStrings : CommandBox<string, CommandStrings.StringButtons>
+{
+    [Serializable] public class StringButtons : CommandBox<string, CommandStrings.StringButtons>.Buttons<string> {}
+}
 
 [Serializable]
-public class CommandInputBools : CommandInputBox<bool> {}
+public class CommandBools : CommandBox<bool, CommandBools.BoolButtons>
+{
+    [Serializable] public class BoolButtons : CommandBox<bool, CommandBools.BoolButtons>.Buttons<bool> {}
+}
+
+[Serializable]
+public class CommandMap : CommandBox<Command, CommandMap.CommandButtons>
+{
+    [Serializable] public class CommandButtons : CommandBox<Command, CommandMap.CommandButtons>.Buttons<Command> {}
+}
 
 
 
 public enum CPUSwitchInput
 {
-    Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine
+    Zero, One, Two, Three
 }
 
 public class CPUSwitchInputBox<T>
 {
-    public T Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine;
+    public T Zero, One, Two, Three;
 
     public T this [CPUSwitchInput input]
     {
@@ -86,12 +110,6 @@ public class CPUSwitchInputBox<T>
                 case CPUSwitchInput.One: return One;
                 case CPUSwitchInput.Two: return Two;
                 case CPUSwitchInput.Three: return Three;
-                case CPUSwitchInput.Four: return Four;
-                case CPUSwitchInput.Five: return Five;
-                case CPUSwitchInput.Six: return Six;
-                case CPUSwitchInput.Seven: return Seven;
-                case CPUSwitchInput.Eight: return Eight;
-                case CPUSwitchInput.Nine: return Nine;
                 default: throw new ArgumentException("unexpected CPUSwitchInput value " + input);
             }
         }
@@ -103,12 +121,6 @@ public class CPUSwitchInputBox<T>
                 case CPUSwitchInput.One: One = value; break;
                 case CPUSwitchInput.Two: Two = value; break;
                 case CPUSwitchInput.Three: Three = value; break;
-                case CPUSwitchInput.Four: Four = value; break;
-                case CPUSwitchInput.Five: Five = value; break;
-                case CPUSwitchInput.Six: Six = value; break;
-                case CPUSwitchInput.Seven: Seven = value; break;
-                case CPUSwitchInput.Eight: Eight = value; break;
-                case CPUSwitchInput.Nine: Nine = value; break;
                 default: throw new ArgumentException("unexpected CPUSwitchInput value " + input);
             }
         }

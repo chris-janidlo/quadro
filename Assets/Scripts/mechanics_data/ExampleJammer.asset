@@ -15,13 +15,20 @@ MonoBehaviour:
   Name: example
   Description: blah blah blah
   CommandClassNames:
-    A: ExampleJammerCommandA
-    B: ExampleJammerCommandB
-    C: ExampleJammerCommandC
-    D: ExampleJammerCommandD
-    E: ExampleJammerCommandE
-    F: ExampleJammerCommandF
-    G: ExampleJammerCommandG
+    _attack:
+      Jab: ExampleJammerCommandC
+      Kick: ExampleJammerCommandD
+      Utility: ExampleJammerCommandE
+      Finisher: ExampleJammerCommandF
+    _defense:
+      Jab: ExampleJammerCommandG
+      Kick: ExampleJammerCommandA
+      Utility: ExampleJammerCommandB
+      Finisher: ExampleJammerCommandC
+    _register:
+      Jab: ExampleJammerCommandD
+      Kick: ExampleJammerCommandE
+      Utility: ExampleJammerCommandF
+      Finisher: ExampleJammerCommandG
   MaxHealth: 100
-  NumCPUs: 4
   ArmorDecayPerBeat: 1

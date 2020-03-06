@@ -11,8 +11,8 @@ public class CommandVisual : MonoBehaviour, IDriverSubscriber
 
     public TextMeshProUGUI NameText;
 
-    public void Initialize (CommandInput dir)
+    public void Initialize (CommandZone zone, CommandButton button)
     {
-        NameText.text = Driver.Player.Commands[dir].Name;
+        NameText.text = Driver.Player.Commands[zone][button].Name;
     }
 }

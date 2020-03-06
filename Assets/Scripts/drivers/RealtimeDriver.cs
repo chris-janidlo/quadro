@@ -14,6 +14,10 @@ public class RealtimeDriver : ADriver, QuadroInput.IPlayerActions
 
     float inverseAudioFrequency;
 
+    bool defense, register;
+
+    CommandZone currentZone => register ? CommandZone.Register : (defense ? CommandZone.Defense : CommandZone.Attack);
+
     public override void Initialize (int seed)
     {
         base.Initialize(seed);
@@ -29,54 +33,47 @@ public class RealtimeDriver : ADriver, QuadroInput.IPlayerActions
         TimingSource.pitch = (float) Player.Track.BPM / TimingClipBPM * 4 / Track.BEATS_PER_MEASURE;
     }
 
-    public void OnCommandC (InputAction.CallbackContext context)
-    {
+	public void OnJab (InputAction.CallbackContext context)
+	{
         if (context.phase != InputActionPhase.Performed) return;
 
-        Player.DoInput(new InputFrame(CommandInput.C, null));
-    }
+        Player.RunCommand(currentZone, CommandButton.Jab);
+	}
 
-    public void OnCommandD (InputAction.CallbackContext context)
-    {
+	public void OnKick (InputAction.CallbackContext context)
+	{
         if (context.phase != InputActionPhase.Performed) return;
 
-        Player.DoInput(new InputFrame(CommandInput.D, null));
-    }
+        Player.RunCommand(currentZone, CommandButton.Kick);
+	}
 
-    public void OnCommandE (InputAction.CallbackContext context)
-    {
+	public void OnUtility (InputAction.CallbackContext context)
+	{
         if (context.phase != InputActionPhase.Performed) return;
 
-        Player.DoInput(new InputFrame(CommandInput.E, null));
-    }
+        Player.RunCommand(currentZone, CommandButton.Utility);
+	}
 
-    public void OnCommandF (InputAction.CallbackContext context)
-    {
+	public void OnFinisher (InputAction.CallbackContext context)
+	{
         if (context.phase != InputActionPhase.Performed) return;
 
-        Player.DoInput(new InputFrame(CommandInput.F, null));
-    }
+        Player.RunCommand(currentZone, CommandButton.Finisher);
+	}
 
-    public void OnCommandG (InputAction.CallbackContext context)
-    {
+	public void OnDefenseModifier (InputAction.CallbackContext context)
+	{
         if (context.phase != InputActionPhase.Performed) return;
 
-        Player.DoInput(new InputFrame(CommandInput.G, null));
-    }
+        defense = !defense;
+	}
 
-    public void OnCommandA (InputAction.CallbackContext context)
-    {
+	public void OnRegisterModifier (InputAction.CallbackContext context)
+	{
         if (context.phase != InputActionPhase.Performed) return;
 
-        Player.DoInput(new InputFrame(CommandInput.A, null));
-    }
-
-    public void OnCommandB (InputAction.CallbackContext context)
-    {
-        if (context.phase != InputActionPhase.Performed) return;
-
-        Player.DoInput(new InputFrame(CommandInput.B, null));
-    }
+        register = !register;
+	}
 
     // assumes input is diamond-shaped
     public void OnCPUSelect (InputAction.CallbackContext context)
@@ -87,19 +84,19 @@ public class RealtimeDriver : ADriver, QuadroInput.IPlayerActions
 
         if (dir.x == -1)
         {
-            Player.DoInput(new InputFrame(null, CPUSwitchInput.Zero));
+            Player.SwitchActiveCPU(CPUSwitchInput.Zero);
         }
         else if (dir.y == -1)
         {
-            Player.DoInput(new InputFrame(null, CPUSwitchInput.One));
+            Player.SwitchActiveCPU(CPUSwitchInput.One);
         }
         else if (dir.x == 1)
         {
-            Player.DoInput(new InputFrame(null, CPUSwitchInput.Two));
+            Player.SwitchActiveCPU(CPUSwitchInput.Two);
         }
         else if (dir.y == 1)
         {
-            Player.DoInput(new InputFrame(null, CPUSwitchInput.Three));
+            Player.SwitchActiveCPU(CPUSwitchInput.Three);
         }
     }
 }

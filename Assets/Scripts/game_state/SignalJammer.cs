@@ -7,7 +7,7 @@ public class SignalJammer : ScriptableObject
     public string Name;
     [TextArea]
     public string Description;
-    public CommandInputStrings CommandClassNames;
-    public int MaxHealth, NumCPUs;
+    public CommandStrings CommandClassNames;
+    public int MaxHealth;
     public float ArmorDecayPerBeat;
 }
