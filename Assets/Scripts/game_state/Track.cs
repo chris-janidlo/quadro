@@ -9,7 +9,6 @@ using crass;
 public class Track
 {
 	public event Action Beat;
-    public event Action<Note> NoteSpawned, NoteDespawned;
 
     public const int BEATS_PER_MEASURE = 4;
     public const int BEATS_SHOWN_IN_ADVANCE = 8;
@@ -17,11 +16,12 @@ public class Track
 
     static readonly IReadOnlyList<int> LEGAL_SUBDIVISIONS = new List<int> { 3, 4 };
 
-    // never get the current BPM from this value; always get it from BPM property below
-    public readonly BoxedInt BSteps = new BoxedInt(12, 4, 20);
-    public readonly BoxedInt RhythmDifficulty = new BoxedInt(7, RhythmGenerator.MIN_DIFFICULTY, RhythmGenerator.MAX_DIFFICULTY);
+    public readonly ChordGenerator ChordGenerator;
 
-    public readonly BoxedDouble LatencySeconds = new BoxedDouble(0.3, double.NegativeInfinity, double.PositiveInfinity);
+    // never get the current BPM from this value; always get it from BPM property below
+    public readonly BoxedInt BSteps = new BoxedInt(8, 4, 20);
+
+    public readonly BoxedDouble LatencySeconds = new BoxedDouble(0, double.NegativeInfinity, double.PositiveInfinity);
 
     // needs to be updated by external driver
     double _beatPos;
@@ -47,9 +47,6 @@ public class Track
 
     int closestBeatPosition => (int) Math.Round(CurrentPositionInMeasure);
 
-    List<Note> notes = new List<Note>();
-    RhythmGenerator generator;
-
     List<int> currentlyLegalSubdivisions;
 
     int beatTicker = -1, emptyBeatSpawnTicker;
@@ -64,7 +61,7 @@ public class Track
 
     public Track (int seed)
     {
-        generator = new RhythmGenerator(this, BEATS_PER_MEASURE, seed);
+        ChordGenerator = new ChordGenerator(seed);
 
         apparentBSteps = BSteps.Value;
         currentlyLegalSubdivisions = new List<int>(LEGAL_SUBDIVISIONS);
@@ -96,11 +93,6 @@ public class Track
         return hit;
     }
 
-    public NoteSymbol CurrentChord ()
-    {
-        return notes.Where(n => n.BeatsUntilThisNote >= -1).OrderBy(n => n.BeatsUntilThisNote).First().Symbol;
-    }
-
     double closestTargetablePositionInBeat ()
     {
         List<double> targetablePositions = new List<double> { 0, 1 };
@@ -126,8 +118,7 @@ public class Track
 
             Beat?.Invoke();
 
-            clearStaleNotes();
-            spawnNotesForNextBeat();
+            ChordGenerator.TickBeat();
 
             currentlyLegalSubdivisions.Clear();
             currentlyLegalSubdivisions.AddRange(LEGAL_SUBDIVISIONS);
@@ -145,31 +136,6 @@ public class Track
             if (!(closestHittablePositionInBeat == 0 && previousHittablePositionInBeat == 1))
                 closestHittableNoteAttempted = false;
             previousHittablePositionInBeat = closestHittablePositionInBeat;
-        }
-    }
-
-    void spawnNotesForNextBeat ()
-    {
-        NoteChunk nextBeat = generator.GetNextBeat(CurrentBeatPosition, RhythmDifficulty.Value);
-
-        foreach (Note note in nextBeat.Values)
-        {
-            notes.Add(note);
-            NoteSpawned?.Invoke(note);
-        }
-    }
-
-    void clearStaleNotes ()
-    {
-		for (int i = notes.Count - 1; i >= 0; i--)
-        {
-			Note note = notes[i];
-
-            if (note.BeatsUntilThisNote <= -1)
-            {
-                notes.RemoveAt(i);
-                NoteDespawned?.Invoke(note);
-            }
         }
     }
 
