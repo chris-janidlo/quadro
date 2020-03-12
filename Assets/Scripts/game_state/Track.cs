@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using crass;
 
+// TODO: if the closest note is attempted but there's another note within hit range, and the player attempts a hit, do we count the second hit?
+// TODO: say there are two notes a and b. b is closer to the current position in measure, and neither have ever been attempted, but a is still in hit range. if the player attempts a hit, should that count for a or b?
 public class Track
 {
 	public event Action Beat;
@@ -19,7 +21,7 @@ public class Track
     public readonly BoxedInt BSteps = new BoxedInt(12, 4, 20);
     public readonly BoxedInt RhythmDifficulty = new BoxedInt(7, RhythmGenerator.MIN_DIFFICULTY, RhythmGenerator.MAX_DIFFICULTY);
 
-    public double Latency; // TODO: use this
+    public readonly BoxedDouble LatencySeconds = new BoxedDouble(0.3, double.NegativeInfinity, double.PositiveInfinity);
 
     // needs to be updated by external driver
     double _beatPos;
@@ -33,7 +35,7 @@ public class Track
                 throw new ArgumentException($"value must be in range [0, {BEATS_PER_MEASURE}); was given ${value}");
             }
 
-            _beatPos = value;
+            _beatPos = (value + latencyBeats) % BEATS_PER_MEASURE;
             audioTimeDidUpdate();
         }
     }
@@ -55,6 +57,8 @@ public class Track
     double previousHittablePositionInBeat;
     bool closestHittableNoteAttempted;
 
+    double latencyBeats;
+
     // the actual value that is currently in play, which lags behind BSteps a bit (based on an easing function) in order to make the BPM change not so sudden
     double apparentBSteps;
 
@@ -64,6 +68,11 @@ public class Track
 
         apparentBSteps = BSteps.Value;
         currentlyLegalSubdivisions = new List<int>(LEGAL_SUBDIVISIONS);
+
+        calculateLatencyInBeats();
+
+        BSteps.ValueDidChange += v => calculateLatencyInBeats();
+        LatencySeconds.ValueDidChange += v => calculateLatencyInBeats();
     }
 
     public HitData TryHitNow ()
@@ -162,5 +171,10 @@ public class Track
                 NoteDespawned?.Invoke(note);
             }
         }
+    }
+
+    void calculateLatencyInBeats ()
+    {
+        latencyBeats = LatencySeconds.Value * BPM / 60;
     }
 }

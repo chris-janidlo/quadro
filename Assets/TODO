@@ -15,7 +15,7 @@ TODO:
 
 	register changes
 
-	harder timing on smaller beat subdivisions
+	latency measurement, separate out audio and video latency
 
 	chord buff system implementation
 
