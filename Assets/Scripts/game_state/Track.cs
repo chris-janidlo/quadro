@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using crass;
 
-// TODO: if the closest note is attempted but there's another note within hit range, and the player attempts a hit, do we count the second hit?
-// TODO: say there are two notes a and b. b is closer to the current position in measure, and neither have ever been attempted, but a is still in hit range. if the player attempts a hit, should that count for a or b?
 public class Track
 {
 	public event Action Beat;
