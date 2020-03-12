@@ -16,7 +16,7 @@ public class Track
     static readonly IReadOnlyList<int> LEGAL_SUBDIVISIONS = new List<int> { 3, 4 };
 
     // never get the current BPM from this value; always get it from BPM property below
-    public readonly BoxedInt BSteps = new BoxedInt(8, 4, 20);
+    public readonly BoxedInt BSteps = new BoxedInt(12, 4, 20);
     public readonly BoxedInt RhythmDifficulty = new BoxedInt(7, RhythmGenerator.MIN_DIFFICULTY, RhythmGenerator.MAX_DIFFICULTY);
 
     public double Latency; // TODO: use this
